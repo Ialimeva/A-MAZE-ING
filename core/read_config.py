@@ -1,3 +1,6 @@
+class ConfigError(Exception):
+    pass
+
 class Config:
     def __init__(self) -> None:
         self.__width: int = 20
@@ -51,5 +54,99 @@ class ConfigManager:
     def __init__(self, filename: str) -> None:
         if not filename:
             raise ValueError("No configuration file provided")
-        self._filename: str = filename
+        self.__file: str = filename
+        self.__config: Config = Config()
+        self.__filecontent: str = ""
 
+        self.__read_file()
+        self.__parsing()
+
+    def __read_file(self) -> None:
+        try:
+            with open(self.__file, "r") as f:
+                self.__filecontent = f.read()
+
+        except PermissionError as e:
+            print(f"Permission error on {self.__file}")
+
+        except FileNotFoundError:
+            print(f"File {self.__file} not found")
+
+        except IsADirectoryError:
+            print(f"'{self.__file}' is a directory")
+
+        except Exception as e:
+            print(f"Unexpected Error: {e}")
+
+    def __parsing(self) -> None:
+        try:
+            lines: list[str] = self.__filecontent.splitlines()
+
+            for line in lines:
+                line = line.split("#", 1)[0].strip()
+
+                if not line:
+                    continue
+
+                key, value = map(str.strip, line.split("=", 1))
+                key = ConfigManager.normalize_str(key)
+
+                self.__apply_config(key, value)
+
+        except ConfigError as e:
+            print(f"Config Error: {e}")
+        except Exception as e:
+            print(f"Unexpected Error: {e}")
+
+    @staticmethod
+    def normalize_str(val: str) -> str:
+        return val.strip().lower()
+
+    def __apply_config(self, key: str, value: str) -> None:
+        try:
+            if key == "width":
+                self.__config.set_width(int(value))
+
+            elif key == "height":
+                self.__config.set_height(int(value))
+
+            elif key == "entry":
+                self.__config.set_entry(ConfigManager.parse_tuple(value))
+
+            elif key == "exit":
+                self.__config.set_exit(ConfigManager.parse_tuple(value))
+
+            elif key == "output_file":
+                self.__config.set_output_file(value)
+
+            elif key == "perfect":
+                self.__config.set_perfect(ConfigManager.parse_bool(value))
+
+            else:
+                raise ConfigError(f"Unknown key value: {key} - {value}")
+
+        except Exception as e:
+            raise ConfigError(e)
+
+    @staticmethod
+    def parse_tuple(value: str) -> tuple[int, int]:
+        parts: list[str] = value.split(",")
+        if len(parts) != 2:
+            raise ValueError(f"Invalid coordinate format: {value}")
+        return (int(parts[0]), int(parts[1]))
+
+    @staticmethod
+    def parse_bool(value: str) -> bool:
+        value = value.strip()
+        if value in ("1", "true", "True", "TRUE", "yes"):
+            return True
+        if value in ("0", "false", "False", "FALSE", "no"):
+            return False
+        raise ValueError(f"Invalid boolean format: {value}")
+
+
+    def get_config(self) -> dict[
+        str,
+        int | tuple[int, int] | str | bool
+    ]:
+        return self.__config.get_config()
