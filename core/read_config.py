@@ -1,6 +1,7 @@
 class ConfigError(Exception):
     pass
 
+
 class Config:
     def __init__(self) -> None:
         self.__width: int = 20
@@ -66,7 +67,7 @@ class ConfigManager:
             with open(self.__file, "r") as f:
                 self.__filecontent = f.read()
 
-        except PermissionError as e:
+        except PermissionError:
             print(f"Permission error on {self.__file}")
 
         except FileNotFoundError:
@@ -143,7 +144,6 @@ class ConfigManager:
         if value in ("0", "false", "False", "FALSE", "no"):
             return False
         raise ValueError(f"Invalid boolean format: {value}")
-
 
     def get_config(self) -> dict[
         str,
