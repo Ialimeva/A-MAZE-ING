@@ -48,9 +48,6 @@ class Config:
         self.__perfect = perfect
 
 
-# TODO: Implement class / function to validate configuration,
-# and stick to default one if error happen
-
 class ConfigManager:
     def __init__(self, filename: str) -> None:
         if not filename:
