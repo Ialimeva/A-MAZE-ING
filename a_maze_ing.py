@@ -12,14 +12,17 @@ def main() -> None:
         )
         sys.exit(1)
 
-    config: ConfigManager = ConfigManager(sys.argv[1])
+    try:
+        config: ConfigManager = ConfigManager(sys.argv[1])
 
-    all_configuration: dict[
-        str,
-        str | bool | int | tuple[int, int]
-    ] = config.get_config()
+        all_configuration: dict[
+            str,
+            str | bool | int | tuple[int, int]
+        ] = config.get_config()
 
-    print(all_configuration)
+        print(all_configuration)
+    except ValueError as e:
+        print(f"Value error: {e}")
 
 
 if __name__ == "__main__":
