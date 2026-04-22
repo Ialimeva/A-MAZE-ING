@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: trakotoz <trakotoz@student.42antananari    +#+  +:+       +#+         #
+#    By: ialrandr <ialrandr@student.42antananari    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/21 17:45:13 by trakotoz          #+#    #+#              #
-#    Updated: 2026/04/22 12:33:57 by trakotoz         ###   ########.fr        #
+#    Updated: 2026/04/22 14:22:50 by ialrandr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ VENV		= .venv
 PYTHON		= $(VENV)/bin/python
 PIP			= $(PYTHON) -m pip
 REQ			= requirements.txt
+WHL			= mlx-2.2-py3-none-any.whl
 
 # Program and Args
 PROGRAM		= a_maze_ing.py
@@ -50,6 +51,8 @@ $(VENV)	:
 install		: $(VENV)
 	@ echo "$(C_MAGENTA)> Installing $(REQ)$(C_RESET)"
 	@ $(PIP) install -r $(REQ) -q
+	@ echo "$(C_MAGENTA)> Installing mlx $(C_RESET)"
+	@ $(PIP) install $(WHL)
 
 run			: install
 	$(PYTHON) $(PROGRAM) $(CONFIG)
