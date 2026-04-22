@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Generator
 
 class MazeAlgoError(Exception):
     pass
@@ -19,9 +20,9 @@ class MazeAlgorithm(ABC):
         ...
 
     # TODO: Generate maze but one step at a time
-    # @abstractmethod
-    # def generate_step(self) -> list[list[int]]:
-    #     ...
+    @abstractmethod
+    def generate_step(self) -> Generator[list[list[int]], None, None]:
+        ...
 
     def is_valid_pos(self, x: int, y: int) -> bool:
         return (

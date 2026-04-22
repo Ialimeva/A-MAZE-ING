@@ -1,6 +1,6 @@
 from .maze_algorithm import MazeAlgorithm
 from .algorithms.backtracking_dfs import Bactracking
-from typing import Optional
+from typing import Optional, Generator
 
 
 class MazeError(Exception):
@@ -49,3 +49,6 @@ class MazeGenerator:
 
     def generate(self) -> list[list[int]]:
         return self.__algo.generate()
+
+    def generate_step(self) -> Generator[list[list[int]], None, None]:
+        return self.__algo.generate_step()
