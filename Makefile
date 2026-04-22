@@ -6,7 +6,7 @@
 #    By: trakotoz <trakotoz@student.42antananari    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/21 17:45:13 by trakotoz          #+#    #+#              #
-#    Updated: 2026/04/22 09:07:00 by trakotoz         ###   ########.fr        #
+#    Updated: 2026/04/22 12:33:57 by trakotoz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,7 @@ $(VENV)	:
 
 install		: $(VENV)
 	@ echo "$(C_MAGENTA)> Installing $(REQ)$(C_RESET)"
-	@ $(PIP) install -r $(REQ)
+	@ $(PIP) install -r $(REQ) -q
 
 run			: install
 	$(PYTHON) $(PROGRAM) $(CONFIG)
