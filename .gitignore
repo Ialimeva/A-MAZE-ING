@@ -8,3 +8,6 @@ env/
 
 # Mypy
 .mypy_cache/
+
+# Test
+test_*
