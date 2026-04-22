@@ -1,4 +1,7 @@
+import time
+
 class Render:
+    clear = "\033[H\033[J"
     def __init__(self) -> None:
         self._grid: list[list[int]] = []
 
@@ -6,7 +9,7 @@ class Render:
         self._grid = grid
 
     def render_grid(self) -> None:
-        output: str = ""
+        output: str = Render.clear
         for row in self._grid:
             for cell in row:
                 if (cell % 2) == 0:
@@ -15,5 +18,6 @@ class Render:
                     output += "█"
             output += "\n"
 
+        time.sleep(0.02)
         print(output)
 
