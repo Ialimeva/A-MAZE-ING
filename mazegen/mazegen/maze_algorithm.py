@@ -19,7 +19,6 @@ class MazeAlgorithm(ABC):
     def generate(self) -> list[list[int]]:
         ...
 
-    # TODO: Generate maze but one step at a time
     @abstractmethod
     def generate_step(self) -> Generator[list[list[int]], None, None]:
         ...
