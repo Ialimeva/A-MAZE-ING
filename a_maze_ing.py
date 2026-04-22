@@ -8,7 +8,7 @@ def main() -> None:
     if len(sys.argv) != 2:
         print(
             "Invalid execution format - try:\n"
-            f"python3 a_maze_ing.py <config_file>"
+            "python3 a_maze_ing.py <config_file>"
         )
         sys.exit(1)
 
