@@ -6,7 +6,7 @@
 #    By: trakotoz <trakotoz@student.42antananari    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/21 17:45:13 by trakotoz          #+#    #+#              #
-#    Updated: 2026/04/22 09:01:30 by trakotoz         ###   ########.fr        #
+#    Updated: 2026/04/22 09:07:00 by trakotoz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,31 +47,33 @@ $(VENV)	:
 	@ echo "$(C_RESET)"
 
 
-install	: $(VENV)
+install		: $(VENV)
 	@ echo "$(C_MAGENTA)> Installing $(REQ)$(C_RESET)"
 	@ $(PIP) install -r $(REQ)
 
-run		: install
+run			: install
 	$(PYTHON) $(PROGRAM) $(CONFIG)
 
-clean	:
+clean		:
 	@ echo "$(C_YELLOW)Removing python cache$(C_RESET)"
 	@ $(RM) $(shell find . -name "__pycache__" -type d)
 
 	@ echo "$(C_YELLOW)Removing other cache$(C_RESET)"
 	@ $(RM) $(shell find . -name ".mypy_cache" -type d)
 
-fclean	: clean
+fclean		: clean
 	@ echo "$(C_YELLOW)Removing virtual environment$(C_RESET)"
 	@ $(RM) $(VENV)
 
-lint : install
+lint 		: install
 	@ $(PYTHON) -m flake8 --exclude=$(VENV)
 	@ $(PYTHON) -m mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs
 
-lint-strict: install
+lint-strict	: install
 	@ $(PYTHON) -m flake8 --exclude=$(VENV)
 	@ $(PYTHON) -m mypy . --strict
 
+# TODO: Implemetation of command to run the program in debug mode
+debug		: run
 
 .PHONY	: install run clean lint lint-strict
