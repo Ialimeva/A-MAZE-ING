@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: ialrandr <ialrandr@student.42antananari    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/04/21 17:45:13 by trakotoz          #+#    #+#              #
-#    Updated: 2026/04/22 15:23:30 by trakotoz         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 
 # Environment Configuration
 VENV		= .venv
@@ -52,10 +40,10 @@ install		: $(VENV)
 	@ echo "$(C_MAGENTA)> Installing $(REQ)$(C_RESET)"
 	@ $(PIP) install -r $(REQ) -q
 	@ echo "$(C_MAGENTA)> Installing mlx $(C_RESET)"
-	@ $(PIP) install $(WHL)
+	@ $(PIP) install $(WHL) -q
 
 run			: install
-	$(PYTHON) $(PROGRAM) $(CONFIG)
+	@ $(PYTHON) $(PROGRAM) $(CONFIG)
 
 clean		:
 	@ echo "$(C_YELLOW)Removing python cache$(C_RESET)"
