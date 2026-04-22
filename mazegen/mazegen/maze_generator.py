@@ -1,5 +1,5 @@
 from .maze_algorithm import MazeAlgorithm
-from .algorithms.backtracking_dfs import Bactracking
+from .algorithms import Bactracking
 from typing import Optional, Generator
 
 
