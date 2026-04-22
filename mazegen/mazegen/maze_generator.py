@@ -1,4 +1,5 @@
 from .maze_algorithm import MazeAlgorithm
+from .algorithms.backtracking_dfs import Bactracking
 from typing import Optional
 
 
@@ -33,6 +34,8 @@ class MazeGenerator:
         self.__algo: MazeAlgorithm
         if algo:
             self.__algo = algo
+        else:
+            self.__algo = Bactracking(self.__width, self.__height, self.__grid)
 
     def set_algo(self, algo: MazeAlgorithm):
         self.__algo = algo
