@@ -30,9 +30,13 @@ class Config:
         return config
 
     def set_width(self, width: int) -> None:
+        if width <= 0:
+            raise ConfigError("Invalid width value")
         self.__width = width
 
     def set_height(self, height: int) -> None:
+        if height <= 0:
+            raise ConfigError("Invalid height value")
         self.__height = height
 
     def set_entry(self, entry: tuple[int, int]) -> None:
@@ -42,6 +46,8 @@ class Config:
         self.__exit = exit
 
     def set_output_file(self, output_file: str) -> None:
+        if not output_file:
+            raise ConfigError("Empty output_file")
         self.__output_file = output_file
 
     def set_perfect(self, perfect: bool) -> None:
