@@ -64,7 +64,9 @@ lint-strict	: install
 	@ $(PYTHON) -m flake8 --exclude=$(VENV)
 	@ $(PYTHON) -m mypy . --strict
 
+re			: fclean run
+
 # TODO: Implemetation of command to run the program in debug mode
 debug		: run
 
-.PHONY	: install run clean lint lint-strict
+.PHONY	: install run re clean lint lint-strict
