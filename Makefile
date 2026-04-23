@@ -4,7 +4,7 @@ VENV		= .venv
 PYTHON		= $(VENV)/bin/python
 PIP			= $(PYTHON) -m pip
 REQ			= requirements.txt
-WHL			= mlx-2.2-py3-none-any.whl
+MLX			= dependencies/mlx-2.2-py3-none-any.whl
 
 # Program and Args
 PROGRAM		= a_maze_ing.py
@@ -40,7 +40,7 @@ install		: $(VENV)
 	@ echo "$(C_MAGENTA)> Installing $(REQ)$(C_RESET)"
 	@ $(PIP) install -r $(REQ) -q
 	@ echo "$(C_MAGENTA)> Installing mlx $(C_RESET)"
-	@ $(PIP) install $(WHL) -q
+	@ $(PIP) install $(MLX) -q
 
 run			: install
 	@ $(PYTHON) $(PROGRAM) $(CONFIG)
@@ -69,4 +69,7 @@ re			: fclean run
 # TODO: Implemetation of command to run the program in debug mode
 debug		: run
 
-.PHONY	: install run re clean lint lint-strict
+packages	: install
+	@ $(PIP) list
+
+PHONY	: install run re clean lint lint-strict
