@@ -11,3 +11,7 @@ env/
 
 # Test
 test_*
+
+# Output maze
+maze.txt
+output_maze.txt
