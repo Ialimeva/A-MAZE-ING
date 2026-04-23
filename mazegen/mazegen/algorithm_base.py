@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import Generator
 
+
 class MazeAlgoError(Exception):
     pass
+
 
 class MazeAlgorithm(ABC):
     def __init__(

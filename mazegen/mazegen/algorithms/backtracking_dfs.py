@@ -2,6 +2,7 @@ from ..algorithm_base import MazeAlgoError, MazeAlgorithm
 import random
 from typing import Generator
 
+
 class Backtracking(MazeAlgorithm):
     def __init__(
         self,
@@ -37,7 +38,10 @@ class Backtracking(MazeAlgorithm):
         for dx, dy in directions:
             npos_x, npos_y = pos_x + dx, pos_y + dy
 
-            if self.is_valid_pos(npos_x, npos_y) and (npos_x, npos_y) not in self.__visited:
+            if (
+                self.is_valid_pos(npos_x, npos_y) and
+                (npos_x, npos_y) not in self.__visited
+            ):
                 self._grid[(dy // 2) + pos_y][(dx // 2) + pos_x] = 0
                 self.__carve(npos_x, npos_y)
 
@@ -50,7 +54,11 @@ class Backtracking(MazeAlgorithm):
         yield from self.__carve_step(1, 1)
         yield self._grid
 
-    def __carve_step(self, pos_x: int, pos_y: int) -> Generator[list[list[int]], None, None]:
+    def __carve_step(
+        self,
+        pos_x: int,
+        pos_y: int
+    ) -> Generator[list[list[int]], None, None]:
         self._grid[pos_y][pos_x] = 0
         self.__visited.add((pos_x, pos_y))
 
@@ -64,7 +72,10 @@ class Backtracking(MazeAlgorithm):
 
         for dx, dy in directions:
             npos_x, npos_y = pos_x + dx, pos_y + dy
-            if (self.is_valid_pos(npos_x, npos_y) and (npos_x, npos_y) not in self.__visited):
+            if (
+                self.is_valid_pos(npos_x, npos_y) and
+                (npos_x, npos_y) not in self.__visited
+            ):
                 self._grid[(dy // 2) + pos_y][(dx // 2) + pos_x] = 0
                 yield self._grid
                 yield from self.__carve_step(npos_x, npos_y)

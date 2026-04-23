@@ -6,6 +6,7 @@ from typing import Optional, Generator
 class MazeError(Exception):
     pass
 
+
 class MazeGenerator:
     def __init__(
         self,
@@ -35,9 +36,13 @@ class MazeGenerator:
         if algo:
             self.__algo = algo
         else:
-            self.__algo = Backtracking(self.__width, self.__height, self.__grid)
+            self.__algo = Backtracking(
+                self.__width,
+                self.__height,
+                self.__grid
+            )
 
-    def set_algo(self, algo: MazeAlgorithm):
+    def set_algo(self, algo: MazeAlgorithm) -> None:
         self.__algo = algo
 
     @staticmethod
