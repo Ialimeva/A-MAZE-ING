@@ -29,7 +29,7 @@ class MazeExporter:
                 f.write(output)
 
         except Exception as e:
-            raise MazeExporterError(f"Export filed: {e}")
+            raise MazeExporterError(f"Export failed: {e}")
 
     def __parse_grid(self) -> str:
         if not self.__grid:

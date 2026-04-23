@@ -1,5 +1,5 @@
-from .maze_algorithm import MazeAlgorithm
-from .algorithms import Bactracking
+from .algorithm_base import MazeAlgorithm
+from .algorithms import Backtracking
 from typing import Optional, Generator
 
 
@@ -14,11 +14,11 @@ class MazeGenerator:
         grid: Optional[list[list[int]]] = None,
         algo: Optional[MazeAlgorithm] = None,
     ) -> None:
-        if width < 0:
+        if width <= 0:
             raise MazeError(f"Invalid width: {width}")
         self.__width: int = (2 * width) + 1
 
-        if height < 0:
+        if height <= 0:
             raise MazeError(f"Invalid height: {height}")
         self.__height: int = (2 * height) + 1
 
@@ -35,7 +35,7 @@ class MazeGenerator:
         if algo:
             self.__algo = algo
         else:
-            self.__algo = Bactracking(self.__width, self.__height, self.__grid)
+            self.__algo = Backtracking(self.__width, self.__height, self.__grid)
 
     def set_algo(self, algo: MazeAlgorithm):
         self.__algo = algo

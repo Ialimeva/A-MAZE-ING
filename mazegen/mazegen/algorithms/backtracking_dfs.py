@@ -1,8 +1,8 @@
-from ..maze_algorithm import MazeAlgoError, MazeAlgorithm
+from ..algorithm_base import MazeAlgoError, MazeAlgorithm
 import random
 from typing import Generator
 
-class Bactracking(MazeAlgorithm):
+class Backtracking(MazeAlgorithm):
     def __init__(
         self,
         width: int,

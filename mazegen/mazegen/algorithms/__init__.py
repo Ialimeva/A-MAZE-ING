@@ -1,5 +1,5 @@
-from .backtracking_dfs import Bactracking
+from .backtracking_dfs import Backtracking
 
 __all__ = [
-    "Bactracking"
+    "Backtracking"
 ]
