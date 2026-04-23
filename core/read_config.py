@@ -1,3 +1,5 @@
+from typing import Optional
+
 class ConfigError(Exception):
     pass
 
@@ -10,14 +12,15 @@ class Config:
         self.__exit: tuple[int, int] = (19, 14)
         self.__output_file: str = "maze.txt"
         self.__perfect: bool = True
+        self.__seed: Optional[int] = None
 
     def get_config(self) -> dict[
         str,
-        int | tuple[int, int] | str | bool
+        int | tuple[int, int] | str | bool | Optional[int]
     ]:
         config: dict[
             str,
-            int | tuple[int, int] | str | bool
+            int | tuple[int, int] | str | bool | Optional[int]
         ] = {}
 
         config["width"] = self.__width
@@ -26,6 +29,7 @@ class Config:
         config["exit"] = self.__exit
         config["output_file"] = self.__output_file
         config["perfect"] = self.__perfect
+        config["seed"] = self.__seed
 
         return config
 
@@ -52,6 +56,15 @@ class Config:
 
     def set_perfect(self, perfect: bool) -> None:
         self.__perfect = perfect
+
+    def set_seed(self, seed: str | Optional[int] = None) -> None:
+        if not seed:
+            return
+        try:
+            val: int = int(seed)
+            self.__seed = val
+        except Exception:
+            pass
 
 
 class ConfigManager:
@@ -126,6 +139,9 @@ class ConfigManager:
             elif key == "perfect":
                 self.__config.set_perfect(ConfigManager.parse_bool(value))
 
+            elif key == "seed":
+                self.__config.set_seed(value)
+
             else:
                 raise ConfigError(f"Unknown key value: {key} - {value}")
 
@@ -150,6 +166,6 @@ class ConfigManager:
 
     def get_config(self) -> dict[
         str,
-        int | tuple[int, int] | str | bool
+        int | tuple[int, int] | str | bool | Optional[int]
     ]:
         return self.__config.get_config()
