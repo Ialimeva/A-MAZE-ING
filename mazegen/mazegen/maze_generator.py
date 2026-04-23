@@ -16,10 +16,10 @@ class MazeGenerator:
     ) -> None:
         if width <= 0:
             raise MazeError(f"Invalid width: {width}")
-        self.__width: int = (2 * width) + 1
-
         if height <= 0:
             raise MazeError(f"Invalid height: {height}")
+
+        self.__width: int = (2 * width) + 1
         self.__height: int = (2 * height) + 1
 
         self.__grid: list[list[int]] = []
