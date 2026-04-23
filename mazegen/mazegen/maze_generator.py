@@ -1,6 +1,7 @@
 from .algorithm_base import MazeAlgorithm
 from .algorithms import Backtracking
 from typing import Optional, Generator
+import random
 
 
 class MazeError(Exception):
@@ -14,6 +15,7 @@ class MazeGenerator:
         height: int,
         grid: Optional[list[list[int]]] = None,
         algo: Optional[MazeAlgorithm] = None,
+        seed: Optional[int] = None
     ) -> None:
         if width <= 0:
             raise MazeError(f"Invalid width: {width}")
@@ -41,6 +43,10 @@ class MazeGenerator:
                 self.__height,
                 self.__grid
             )
+
+        self.random = random
+        if seed:
+            self.random = random.seed(seed)
 
     def set_algo(self, algo: MazeAlgorithm) -> None:
         self.__algo = algo

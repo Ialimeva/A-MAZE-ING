@@ -1,6 +1,6 @@
 from ..algorithm_base import MazeAlgoError, MazeAlgorithm
+from typing import Generator, Optional
 import random
-from typing import Generator
 
 
 class Backtracking(MazeAlgorithm):
@@ -8,9 +8,10 @@ class Backtracking(MazeAlgorithm):
         self,
         width: int,
         height: int,
-        grid: list[list[int]]
+        grid: list[list[int]],
+        rdm: Optional[random.Random] = None
     ) -> None:
-        super().__init__(width, height, grid)
+        super().__init__(width, height, grid, rdm)
         self.__visited: set[tuple[int, int]] = set()
 
     def generate(self) -> list[list[int]]:
@@ -33,7 +34,7 @@ class Backtracking(MazeAlgorithm):
             (0, 2),
             (0, -2)
         ]
-        random.shuffle(directions)
+        self._random.shuffle(directions)
 
         for dx, dy in directions:
             npos_x, npos_y = pos_x + dx, pos_y + dy

@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import Generator
+from typing import Generator, Optional
+import random
 
 
 class MazeAlgoError(Exception):
@@ -11,11 +12,16 @@ class MazeAlgorithm(ABC):
         self,
         width: int,
         height: int,
-        grid: list[list[int]]
+        grid: list[list[int]],
+        rdm: Optional[random.Random] = None
     ) -> None:
         self.__width: int = width
         self.__height: int = height
         self._grid: list[list[int]] = grid
+
+        self._random: random.Random = random.Random()
+        if rdm is not None:
+            self._random = rdm
 
     @abstractmethod
     def generate(self) -> list[list[int]]:
