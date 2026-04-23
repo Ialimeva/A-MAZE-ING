@@ -1,7 +1,9 @@
 from typing import Optional
 
+
 class MazeExporterError(Exception):
     pass
+
 
 class MazeExporter:
     def __init__(
@@ -44,7 +46,7 @@ class MazeExporter:
                 south = self.__grid[i + 1][j]
                 east = self.__grid[i][j + 1]
                 north = self.__grid[i - 1][j]
-                
+
                 value = (
                     (north << 0) |
                     (east << 1) |

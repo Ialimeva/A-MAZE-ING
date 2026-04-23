@@ -10,7 +10,6 @@ class Pattern42:
         [1, 1, 1],
         [0, 0, 1],
         [0, 0, 1],
-        [0, 0, 1],
     ]
 
     _DIGIT_2: list[list[int]] = [
@@ -25,7 +24,11 @@ class Pattern42:
     _CELL_HEIGHT = 5
 
     @classmethod
-    def create_grid_42pattern(cls, val_width: int, val_height: int) -> list[list[int]]:
+    def create_grid_42pattern(
+        cls,
+        val_width: int,
+        val_height: int
+    ) -> list[list[int]]:
         width: int = (2 * val_width) + 1
         height: int = (2 * val_height) + 1
 
@@ -35,7 +38,7 @@ class Pattern42:
             raise Pattern42Error(f"Invalid height {height}")
 
         if width < Pattern42._CELL_WIDTH or height < Pattern42._CELL_HEIGHT:
-            raise Pattern42Error(f"Size to small for 42 pattern")
+            raise Pattern42Error("Size to small for 42 pattern")
         grid: list[list[int]] = [
             [1 for _ in range(width)]
             for _ in range(height)
