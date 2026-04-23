@@ -12,7 +12,9 @@ class Render:
         output: str = Render.clear
         for row in self._grid:
             for cell in row:
-                if (cell % 2) == 0:
+                if cell == 2:
+                    output += "\033[33m█\033[0m"
+                elif (cell % 2) == 0:
                     output += " "
                 else:
                     output += "█"
