@@ -9,7 +9,9 @@ class MazeExporter:
     def __init__(
         self,
         filename: str,
-        grid: Optional[list[list[int]]] = None
+        entry: tuple[int, int],
+        exit_: tuple[int, int],
+        grid: Optional[list[list[int]]] = None,
     ) -> None:
         if not filename:
             raise MazeExporterError("Invalid file")
@@ -18,6 +20,9 @@ class MazeExporter:
         self.__grid: list[list[int]] = []
         if grid:
             self.__grid = grid
+
+        self.entry: tuple[int, int] = entry
+        self.exit: tuple[int, int] = exit_
 
     def set_grid(self, grid: list[list[int]]) -> None:
         if not grid:
@@ -29,6 +34,10 @@ class MazeExporter:
             with open(self.__file, "w") as f:
                 output: str = self.__parse_grid()
                 f.write(output)
+
+                f.write("\n")
+                f.write(str(self.entry[0]) + "," + str(self.entry[1]) + "\n")
+                f.write(str(self.exit[0]) + "," + str(self.exit[1]) + "\n")
 
         except Exception as e:
             raise MazeExporterError(f"Export failed: {e}")

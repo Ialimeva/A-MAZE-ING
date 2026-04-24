@@ -1,5 +1,6 @@
 from typing import Optional
 
+
 class ConfigError(Exception):
     pass
 
@@ -30,6 +31,8 @@ class Config:
         config["output_file"] = self.__output_file
         config["perfect"] = self.__perfect
         config["seed"] = self.__seed
+        config["entry"] = self.__entry
+        config["exit"] = self.__exit
 
         return config
 
@@ -141,6 +144,12 @@ class ConfigManager:
 
             elif key == "seed":
                 self.__config.set_seed(value)
+
+            elif key == "entry":
+                self.__config.set_entry(ConfigManager.parse_tuple(value))
+
+            elif key == "exit":
+                self.__config.set_exit(ConfigManager.parse_tuple(value))
 
             else:
                 raise ConfigError(f"Unknown key value: {key} - {value}")
