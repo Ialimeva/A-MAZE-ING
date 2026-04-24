@@ -38,12 +38,12 @@ class Config:
 
     def set_width(self, width: int) -> None:
         if width <= 0:
-            raise ConfigError("Invalid width value")
+            raise ConfigError(f"Invalid width value: {width}")
         self.__width = width
 
     def set_height(self, height: int) -> None:
         if height <= 0:
-            raise ConfigError("Invalid height value")
+            raise ConfigError(f"Invalid height value {height}")
         self.__height = height
 
     def set_entry(self, entry: tuple[int, int]) -> None:
@@ -64,10 +64,14 @@ class Config:
         if not seed:
             return
         try:
+            if str(seed).lower() == "none":
+                self.__seed = None
+                return
+
             val: int = int(seed)
             self.__seed = val
         except Exception:
-            pass
+            raise ConfigError(f"Invalid seed value {seed}")
 
 
 class ConfigManager:
@@ -115,6 +119,11 @@ class ConfigManager:
 
         except ConfigError as e:
             print(f"Config Error: {e}")
+            print("Merge to default configuration")
+            self.__config = ConfigManager._to_default_value()
+            import time
+            time.sleep(3)
+
         except Exception as e:
             print(f"Unexpected Error: {e}")
 
@@ -167,11 +176,15 @@ class ConfigManager:
     @staticmethod
     def parse_bool(value: str) -> bool:
         value = value.strip()
-        if value in ("1", "true", "True", "TRUE", "yes"):
+        if value in ("1", "true", "True", "TRUE", "yes", "Yes", "YES"):
             return True
-        if value in ("0", "false", "False", "FALSE", "no"):
+        if value in ("0", "false", "False", "FALSE", "no", "No", "NO"):
             return False
         raise ValueError(f"Invalid boolean format: {value}")
+
+    @classmethod
+    def _to_default_value(cls) -> Config:
+        return Config()
 
     def get_config(self) -> dict[
         str,
