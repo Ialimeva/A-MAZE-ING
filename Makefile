@@ -4,7 +4,8 @@ VENV		= .venv
 PYTHON		= $(VENV)/bin/python
 PIP			= $(PYTHON) -m pip
 REQ			= requirements.txt
-MLX			= dependencies/mlx-2.2-py3-none-any.whl
+DEP			= dependencies
+MLX			= $(DEP)/mlx-2.2-py3-none-any.whl
 
 # Program and Args
 PROGRAM		= a_maze_ing.py
@@ -71,5 +72,7 @@ debug		: run
 
 packages	: install
 	@ $(PIP) list
+	@ $(PYTHON) --version
+	@ $(PIP) --version
 
 PHONY	: install run re clean lint lint-strict
