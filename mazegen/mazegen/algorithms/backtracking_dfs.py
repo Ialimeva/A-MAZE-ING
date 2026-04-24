@@ -1,6 +1,5 @@
 from ..algorithm_base import MazeAlgoError, MazeAlgorithm
 from typing import Generator, Optional
-import random
 
 
 class Backtracking(MazeAlgorithm):
@@ -8,16 +7,20 @@ class Backtracking(MazeAlgorithm):
         self,
         width: int,
         height: int,
-        grid: list[list[int]],
-        rdm: Optional[random.Random] = None
+        grid: Optional[list[list[int]]] | None = None,
+        perfect: bool = True,
+        seed: Optional[int] = None
     ) -> None:
-        super().__init__(width, height, grid, rdm)
+        super().__init__(width, height, grid, perfect, seed)
         self.__visited: set[tuple[int, int]] = set()
 
     def generate(self) -> list[list[int]]:
         self.__visited.clear()
         if not self.__carve(1, 1):
             raise MazeAlgoError("Error on generating the Maze")
+        if not self._perfect:
+            MazeAlgorithm._add_loop(self._grid)
+
         return self._grid
 
     def __carve(
@@ -69,7 +72,7 @@ class Backtracking(MazeAlgorithm):
             (0, 2),
             (0, -2)
         ]
-        random.shuffle(directions)
+        self._random.shuffle(directions)
 
         for dx, dy in directions:
             npos_x, npos_y = pos_x + dx, pos_y + dy

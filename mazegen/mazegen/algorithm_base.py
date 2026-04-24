@@ -12,16 +12,20 @@ class MazeAlgorithm(ABC):
         self,
         width: int,
         height: int,
-        grid: list[list[int]],
-        rdm: Optional[random.Random] = None
+        grid: Optional[list[list[int]]] | None = None,
+        perfect: bool = True,
+        seed: Optional[int] = None
     ) -> None:
         self.__width: int = width
         self.__height: int = height
-        self._grid: list[list[int]] = grid
+        self._grid: list[list[int]] = (
+            grid if grid is not None
+            else MazeAlgorithm.initiate_grid(self.__width, self.__height)
+        )
 
-        self._random: random.Random = random.Random()
-        if rdm is not None:
-            self._random = rdm
+        self._perfect: bool = perfect
+
+        self._random: random.Random = random.Random(seed)
 
     @abstractmethod
     def generate(self) -> list[list[int]]:
@@ -37,3 +41,14 @@ class MazeAlgorithm(ABC):
             0 < y < self.__height and
             self._grid[y][x] != 2
         )
+
+    @staticmethod
+    def initiate_grid(width: int, height: int) -> list[list[int]]:
+        return [
+            [1 for _ in range(width)]
+            for _ in range(height)
+        ]
+
+    @classmethod
+    def _add_loop(cls, grid: list[list[int]]) -> list[list[int]]:
+        ...

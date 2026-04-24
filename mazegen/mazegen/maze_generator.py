@@ -1,7 +1,6 @@
 from .algorithm_base import MazeAlgorithm
 from .algorithms import Backtracking
 from typing import Optional, Generator
-import random
 
 
 class MazeError(Exception):
@@ -13,6 +12,7 @@ class MazeGenerator:
         self,
         width: int,
         height: int,
+        perfect: bool,
         grid: Optional[list[list[int]]] = None,
         algo: Optional[MazeAlgorithm] = None,
         seed: Optional[int] = None
@@ -25,38 +25,25 @@ class MazeGenerator:
         self.__width: int = (2 * width) + 1
         self.__height: int = (2 * height) + 1
 
-        self.__grid: list[list[int]] = []
-        if grid:
-            self.__grid = grid
-        else:
-            self.__grid = MazeGenerator.initiate_grid(
-                self.__width,
-                self.__height
-            )
-
-        self.__algo: MazeAlgorithm
-        if algo:
-            self.__algo = algo
-        else:
-            self.__algo = Backtracking(
+        initial_grid: Optional[list[list[int]]] = (
+            [row[:] for row in grid] if grid
+            else None
+        )
+        self.__algo: MazeAlgorithm = (
+            algo if algo
+            else Backtracking(
                 self.__width,
                 self.__height,
-                self.__grid
+                initial_grid,
+                perfect,
+                seed
             )
+        )
 
-        self.random = random
-        if seed:
-            self.random = random.seed(seed)
 
     def set_algo(self, algo: MazeAlgorithm) -> None:
         self.__algo = algo
 
-    @staticmethod
-    def initiate_grid(width: int, height: int) -> list[list[int]]:
-        return [
-            [1 for _ in range(width)]
-            for _ in range(height)
-        ]
 
     def generate(self) -> list[list[int]]:
         return self.__algo.generate()
