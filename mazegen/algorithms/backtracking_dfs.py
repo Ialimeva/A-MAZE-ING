@@ -25,29 +25,45 @@ class Backtracking(MazeAlgorithm):
 
     def __carve(
         self,
-        pos_x: int,
-        pos_y: int
+        start_x: int,
+        start_y: int
     ) -> bool:
-        self._grid[pos_y][pos_x] = 0
-        self.__visited.add((pos_x, pos_y))
+        self.__visited.clear()
 
-        directions: list[tuple[int, int]] = [
-            (2, 0),
-            (-2, 0),
-            (0, 2),
-            (0, -2)
-        ]
-        self._random.shuffle(directions)
+        stack: list[tuple[int, int]] = [(start_x, start_y)]
+        self.__visited.add((start_x, start_y))
+        self._grid[start_y][start_x] = 0
 
-        for dx, dy in directions:
-            npos_x, npos_y = pos_x + dx, pos_y + dy
+        while stack:
+            pos_x, pos_y = stack[-1]
 
-            if (
-                self.is_valid_pos(npos_x, npos_y) and
-                (npos_x, npos_y) not in self.__visited
-            ):
-                self._grid[(dy // 2) + pos_y][(dx // 2) + pos_x] = 0
-                self.__carve(npos_x, npos_y)
+            directions: list[tuple[int, int]] = [
+                (2, 0),
+                (-2, 0),
+                (0, -2),
+                (0, 2)
+            ]
+            self._random.shuffle(directions)
+
+            pushed: bool = False
+            for dx, dy in directions:
+                npos_x, npos_y = dx + pos_x, dy + pos_y
+
+                if (
+                    self.is_valid_pos(npos_x, npos_y) and
+                    (npos_x, npos_y) not in self.__visited
+                ):
+                    self.__visited.add((npos_x, npos_y))
+                    stack.append((npos_x, npos_y))
+
+                    self._grid[(dy // 2) + pos_y][(dx // 2) + pos_x] = 0
+                    self._grid[npos_y][npos_x] = 0
+
+                    pushed = True
+                    break
+
+            if not pushed:
+                stack.pop()
 
         return True
 
@@ -60,28 +76,46 @@ class Backtracking(MazeAlgorithm):
 
     def __carve_step(
         self,
-        pos_x: int,
-        pos_y: int
+        start_x: int,
+        start_y: int
     ) -> Generator[list[list[int]], None, None]:
-        self._grid[pos_y][pos_x] = 0
-        self.__visited.add((pos_x, pos_y))
+        self.__visited.clear()
 
-        directions: list[tuple[int, int]] = [
-            (2, 0),
-            (-2, 0),
-            (0, 2),
-            (0, -2)
-        ]
-        self._random.shuffle(directions)
+        stack: list[tuple[int, int]] = [(start_x, start_y)]
+        self.__visited.add((start_x, start_y))
+        self._grid[start_y][start_x] = 0
 
-        for dx, dy in directions:
-            npos_x, npos_y = pos_x + dx, pos_y + dy
-            if (
-                self.is_valid_pos(npos_x, npos_y) and
-                (npos_x, npos_y) not in self.__visited
-            ):
-                self._grid[(dy // 2) + pos_y][(dx // 2) + pos_x] = 0
-                yield self._grid
-                yield from self.__carve_step(npos_x, npos_y)
+        while stack:
+            pos_x, pos_y = stack[-1]
+
+            directions: list[tuple[int, int]] = [
+                (2, 0),
+                (-2, 0),
+                (0, -2),
+                (0, 2)
+            ]
+            self._random.shuffle(directions)
+
+            pushed: bool = False
+            for dx, dy in directions:
+                npos_x, npos_y = dx + pos_x, dy + pos_y
+
+                if (
+                    self.is_valid_pos(npos_x, npos_y) and
+                    (npos_x, npos_y) not in self.__visited
+                ):
+                    self.__visited.add((npos_x, npos_y))
+                    stack.append((npos_x, npos_y))
+
+                    self._grid[(dy // 2) + pos_y][(dx // 2) + pos_x] = 0
+                    self._grid[npos_y][npos_x] = 0
+
+                    yield self._grid
+
+                    pushed = True
+                    break
+
+            if not pushed:
+                stack.pop()
 
         yield self._grid

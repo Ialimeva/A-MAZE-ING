@@ -26,7 +26,8 @@ def main() -> None:
         grid=Pattern42.create_grid_42pattern(
             configs["width"],
             configs["height"],
-        )
+        ),
+        seed=configs["seed"]
     )
 
     render: Render = Render()
