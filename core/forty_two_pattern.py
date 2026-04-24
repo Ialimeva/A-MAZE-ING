@@ -5,22 +5,22 @@ class Pattern42Error(Exception):
 class Pattern42:
 
     _DIGIT_4: list[list[int]] = [
-        [1, 0, 0],
-        [1, 0, 0],
-        [1, 1, 1],
-        [0, 0, 1],
-        [0, 0, 1],
+        [0, 0, 0, 1],
+        [0, 0, 1, 0],
+        [0, 1, 0, 0],
+        [1, 1, 1, 1],
+        [0, 0, 0, 1],
     ]
 
     _DIGIT_2: list[list[int]] = [
-        [1, 1, 1],
-        [0, 0, 1],
-        [1, 1, 1],
-        [1, 0, 0],
-        [1, 1, 1]
+        [0, 1, 1, 1],
+        [0, 0, 0, 1],
+        [0, 0, 1, 0],
+        [0, 1, 1, 1],
+        [0, 0, 0, 0]
     ]
 
-    _CELL_WIDTH = 7
+    _CELL_WIDTH = 9
     _CELL_HEIGHT = 5
 
     @classmethod
@@ -48,7 +48,7 @@ class Pattern42:
         offset_y = (val_height - Pattern42._CELL_HEIGHT) // 2
 
         for row in range(5):
-            for col in range(3):
+            for col in range(4):
                 if Pattern42._DIGIT_4[row][col] == 1:
                     gx = (offset_x + col) * 2 + 1
                     gy = (offset_y + row) * 2 + 1
