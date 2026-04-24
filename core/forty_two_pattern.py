@@ -60,3 +60,11 @@ class Pattern42:
                     grid[gy][gx] = 2
 
         return grid
+
+    @classmethod
+    def get_42_width(cls) -> int:
+        return (cls._CELL_WIDTH)
+
+    @classmethod
+    def get_42_height(cls) -> int:
+        return (cls._CELL_HEIGHT)

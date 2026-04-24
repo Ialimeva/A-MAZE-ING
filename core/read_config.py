@@ -1,4 +1,5 @@
 from typing import Optional
+from .forty_two_pattern import Pattern42
 
 
 class ConfigError(Exception):
@@ -47,10 +48,14 @@ class Config:
         self.__height = height
 
     def set_entry(self, entry: tuple[int, int]) -> None:
+        if entry[0] < 0 or entry[1] < 0:
+            raise ConfigError(f"Invalid entry point value {entry}")
         self.__entry = entry
 
-    def set_exit(self, exit: tuple[int, int]) -> None:
-        self.__exit = exit
+    def set_exit(self, exit_: tuple[int, int]) -> None:
+        if exit_[0] < 0 or exit_[1] < 0:
+            raise ConfigError(f"Invalid exit point value {exit_}")
+        self.__exit = exit_
 
     def set_output_file(self, output_file: str) -> None:
         if not output_file:
@@ -84,6 +89,18 @@ class ConfigManager:
 
         self.__read_file()
         self.__parsing()
+
+        try:
+            ConfigManager._evaluation(self.__config)
+        except ConfigError as e:
+            print(f"Config Error caugth: {e}")
+            print("Using default value")
+            self.__config = ConfigManager._to_default_value()
+            import time
+            time.sleep(4)
+
+        except Exception as e:
+            print(f"Unexpected Error: {e}")
 
     def __read_file(self) -> None:
         try:
@@ -191,3 +208,25 @@ class ConfigManager:
         int | tuple[int, int] | str | bool | Optional[int]
     ]:
         return self.__config.get_config()
+
+    @classmethod
+    def _evaluation(cls, config: Config) -> None:
+        conf = config.get_config()
+
+        entry_point = conf["entry"]
+        exit_point = conf["exit"]
+
+        width = conf["width"]
+        height = conf["height"]
+
+        if width < Pattern42._CELL_WIDTH or height < Pattern42._CELL_HEIGHT:
+            raise ConfigError("Size to small for 42 pattern")
+
+        if entry_point == exit_point:
+            raise ConfigError("Entry and exit can't be the same")
+
+        if (entry_point[0] > width - 1 or entry_point[1] > height - 1):
+            raise ConfigError(f"Entry point out of bound {entry_point}")
+
+        if (exit_point[0] > width - 1 or exit_point[1] > height - 1):
+            raise ConfigError(f"Exit point out of bound {exit_point}")
