@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from core import ConfigManager, MazeExporter, Pattern42
-from mazegen.mazegen import MazeGenerator
+from mazegen import MazeGenerator
 from cli_render import Render
 from typing import Optional
 
