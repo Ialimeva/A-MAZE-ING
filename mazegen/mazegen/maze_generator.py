@@ -40,10 +40,8 @@ class MazeGenerator:
             )
         )
 
-
     def set_algo(self, algo: MazeAlgorithm) -> None:
         self.__algo = algo
-
 
     def generate(self) -> list[list[int]]:
         return self.__algo.generate()

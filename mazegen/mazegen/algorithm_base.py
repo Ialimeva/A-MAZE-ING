@@ -51,4 +51,4 @@ class MazeAlgorithm(ABC):
 
     @classmethod
     def _add_loop(cls, grid: list[list[int]]) -> list[list[int]]:
-        ...
+        return grid
