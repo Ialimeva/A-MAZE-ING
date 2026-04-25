@@ -35,6 +35,8 @@ def main() -> None:
     gen = maze_generator.generate_step()
     final_grid: list[list[int]] = []
 
+    render.set_point(configs["entry"], configs["exit"])
+
     for g in gen:
         final_grid = g
         render.set_grid(final_grid)

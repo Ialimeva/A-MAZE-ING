@@ -3,6 +3,7 @@
 VENV		= .venv
 PYTHON		= $(VENV)/bin/python
 PIP			= $(PYTHON) -m pip
+DEBUGGER	= $(PYTHON) -m ipdb
 REQ			= requirements.txt
 DEP			= dependencies
 MLX			= $(DEP)/mlx-2.2-py3-none-any.whl
@@ -20,6 +21,8 @@ C_YELLOW	= \033[33m
 C_BLEU		= \033[34m
 C_MAGENTA	= \033[35m
 
+
+all		: install
 
 $(VENV)	:
 	@ echo "$(C_MAGENTA)> Creating Virtual environment$(C_RESET)"
@@ -65,10 +68,10 @@ lint-strict	: install
 	@ $(PYTHON) -m flake8 --exclude=$(VENV)
 	@ $(PYTHON) -m mypy . --strict
 
-re			: fclean run
+re			: fclean all
 
-# TODO: Implemetation of command to run the program in debug mode
-debug		: run
+debug		: install
+	@ $(DEBUGGER) $(PROGRAM)
 
 packages	: install
 	@ $(PIP) list
