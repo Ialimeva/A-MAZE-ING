@@ -8,7 +8,7 @@ class MazeAlgoError(Exception):
 
 
 class MazeAlgorithm(ABC):
-    _chance: float = 0.1
+    _chance: float = 0.05
 
     def __init__(
         self,
@@ -38,7 +38,7 @@ class MazeAlgorithm(ABC):
     @abstractmethod
     def generate_step(self) -> Generator[list[list[int]], None, None]:
         if not self._perfect:
-            self._add_loop()
+            yield from self._add_loop_step()
         yield self._grid
 
     def is_valid_pos(self, x: int, y: int) -> bool:
@@ -56,10 +56,6 @@ class MazeAlgorithm(ABC):
         ]
 
     def _add_loop(self) -> None:
-        import time
-
-        print("Adding loops")
-        time.sleep(2)
         for y in range(1, self.__height - 1):
             for x in range(1, self.__width - 1):
                 if self._grid[y][x] == 2:
@@ -80,4 +76,50 @@ class MazeAlgorithm(ABC):
                 if neighbors >= 2 and self._random.random() < MazeAlgorithm._chance:
                     self._grid[y][x] = 0
 
-        print("Adding loops finished")
+    def _compute_protected(self) -> set[tuple[int, int]]:
+        protected: set[tuple[int, int]] = set()
+
+        for y in range(1, self.__height, 2):
+            for x in range(1, self.__width, 2):
+                if self._grid == 2:
+
+                    for dy in (-1, 0, 1):
+                        for dx in (-1, 0, 1):
+                            nx, ny = dx + x, dy + y
+
+                            if 0 <= nx < self.__width and 0 <= ny < self.__height:
+                                protected.add((nx, ny))
+
+
+        return protected
+
+    def _add_loop_step(self) -> Generator[list[list[int]], None, None]:
+        protected: set[tuple[int, int]] = self._compute_protected()
+
+        for y in range(1, self.__height - 1):
+            for x in range(1, self.__width - 1):
+                if self._grid[y][x] == 2:
+                    continue
+                if self._grid[y][x] != 1:
+                    continue
+
+                if (x, y) in protected:
+                    continue
+
+                neighbors: int = 0
+                if self._grid[y - 1][x] == 0:
+                    neighbors += 1
+                if self._grid[y][x + 1] == 0:
+                    neighbors += 1
+                if self._grid[y + 1][x] == 0:
+                    neighbors += 1
+                if self._grid[y][x - 1] == 0:
+                    neighbors += 1
+
+                if (
+                    neighbors in (1, 2) and
+                    self._random.random() < MazeAlgorithm._chance
+                ):
+                    self._grid[y][x] = 0
+                    yield self._grid
+
