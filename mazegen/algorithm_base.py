@@ -8,6 +8,8 @@ class MazeAlgoError(Exception):
 
 
 class MazeAlgorithm(ABC):
+    _chance: float = 0.1
+
     def __init__(
         self,
         width: int,
@@ -29,11 +31,15 @@ class MazeAlgorithm(ABC):
 
     @abstractmethod
     def generate(self) -> list[list[int]]:
-        ...
+        if not self._perfect:
+            self._add_loop()
+        return self._grid
 
     @abstractmethod
     def generate_step(self) -> Generator[list[list[int]], None, None]:
-        ...
+        if not self._perfect:
+            self._add_loop()
+        yield self._grid
 
     def is_valid_pos(self, x: int, y: int) -> bool:
         return (
@@ -49,6 +55,29 @@ class MazeAlgorithm(ABC):
             for _ in range(height)
         ]
 
-    @classmethod
-    def _add_loop(cls, grid: list[list[int]]) -> list[list[int]]:
-        return grid
+    def _add_loop(self) -> None:
+        import time
+
+        print("Adding loops")
+        time.sleep(2)
+        for y in range(1, self.__height - 1):
+            for x in range(1, self.__width - 1):
+                if self._grid[y][x] == 2:
+                    continue
+                if self._grid[y][x] != 1:
+                    continue
+
+                neighbors: int = 0
+                if self._grid[y - 1][x] == 0:
+                    neighbors += 1
+                if self._grid[y][x + 1] == 0:
+                    neighbors += 1
+                if self._grid[y + 1][x] == 0:
+                    neighbors += 1
+                if self._grid[y][x - 1] == 0:
+                    neighbors += 1
+
+                if neighbors >= 2 and self._random.random() < MazeAlgorithm._chance:
+                    self._grid[y][x] = 0
+
+        print("Adding loops finished")

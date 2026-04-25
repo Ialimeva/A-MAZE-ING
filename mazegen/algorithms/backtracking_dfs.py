@@ -18,10 +18,7 @@ class Backtracking(MazeAlgorithm):
         self.__visited.clear()
         if not self.__carve(1, 1):
             raise MazeAlgoError("Error on generating the Maze")
-        if not self._perfect:
-            MazeAlgorithm._add_loop(self._grid)
-
-        return self._grid
+        return super().generate()
 
     def __carve(
         self,
@@ -72,7 +69,7 @@ class Backtracking(MazeAlgorithm):
 
         yield self._grid
         yield from self.__carve_step(1, 1)
-        yield self._grid
+        yield from super().generate_step()
 
     def __carve_step(
         self,
