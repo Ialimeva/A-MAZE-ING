@@ -6,7 +6,7 @@
 #    By: ialrandr <ialrandr@student.42antananari    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/21 17:45:13 by trakotoz          #+#    #+#              #
-#    Updated: 2026/04/22 15:23:30 by trakotoz         ###   ########.fr        #
+#    Updated: 2026/04/25 06:13:18 by ialrandr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,6 +77,7 @@ lint-strict	: install
 	@ $(PYTHON) -m mypy . --strict
 
 # TODO: Implemetation of command to run the program in debug mode
-debug		: run
+debug		: 
+	@ $(PYTHON) -m ipdb $(PROGRAM)
 
 .PHONY	: install run clean lint lint-strict
