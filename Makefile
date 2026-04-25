@@ -4,7 +4,6 @@ VENV		= .venv
 PYTHON		= $(VENV)/bin/python
 
 PIP			= $(PYTHON) -m pip
-DEBUGGER	= $(PYTHON) -m ipdb
 REQ			= requirements.txt
 DEP			= dependencies
 MLX			= $(DEP)/mlx-2.2-py3-none-any.whl
@@ -74,9 +73,6 @@ debug		:
 	@ $(PYTHON) -m ipdb $(PROGRAM)
 
 re			: fclean all
-
-debug		: install
-	@ $(DEBUGGER) $(PROGRAM)
 
 packages	: install
 	@ $(PIP) list
