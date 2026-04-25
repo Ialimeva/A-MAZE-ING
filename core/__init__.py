@@ -1,6 +1,7 @@
-from .read_config import ConfigManager
-
+from .maze_config import ConfigManager, MazeExporter, Pattern42
 
 __all__ = [
-    "ConfigManager"
+    "ConfigManager",
+    "MazeExporter",
+    "Pattern42"
 ]

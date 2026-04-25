@@ -1,22 +1,13 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: ialrandr <ialrandr@student.42antananari    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/04/21 17:45:13 by trakotoz          #+#    #+#              #
-#    Updated: 2026/04/25 06:13:18 by ialrandr         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 
 # Environment Configuration
 VENV		= .venv
 PYTHON		= $(VENV)/bin/python
+
 PIP			= $(PYTHON) -m pip
+DEBUGGER	= $(PYTHON) -m ipdb
 REQ			= requirements.txt
-WHL			= mlx-2.2-py3-none-any.whl
+DEP			= dependencies
+MLX			= $(DEP)/mlx-2.2-py3-none-any.whl
 
 # Program and Args
 PROGRAM		= a_maze_ing.py
@@ -31,6 +22,8 @@ C_YELLOW	= \033[33m
 C_BLEU		= \033[34m
 C_MAGENTA	= \033[35m
 
+
+all		: install
 
 $(VENV)	:
 	@ echo "$(C_MAGENTA)> Creating Virtual environment$(C_RESET)"
@@ -52,10 +45,10 @@ install		: $(VENV)
 	@ echo "$(C_MAGENTA)> Installing $(REQ)$(C_RESET)"
 	@ $(PIP) install -r $(REQ) -q
 	@ echo "$(C_MAGENTA)> Installing mlx $(C_RESET)"
-	@ $(PIP) install $(WHL)
+	@ $(PIP) install $(MLX) -q
 
 run			: install
-	$(PYTHON) $(PROGRAM) $(CONFIG)
+	@ $(PYTHON) $(PROGRAM) $(CONFIG)
 
 clean		:
 	@ echo "$(C_YELLOW)Removing python cache$(C_RESET)"
@@ -80,4 +73,14 @@ lint-strict	: install
 debug		: 
 	@ $(PYTHON) -m ipdb $(PROGRAM)
 
-.PHONY	: install run clean lint lint-strict
+re			: fclean all
+
+debug		: install
+	@ $(DEBUGGER) $(PROGRAM)
+
+packages	: install
+	@ $(PIP) list
+	@ $(PYTHON) --version
+	@ $(PIP) --version
+
+PHONY	: install run re clean lint lint-strict
