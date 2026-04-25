@@ -10,7 +10,7 @@ MLX			= $(DEP)/mlx-2.2-py3-none-any.whl
 
 # Program and Args
 PROGRAM		= a_maze_ing.py
-CONFIG		= config.txt
+CONFIG		= config.conf
 
 RM	= rm -rf
 
