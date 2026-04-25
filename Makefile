@@ -2,8 +2,8 @@
 # Environment Configuration
 VENV		= .venv
 PYTHON		= $(VENV)/bin/python
+
 PIP			= $(PYTHON) -m pip
-DEBUGGER	= $(PYTHON) -m ipdb
 REQ			= requirements.txt
 DEP			= dependencies
 MLX			= $(DEP)/mlx-2.2-py3-none-any.whl
@@ -68,10 +68,11 @@ lint-strict	: install
 	@ $(PYTHON) -m flake8 --exclude=$(VENV)
 	@ $(PYTHON) -m mypy . --strict
 
-re			: fclean all
+# TODO: Implemetation of command to run the program in debug mode
+debug		: 
+	@ $(PYTHON) -m ipdb $(PROGRAM)
 
-debug		: install
-	@ $(DEBUGGER) $(PROGRAM)
+re			: fclean all
 
 packages	: install
 	@ $(PIP) list
