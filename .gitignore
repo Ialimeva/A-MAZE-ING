@@ -15,3 +15,7 @@ test_*
 # Output maze
 maze.txt
 output_maze.txt
+
+# Build packages
+dist/
+*.egg-info

@@ -1,0 +1,17 @@
+[build-system]
+requires		= ["setuptools", "wheel"]
+build-backend	= "setuptools.build_meta"
+
+[project]
+name		= "mazegen"
+version		= "0.1.0"
+description	= "Maze Generator"
+authors		= [
+	{name = "Teddy Andrianina", email = "trakotoz@student.42antananarivo.mg"},
+	{name = "Ialimeva Rindraniaina", email = "ialrandr@studen.42antananarivo.mg"}
+]
+readme		= "mazegen/README.md"
+
+[tool.setuptools.packages.find]
+where	= ["."]
+include	= ["mazegen*"]
