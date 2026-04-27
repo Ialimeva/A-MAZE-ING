@@ -222,3 +222,11 @@ class ConfigManager:
 
         if (exit_point[0] > width - 1 or exit_point[1] > height - 1):
             raise ConfigError(f"Exit point out of bound {exit_point}")
+
+        import time
+        if Pattern42.is_42_position(entry_point, width, height):
+            raise ConfigError(f"Entry point collide with 42 pattern")
+
+        if Pattern42.is_42_position(exit_point, width, height):
+            raise ConfigError(f"Exit point collide with 42 pattern")
+        time.sleep(4)
