@@ -10,7 +10,7 @@ MLX			= $(DEP)/mlx-2.2-py3-none-any.whl
 
 # Program and Args
 PROGRAM		= a_maze_ing.py
-CONFIG		= config.txt
+CONFIG		= config.conf
 
 RM	= rm -rf
 
@@ -21,10 +21,17 @@ C_YELLOW	= \033[33m
 C_BLEU		= \033[34m
 C_MAGENTA	= \033[35m
 
+DIST	= dist $(shell find . -name "*.egg-info" -type d)
 
 all		: install
 
-$(VENV)	:
+install		: $(VENV)
+	@ echo "$(C_MAGENTA)> Installing $(REQ)$(C_RESET)"
+	@ $(PIP) install -r $(REQ) -q
+	@ echo "$(C_MAGENTA)> Installing mlx $(C_RESET)"
+	@ $(PIP) install $(MLX) -q
+
+$(VENV)		:
 	@ echo "$(C_MAGENTA)> Creating Virtual environment$(C_RESET)"
 	@ python3 -m venv $@
 	@ echo "$(C_MAGENTA)> Upgrade pip, latest version$(C_RESET)"
@@ -39,13 +46,6 @@ $(VENV)	:
 
 	@ echo "$(C_RESET)"
 
-
-install		: $(VENV)
-	@ echo "$(C_MAGENTA)> Installing $(REQ)$(C_RESET)"
-	@ $(PIP) install -r $(REQ) -q
-	@ echo "$(C_MAGENTA)> Installing mlx $(C_RESET)"
-	@ $(PIP) install $(MLX) -q
-
 run			: install
 	@ $(PYTHON) $(PROGRAM) $(CONFIG)
 
@@ -59,6 +59,8 @@ clean		:
 fclean		: clean
 	@ echo "$(C_YELLOW)Removing virtual environment$(C_RESET)"
 	@ $(RM) $(VENV)
+	@ echo "$(C_YELLOW)Removing dist build generated file$(C_RESET)"
+	@ $(RM) $(DIST)
 
 lint 		: install
 	@ $(PYTHON) -m flake8 --exclude=$(VENV)
@@ -68,7 +70,6 @@ lint-strict	: install
 	@ $(PYTHON) -m flake8 --exclude=$(VENV)
 	@ $(PYTHON) -m mypy . --strict
 
-# TODO: Implemetation of command to run the program in debug mode
 debug		: 
 	@ $(PYTHON) -m ipdb $(PROGRAM)
 
@@ -78,5 +79,8 @@ packages	: install
 	@ $(PIP) list
 	@ $(PYTHON) --version
 	@ $(PIP) --version
+
+build		: install
+	@ $(PYTHON) -m build
 
 PHONY	: install run re clean lint lint-strict

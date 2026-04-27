@@ -1,5 +1,6 @@
 from typing import Optional
 from .forty_two_pattern import Pattern42
+from typing import Any
 
 
 class ConfigError(Exception):
@@ -16,14 +17,8 @@ class Config:
         self.__perfect: bool = True
         self.__seed: Optional[int] = None
 
-    def get_config(self) -> dict[
-        str,
-        int | tuple[int, int] | str | bool | Optional[int]
-    ]:
-        config: dict[
-            str,
-            int | tuple[int, int] | str | bool | Optional[int]
-        ] = {}
+    def get_config(self) -> dict[str, Any]:
+        config: dict[str,Any] = {}
 
         config["width"] = self.__width
         config["height"] = self.__height
@@ -203,10 +198,7 @@ class ConfigManager:
     def _to_default_value(cls) -> Config:
         return Config()
 
-    def get_config(self) -> dict[
-        str,
-        int | tuple[int, int] | str | bool | Optional[int]
-    ]:
+    def get_config(self) -> dict[str, Any]:
         return self.__config.get_config()
 
     @classmethod
