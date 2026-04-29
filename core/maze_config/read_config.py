@@ -89,8 +89,6 @@ class ConfigManager:
             print(f"Config Error caugth: {e}")
             print("Using default value")
             self.__config = ConfigManager._to_default_value()
-            import time
-            time.sleep(4)
 
         except Exception as e:
             print(f"Unexpected Error: {e}")
@@ -131,8 +129,6 @@ class ConfigManager:
             print(f"Config Error: {e}")
             print("Merge to default configuration")
             self.__config = ConfigManager._to_default_value()
-            import time
-            time.sleep(3)
 
         except Exception as e:
             print(f"Unexpected Error: {e}")
@@ -221,10 +217,8 @@ class ConfigManager:
         if (exit_point[0] > width - 1 or exit_point[1] > height - 1):
             raise ConfigError(f"Exit point out of bound {exit_point}")
 
-        import time
         if Pattern42.is_42_position(entry_point, width, height):
             raise ConfigError(f"Entry point collide with 42 pattern")
 
         if Pattern42.is_42_position(exit_point, width, height):
             raise ConfigError(f"Exit point collide with 42 pattern")
-        time.sleep(4)
