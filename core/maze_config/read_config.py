@@ -27,8 +27,6 @@ class Config:
         config["output_file"] = self.__output_file
         config["perfect"] = self.__perfect
         config["seed"] = self.__seed
-        config["entry"] = self.__entry
-        config["exit"] = self.__exit
 
         return config
 
