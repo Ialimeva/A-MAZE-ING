@@ -8,15 +8,11 @@ class MazeExporterError(Exception):
 class MazeExporter:
     def __init__(
         self,
-        filename: str,
         entry: tuple[int, int],
         exit_: tuple[int, int],
         grid: Optional[list[list[int]]] = None,
     ) -> None:
-        if not filename:
-            raise MazeExporterError("Invalid file")
 
-        self.__file: str = filename
         self.__grid: list[list[int]] = []
         if grid:
             self.__grid = grid
@@ -29,10 +25,13 @@ class MazeExporter:
             raise MazeExporterError("Invalid Grid")
         self.__grid = grid
 
-    def export_maze(self) -> None:
+    def export_maze_file(self, filename: str) -> None:
         try:
-            with open(self.__file, "w") as f:
-                output: str = self.__parse_grid()
+            if not filename:
+                raise MazeExporterError("Invalid file")
+            with open(filename, "w") as f:
+                res: list[list[str]] = self.__parse_grid()
+                output: str = "\n".join("".join(row) for row in res)
                 f.write(output)
 
                 f.write("\n")
@@ -42,14 +41,18 @@ class MazeExporter:
         except Exception as e:
             raise MazeExporterError(f"Export failed: {e}")
 
-    def __parse_grid(self) -> str:
+    def export_maze(self) -> list[list[str]]:
+        return self.__parse_grid()
+
+    def __parse_grid(self) -> list[list[str]]:
         if not self.__grid:
             raise MazeExporterError("Empty grid")
-        output: str = ""
+        output: list[list[str]] = []
         height: int = len(self.__grid)
         width: int = len(self.__grid[0])
 
         for i in range(1, height - 1, 2):
+            row: list[str] = []
             for j in range(1, width - 1, 2):
                 west = self.__grid[i][j - 1]
                 south = self.__grid[i + 1][j]
@@ -63,7 +66,7 @@ class MazeExporter:
                     (west << 3)
                 )
 
-                output += format(value, "X")
-            output += "\n"
+                row += [format(value, "X")]
+            output += [row]
 
         return output
