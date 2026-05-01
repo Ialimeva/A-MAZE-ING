@@ -7,7 +7,6 @@ PIP			= $(PYTHON) -m pip
 REQ			= requirements.txt
 DEP			= dependencies
 MLX			= $(DEP)/mlx-2.2-py3-none-any.whl
-NUMPY 		= numpy
 
 # Program and Args
 PROGRAM		= a_maze_ing.py
@@ -31,8 +30,6 @@ install		: $(VENV)
 	@ $(PIP) install -r $(REQ) -q
 	@ echo "$(C_MAGENTA)> Installing mlx $(C_RESET)"
 	@ $(PIP) install $(MLX) -q
-	@ echo "$(C_MAGENTA)> Installing numpy $(C_RESET)"
-	@ $(PIP) install $(NUMPY) -q
 
 $(VENV)		:
 	@ echo "$(C_MAGENTA)> Creating Virtual environment$(C_RESET)"
