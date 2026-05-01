@@ -18,7 +18,7 @@ class Config:
         self.__seed: Optional[int] = None
 
     def get_config(self) -> dict[str, Any]:
-        config: dict[str,Any] = {}
+        config: dict[str, Any] = {}
 
         config["width"] = self.__width
         config["height"] = self.__height
@@ -212,13 +212,13 @@ class ConfigManager:
             raise ConfigError("Entry and exit can't be the same")
 
         if (entry_point[0] > width - 1 or entry_point[1] > height - 1):
-            raise ConfigError(f"Entry point out of bound {entry_point}")
+            raise ConfigError("Entry point out of bound {entry_point}")
 
         if (exit_point[0] > width - 1 or exit_point[1] > height - 1):
-            raise ConfigError(f"Exit point out of bound {exit_point}")
+            raise ConfigError("Exit point out of bound {exit_point}")
 
         if Pattern42.is_42_position(entry_point, width, height):
-            raise ConfigError(f"Entry point collide with 42 pattern")
+            raise ConfigError("Entry point collide with 42 pattern")
 
         if Pattern42.is_42_position(exit_point, width, height):
-            raise ConfigError(f"Exit point collide with 42 pattern")
+            raise ConfigError("Exit point collide with 42 pattern")

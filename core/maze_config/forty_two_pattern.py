@@ -69,7 +69,11 @@ class Pattern42:
         return (grid, positions)
 
     @classmethod
-    def is_42_position(cls, points: tuple[int, int], width: int, height: int) -> bool:
+    def is_42_position(
+        cls,
+        points: tuple[int, int],
+        width: int, height: int
+    ) -> bool:
         _, positions = Pattern42.create_grid_42pattern(width, height)
         val: tuple[int, int] = (2 * points[0] + 1, 2 * points[1] + 1)
         if val in positions:

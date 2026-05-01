@@ -18,7 +18,11 @@ class Render:
     def set_grid(self, grid: list[list[int]]) -> None:
         self._grid = grid
 
-    def set_point(self, entry: tuple[int, int], exit_: tuple[int, int]) -> None:
+    def set_point(
+        self,
+        entry: tuple[int, int],
+        exit_: tuple[int, int]
+    ) -> None:
         self._entry: tuple[int, int] = (2 * entry[0] + 1, 2 * entry[1] + 1)
         self._exit: tuple[int, int] = (2 * exit_[0] + 1, 2 * exit_[1] + 1)
 

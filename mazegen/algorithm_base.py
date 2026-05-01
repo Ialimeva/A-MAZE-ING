@@ -73,7 +73,10 @@ class MazeAlgorithm(ABC):
                 if self._grid[y][x - 1] == 0:
                     neighbors += 1
 
-                if neighbors >= 2 and self._random.random() < MazeAlgorithm._chance:
+                if (
+                    neighbors >= 2 and
+                    self._random.random() < MazeAlgorithm._chance
+                ):
                     self._grid[y][x] = 0
 
     def _compute_protected(self) -> set[tuple[int, int]]:
@@ -87,9 +90,11 @@ class MazeAlgorithm(ABC):
                         for dx in (-1, 0, 1):
                             nx, ny = dx + x, dy + y
 
-                            if 0 <= nx < self.__width and 0 <= ny < self.__height:
+                            if (
+                                0 <= nx < self.__width and
+                                0 <= ny < self.__height
+                            ):
                                 protected.add((nx, ny))
-
 
         return protected
 
@@ -122,4 +127,3 @@ class MazeAlgorithm(ABC):
                 ):
                     self._grid[y][x] = 0
                     yield self._grid
-
