@@ -6,7 +6,7 @@ PYTHON		= $(VENV)/bin/python
 PIP			= $(PYTHON) -m pip
 REQ			= requirements.txt
 DEP			= dependencies
-MLX			= $(DEP)/mlx-2.2-py3-none-any.whl
+WHL			= $(shell find $(DEP) -name "*whl" -type f)
 
 # Program and Args
 PROGRAM		= a_maze_ing.py
@@ -28,8 +28,9 @@ all		: install
 install		: $(VENV)
 	@ echo "$(C_MAGENTA)> Installing $(REQ)$(C_RESET)"
 	@ $(PIP) install -r $(REQ) -q
-	@ echo "$(C_MAGENTA)> Installing mlx $(C_RESET)"
-	@ $(PIP) install $(MLX) -q
+	@ echo "$(C_MAGENTA)> Installing $(DEP) $(C_RESET)"
+	@ echo "$(C_BLEU)$(WHL)$(C_RESET)"
+	@ $(PIP) install $(WHL) -q
 
 $(VENV)		:
 	@ echo "$(C_MAGENTA)> Creating Virtual environment$(C_RESET)"
@@ -75,10 +76,9 @@ debug		:
 
 re			: fclean all
 
-packages	: install
-	@ $(PIP) list
+packages	: $(VENV)
 	@ $(PYTHON) --version
-	@ $(PIP) --version
+	@ $(PIP) list
 
 build		: install
 	@ $(PYTHON) -m build
