@@ -1,97 +1,145 @@
-from keymap import Keymap as Key
-from config import elements
+# ************************************************************************* #
+#                                                                           #
+#                                                      :::      ::::::::    #
+#  utils.py                                          :+:      :+:    :+:    #
+#                                                  +:+ +:+         +:+      #
+#  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
+#                                              +#+#+#+#+#+   +#+            #
+#  Created: 2026/04/29 11:59:44 by ialrandr        #+#    #+#               #
+#  Updated: 2026/05/01 18:05:36 by ialrandr        ###   ########.fr        #
+#                                                                           #
+# ************************************************************************* #
 
-def exit_window(param) -> None:
-    m, mlx_ptr, window_ptr = param
-    m.mlx_destroy_window(mlx_ptr, window_ptr)
-    m.mlx_release(mlx_ptr)
+from typing import Any
+# from config import elements, CELL_HEIGHT, CELL_WIDTH
 
+MlxApp = Any
+MlxPtr = Any
+WindowPtr = Any
+ImagePtr = Any
 
-def compute_key(keycode, param) -> None:
-    if (keycode == Key.get("esc")):
-        exit_window(param)
-
-
-def offset(x: int, y: int, line: int) -> int:
-    res: int = (y * line) + (x * 4);
-    return (res)
-
-
-def draw_floor(m, mlx_ptr, img_adr, img_line, window_ptr) -> None:
-    grid_x, grid_y = elements["floor"]
-
-    buff = m.mlx_new_image(mlx_ptr, 16, 16)
-    buff_adr, buff_bpp, buff_line, buff_ed = m.mlx_get_data_addr(buff)
-    src_x = grid_x * 16
-    src_y = grid_y * 16
-    for y in range(16):
-        for x in range(16):
-            off_src = offset(src_x + x, src_y + y, img_line)
-            color = img_adr[off_src : off_src + 4]
-            off_dst = offset(x, y, buff_line)
-            buff_adr[off_dst : off_dst + 4] = color
-    m.mlx_put_image_to_window(mlx_ptr, window_ptr, buff, 7, 16)
+# def exit_window(param) -> None:
+#     m, mlx_ptr, window_ptr = param
+#     m.mlx_destroy_window(mlx_ptr, window_ptr)
+#     m.mlx_release(mlx_ptr)
 
 
-def draw_north_wall(m, mlx_ptr, img_adr, img_line, window_ptr) -> None:
-    grid_x, grid_y = elements["north"]
-
-    buff = m.mlx_new_image(mlx_ptr, 16, 16)
-    buff_adr, buff_bpp, buff_line, buff_ed = m.mlx_get_data_addr(buff)
-    src_x = grid_x * 16
-    src_y = grid_y * 16
-    for y in range(16):
-        for x in range(16):
-            off_src = offset(src_x + x, src_y + y, img_line)
-            color = img_adr[off_src : off_src + 4]
-            off_dst = offset(x, y, buff_line)
-            buff_adr[off_dst : off_dst + 4] = color
-    m.mlx_put_image_to_window(mlx_ptr, window_ptr, buff, 7, 0)
+# def compute_key(keycode, param) -> None:
+#     if (keycode == Key.get("esc")):
+#         exit_window(param)
 
 
-def draw_south_wall(m, mlx_ptr, img_adr, img_line, window_ptr) -> None:
-    grid_x, grid_y = elements["north"]
+# def offset(x: int, y: int, line: int) -> int:
+#     res: int = (y * line) + (x * 4);
+#     return (res)
 
-    buff = m.mlx_new_image(mlx_ptr, 16, 16)
-    buff_adr, buff_bpp, buff_line, buff_ed = m.mlx_get_data_addr(buff)
-    src_x = grid_x * 16
-    src_y = grid_y * 16
-    for y in range(16):
-        for x in range(16):
-            off_src = offset(src_x + x, src_y + y, img_line)
-            color = img_adr[off_src : off_src + 4]
-            off_dst = offset(x, y, buff_line)
-            buff_adr[off_dst : off_dst + 4] = color
-    m.mlx_put_image_to_window(mlx_ptr, window_ptr, buff, 7, 32)
+# # class Draw():
+# def draw_floor(m, mlx_ptr,
+#                 img_adr, img_line,
+#                 buff_adr, buff_line,
+#                 col, row
+#             ) -> None:
+#     grid_x, grid_y = elements["floor"]
+#     src_x = grid_x * 16
+#     src_y = grid_y * 16
+#     for r in range(row):
+#         for c in range(col):
+#             # Iterates through each cell
+#             cell_position_x = c * 48
+#             cell_position_y = r * 64
+#             for j in range(4):
+#                 for i in range(3):
+#                     # Iterates through each tile(16x16) in a cell
+#                     dest_x = cell_position_x + (i * 16)
+#                     dest_y = cell_position_y + (j * 16)
+#                     for y in range(16):
+#                             # Iterates through all 16 pixels on a row
+#                             off_src = offset(
+#                                 src_x,
+#                                 src_y + y,
+#                                 img_line
+#                             )
+#                             color = img_adr[off_src : off_src + 64]
+#                             off_dst = offset(
+#                                 dest_x,
+#                                 dest_y + y,
+#                                 buff_line
+#                             )
+#                             buff_adr[off_dst : off_dst + 64] = color
 
 
-def draw_east_wall(m, mlx_ptr, img_adr, img_line, window_ptr) -> None:
-    grid_x, grid_y = elements["east"]
-
-    buff = m.mlx_new_image(mlx_ptr, 2, 16)
-    buff_adr, buff_bpp, buff_line, buff_ed = m.mlx_get_data_addr(buff)
-    src_x = grid_x
-    src_y = grid_y * 16
-    for y in range(16):
-        for x in range(2):
-            off_src = offset(src_x + x, src_y + y, img_line)
-            color = img_adr[off_src : off_src + 4]
-            off_dst = offset(x, y, buff_line)
-            buff_adr[off_dst : off_dst + 4] = color
-    m.mlx_put_image_to_window(mlx_ptr, window_ptr, buff, 500, 1)
 
 
-def draw_west_wall(m, mlx_ptr, img_adr, img_line, window_ptr) -> None:
-    grid_x, grid_y = elements["west"]
+# def draw_north_wall(m, mlx_ptr,
+#                     img_adr, img_line,
+#                     buff_adr, buff_line,
+#                     col, row
+#                 ) -> None:
+#     grid_x, grid_y = elements["north"]
+#     src_x = grid_x * 16
+#     src_y = grid_y * 16
+#     for y in range(16):
+#         for x in range(16):
+#             off_src = offset(src_x + x, src_y + y, img_line)
+#             color = img_adr[off_src : off_src + 4]
+#             if (color[3] != 0):
+#                 dest_x = col * 16
+#                 dest_y = row * 16
+#                 off_dst = offset(dest_x + x, dest_y + y, buff_line)
+#                 buff_adr[off_dst : off_dst + 4] = color
 
-    buff = m.mlx_new_image(mlx_ptr, 8, 48)
-    buff_adr, buff_bpp, buff_line, buff_ed = m.mlx_get_data_addr(buff)
-    src_x = grid_x * 16
-    src_y = grid_y * 16
-    for y in range(48):
-        for x in range(7):
-            off_src = offset(src_x + x, src_y + y, img_line)
-            color = img_adr[off_src : off_src + 4]
-            off_dst = offset(x, y, buff_line)
-            buff_adr[off_dst : off_dst + 4] = color
-    m.mlx_put_image_to_window(mlx_ptr, window_ptr, buff, 50, 0)
+
+# def draw_south_wall(m, mlx_ptr,
+#                     img_adr, img_line,
+#                     buff_adr, buff_line,
+#                     col, row
+#                 ) -> None:
+#     grid_x, grid_y = elements["north"]
+#     src_x = grid_x * 16
+#     src_y = grid_y * 16
+#     for y in range(16):
+#         for x in range(16):
+#             off_src = offset(src_x + x, src_y + y, img_line)
+#             color = img_adr[off_src : off_src + 4]
+#             if (color[3] != 0):
+#                 dest_x = col * 16
+#                 dest_y = row * 16
+#                 off_dst = offset(dest_x + x, dest_y + y, buff_line)
+#                 buff_adr[off_dst : off_dst + 4] = color
+
+# def draw_east_wall(m, mlx_ptr,
+#                     img_adr, img_line,
+#                     buff_adr, buff_line,
+#                     col, row
+#                 ) -> None:
+#     grid_x, grid_y = elements["east"]
+#     src_x = grid_x * 16
+#     src_y = grid_y * 16
+#     for y in range(16):
+#         for x in range(16):
+#             off_src = offset(src_x + x, src_y + y, img_line)
+#             color = img_adr[off_src : off_src + 4]
+#             # final_color = color + 0x00330000 
+#             if (color[3] != 0):
+#                 dest_x = col * 16
+#                 dest_y = row * 16
+#                 off_dst = offset(dest_x + x, dest_y + y, buff_line)
+#                 buff_adr[off_dst : off_dst + 4] = color
+
+# def draw_west_wall(m, mlx_ptr,
+#                     img_adr, img_line,
+#                     buff_adr, buff_line,
+#                     col, row
+#                 ) -> None:
+#     grid_x, grid_y = elements["west"]
+#     src_x = grid_x * 16
+#     src_y = grid_y * 16
+#     for y in range(16):
+#         for x in range(16):
+#             off_src = offset(src_x + x, src_y + y, img_line)
+#             color = img_adr[off_src : off_src + 4]
+#             if (color[3] != 0):
+#                 dest_x = col * 16
+#                 dest_y = row * 16
+#                 off_dst = offset(dest_x + x, dest_y + y, buff_line)
+#                 buff_adr[off_dst : off_dst + 4] = color
