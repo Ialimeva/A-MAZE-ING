@@ -36,7 +36,7 @@ $(VENV)		:
 	@ echo "$(C_MAGENTA)> Creating Virtual environment$(C_RESET)"
 	@ python3 -m venv $@
 	@ echo "$(C_MAGENTA)> Upgrade pip, latest version$(C_RESET)"
-	@ $(PIP) install --upgrade pip
+	@ $(PIP) install --upgrade pip -q
 
 	@ echo
 	@ echo "$(C_BLEU)Python:$(C_RESET)"

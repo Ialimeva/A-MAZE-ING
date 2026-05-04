@@ -1,14 +1,16 @@
-WIDTH = 500
-HEIGHT = 600
-PIXEL_SIZE = 16
-BPP = 4
+from typing import Any
 
-elements = {
-    "floor" : (1, 1),
-    "north" : (5, 0),
-    "east"  : (51, 3),
-    "south" : (5, 4),
-    "west"  : (0, 0)
+maze_config: dict[str, Any] = {
+    "colums": 0,
+    "rows": 0,
+    "cell_width": 48,
+    "cell_height": 64
+}
+
+elements: dict[str, Any] = {
+    "floor" : (2, 3),
+    "horizontal_wall" : (0, 0),
+    "vertical_wall"  : (16, 0),
 }
 
 # set_map = {
