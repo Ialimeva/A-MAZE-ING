@@ -6,6 +6,7 @@ from core import Maze
 class Brick(Enum):
     WALL = "█"
     PATH = " "
+    RES = "\033[32m▓\033[0m"
     FT = "\033[33m▓\033[0m"
     POINT = "\033[34m█\033[0m"
 
@@ -45,5 +46,48 @@ class Render:
                     output += Brick.WALL.value
             output += "\n"
 
-        time.sleep(0.02)
+        time.sleep(0.01)
         print(output)
+
+    def _expand_path(self, path: list[tuple[int, int]]) -> set[tuple[int, int]]:
+        full_path: set[tuple[int, int]] = set()
+
+        for i in range(len(path) - 1):
+            x1, y1 = path[i]
+            x2, y2 = path[i + 1]
+
+            full_path.add((x1, y1))
+            full_path.add((x2, y2))
+
+            # add the wall between them
+            mid_x = (x1 + x2) // 2
+            mid_y = (y1 + y2) // 2
+            full_path.add((mid_x, mid_y))
+
+        return full_path
+
+    def render_path(self, path: list[tuple[int, int]]) -> None:
+        output: str = Render.clear
+
+        full_path = self._expand_path(path)
+
+        for y, row in enumerate(self._maze.grid):
+            for x, cell in enumerate(row):
+                if (
+                    (x, y) == self._maze.entry or
+                    (x, y) == self._maze.exit
+                ):
+                    output += Brick.POINT.value
+                elif (x, y) in full_path:
+                    output += Brick.RES.value
+                elif cell == 2:
+                    output += Brick.FT.value
+                elif (cell % 2) == 0:
+                    output += Brick.PATH.value
+                else:
+                    output += Brick.WALL.value
+            output += "\n"
+
+        time.sleep(0.01)
+        print(output)
+
