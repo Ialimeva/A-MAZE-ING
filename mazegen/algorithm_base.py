@@ -55,36 +55,12 @@ class MazeAlgorithm(ABC):
             for _ in range(height)
         ]
 
-    def _add_loop(self) -> None:
-        for y in range(1, self.__height - 1):
-            for x in range(1, self.__width - 1):
-                if self._grid[y][x] == 2:
-                    continue
-                if self._grid[y][x] != 1:
-                    continue
-
-                neighbors: int = 0
-                if self._grid[y - 1][x] == 0:
-                    neighbors += 1
-                if self._grid[y][x + 1] == 0:
-                    neighbors += 1
-                if self._grid[y + 1][x] == 0:
-                    neighbors += 1
-                if self._grid[y][x - 1] == 0:
-                    neighbors += 1
-
-                if (
-                    neighbors >= 2 and
-                    self._random.random() < MazeAlgorithm._chance
-                ):
-                    self._grid[y][x] = 0
-
     def _compute_protected(self) -> set[tuple[int, int]]:
         protected: set[tuple[int, int]] = set()
 
         for y in range(1, self.__height, 2):
             for x in range(1, self.__width, 2):
-                if self._grid == 2:
+                if self._grid[y][x] == 2:
 
                     for dy in (-1, 0, 1):
                         for dx in (-1, 0, 1):
@@ -98,31 +74,58 @@ class MazeAlgorithm(ABC):
 
         return protected
 
+    def _add_loop(self) -> None:
+        protected: set[tuple[int, int]] = self._compute_protected()
+
+        for y in range(1, self.__height - 1):
+            for x in range(1, self.__width - 1):
+                neighbors: int = 0
+
+                if (
+                    self._grid[y][x] != 2 and
+                    self._grid[y][x] == 1 and
+                    (x, y) not in protected
+                ):
+
+                    if self._grid[y - 1][x] == 0:
+                        neighbors += 1
+                    if self._grid[y][x + 1] == 0:
+                        neighbors += 1
+                    if self._grid[y + 1][x] == 0:
+                        neighbors += 1
+                    if self._grid[y][x - 1] == 0:
+                        neighbors += 1
+
+                if (
+                    neighbors == 2 and
+                    self._random.random() < MazeAlgorithm._chance
+                ):
+                    self._grid[y][x] = 0
+
     def _add_loop_step(self) -> Generator[list[list[int]], None, None]:
         protected: set[tuple[int, int]] = self._compute_protected()
 
         for y in range(1, self.__height - 1):
             for x in range(1, self.__width - 1):
-                if self._grid[y][x] == 2:
-                    continue
-                if self._grid[y][x] != 1:
-                    continue
-
-                if (x, y) in protected:
-                    continue
-
                 neighbors: int = 0
-                if self._grid[y - 1][x] == 0:
-                    neighbors += 1
-                if self._grid[y][x + 1] == 0:
-                    neighbors += 1
-                if self._grid[y + 1][x] == 0:
-                    neighbors += 1
-                if self._grid[y][x - 1] == 0:
-                    neighbors += 1
 
                 if (
-                    neighbors in (1, 2) and
+                    self._grid[y][x] != 2 and
+                    self._grid[y][x] == 1 and
+                    (x, y) not in protected
+                ):
+
+                    if self._grid[y - 1][x] == 0:
+                        neighbors += 1
+                    if self._grid[y][x + 1] == 0:
+                        neighbors += 1
+                    if self._grid[y + 1][x] == 0:
+                        neighbors += 1
+                    if self._grid[y][x - 1] == 0:
+                        neighbors += 1
+
+                if (
+                    neighbors == 2 and
                     self._random.random() < MazeAlgorithm._chance
                 ):
                     self._grid[y][x] = 0
