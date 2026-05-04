@@ -88,6 +88,3 @@ class Maze:
     @property
     def get_exti(self) -> tuple[int, int]:
         return self.__exit
-
-maze: Maze = Maze()
-maze.grid_hex
