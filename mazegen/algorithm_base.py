@@ -74,7 +74,7 @@ class MazeAlgorithm(ABC):
                     neighbors += 1
 
                 if (
-                    neighbors >= 2 and
+                    neighbors == 2 and
                     self._random.random() < MazeAlgorithm._chance
                 ):
                     self._grid[y][x] = 0
@@ -122,7 +122,7 @@ class MazeAlgorithm(ABC):
                     neighbors += 1
 
                 if (
-                    neighbors in (1, 2) and
+                    neighbors == 2 and
                     self._random.random() < MazeAlgorithm._chance
                 ):
                     self._grid[y][x] = 0
