@@ -8,9 +8,9 @@ maze_config: dict[str, Any] = {
 }
 
 elements: dict[str, Any] = {
-    "floor" : (2, 3),
-    "horizontal_wall" : (0, 0),
-    "vertical_wall"  : (16, 0),
+    "floor": (2, 3),
+    "horizontal_wall": (0, 0),
+    "vertical_wall": (16, 0),
 }
 
 # set_map = {
