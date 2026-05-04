@@ -7,8 +7,8 @@ name		= "mazegen"
 version		= "0.1.0"
 description	= "Maze Generator"
 authors		= [
-	{name = "trakotoz", email = "trakotoz@student.42antananarivo.mg"},
-	{name = "ialrandr", email = "ialrandr@student.42antananarivo.mg"}
+	{name = "Teddy Andrianina", email = "trakotoz@student.42antananarivo.mg"},
+	{name = "Ialimeva Rindraniaina", email = "ialrandr@student.42antananarivo.mg"}
 ]
 readme		= "mazegen/README.md"
 
