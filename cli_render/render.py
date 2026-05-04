@@ -1,5 +1,6 @@
 import time
 from enum import Enum
+from core import Maze
 
 
 class Brick(Enum):
@@ -13,27 +14,27 @@ class Render:
     clear = "\033[H\033[J"
 
     def __init__(self) -> None:
-        self._grid: list[list[int]] = []
+        self._maze: Maze = Maze()
 
-    def set_grid(self, grid: list[list[int]]) -> None:
-        self._grid = grid
+    def set_maze(self, maze: Maze) -> None:
+        self._maze = maze
 
     def set_point(
         self,
         entry: tuple[int, int],
         exit_: tuple[int, int]
     ) -> None:
-        self._entry: tuple[int, int] = (2 * entry[0] + 1, 2 * entry[1] + 1)
-        self._exit: tuple[int, int] = (2 * exit_[0] + 1, 2 * exit_[1] + 1)
+        self._maze.set_entry((2 * entry[0] + 1, 2 * entry[1] + 1))
+        self._maze.set_exit((2 * exit_[0] + 1, 2 * exit_[1] + 1))
 
-    def render_grid(self) -> None:
+    def render_maze(self) -> None:
         output: str = Render.clear
 
-        for y, row in enumerate(self._grid):
+        for y, row in enumerate(self._maze.grid):
             for x, cell in enumerate(row):
                 if (
-                    (x, y) == self._entry or
-                    (x, y) == self._exit
+                    (x, y) == self._maze.entry or
+                    (x, y) == self._maze.exit
                 ):
                     output += Brick.POINT.value
                 elif cell == 2:

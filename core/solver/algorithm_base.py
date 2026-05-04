@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Generator
 import random
 
+from core.maze import Maze
 
 class SolverError(Exception):
     pass
@@ -10,24 +11,10 @@ class SolverError(Exception):
 class MazeSolver(ABC):
     def __init__(
         self,
-        grid: list[list[int]],
-        entry_point: tuple[int, int],
-        exit_point: tuple[int, int],
+        maze: Maze,
         seed: int
     ) -> None:
-        if not grid or len(grid) < 2:
-            raise SolverError("Invalid grid")
-        if (
-            grid[entry_point[1]][entry_point[0]] == 2 or
-            grid[exit_point[1]][exit_point[0]] == 2
-        ):
-            raise SolverError(
-                "Given coordinate collide with untouchable wall in the maze"
-            )
-
-        self._grid: list[list[int]] = grid
-        self._entry: tuple[int, int] = entry_point
-        self._exit: tuple[int, int] = exit_point
+        self._maze: Maze = maze
         self._random: random.Random = random.Random(seed)
 
     @abstractmethod
@@ -39,11 +26,8 @@ class MazeSolver(ABC):
         ...
 
     def is_valid_pos(self, x: int, y: int) -> bool:
-        width: int = len(self._grid[0])
-        height: int = len(self._grid)
-
         return (
-            0 < x < width and
-            0 < y < height and
-            self._grid[y][x] != 2
+            0 < x < self._maze.width and
+            0 < y < self._maze.height and
+            self._maze.grid[y][x] != 2
         )
