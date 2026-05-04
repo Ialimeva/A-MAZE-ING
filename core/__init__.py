@@ -1,4 +1,4 @@
-from .maze_config import ConfigManager, MazeExporter, Pattern42
+from .config import ConfigManager, MazeExporter, Pattern42
 
 __all__ = [
     "ConfigManager",
