@@ -1,6 +1,6 @@
 import time
 from enum import Enum
-from core import Maze
+from mazegen import Maze
 
 
 class Brick(Enum):

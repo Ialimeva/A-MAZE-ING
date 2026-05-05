@@ -1,4 +1,4 @@
-from .algorithm_base import MazeAlgorithm
+from .generator_base import MazeAlgorithm
 from .algorithms import DFS
 from typing import Optional, Generator
 

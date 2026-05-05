@@ -1,4 +1,4 @@
-from ..algorithm_base import MazeAlgoError, MazeAlgorithm
+from ..generator_base import MazeAlgoError, MazeAlgorithm
 from typing import Generator, Optional
 
 

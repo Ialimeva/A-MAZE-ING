@@ -1,5 +1,5 @@
-from core.solver.algorithm_base import MazeSolver, SolverError
-from core.maze import Maze
+from ..algorithm_base import MazeSolver, SolverError
+from mazegen.maze import Maze
 from typing import Generator, Optional, Deque
 from collections import deque
 

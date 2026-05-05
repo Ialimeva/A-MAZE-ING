@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Generator, Optional
 import random
-from core.maze import Maze
+from mazegen.maze import Maze
 
 
 class SolverError(Exception):

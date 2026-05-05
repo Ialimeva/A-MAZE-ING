@@ -1,11 +1,11 @@
 from typing import Optional
 
 
-class MazeExporterError(Exception):
+class MazeWritterError(Exception):
     pass
 
 
-class MazeExporter:
+class MazeWritter:
 
     @classmethod
     def write_maze(
@@ -18,7 +18,7 @@ class MazeExporter:
     ) -> None:
         try:
             if not filename:
-                raise MazeExporterError("Invalid file")
+                raise MazeWritterError("Invalid file")
             with open(filename, "w") as f:
                 output: str = "\n".join("".join(row) for row in grid_hex)
                 f.write(output)
@@ -34,4 +34,4 @@ class MazeExporter:
                     f.write(path + "\n")
 
         except Exception as e:
-            raise MazeExporterError(f"Export failed: {e}")
+            raise MazeWritterError(f"Export failed: {e}")
