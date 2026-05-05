@@ -1,6 +1,6 @@
 from .config import ConfigManager, MazeExporter, Pattern42
 from .maze import Maze
-from .solver import Backtracking
+from .solver import MazeSolver, BFS
 
 __all__ = [
     "Maze",
@@ -8,5 +8,5 @@ __all__ = [
     "MazeExporter",
     "Pattern42",
     "MazeSolver",
-    "Backtracking"
+    "BFS"
 ]

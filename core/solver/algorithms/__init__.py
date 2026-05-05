@@ -1,6 +1,6 @@
-from .backtracking import Backtracking
+from .backtracking_bfs import BFS
 
 
 __all__ = [
-    "Backtracking"
+    "BFS",
 ]
