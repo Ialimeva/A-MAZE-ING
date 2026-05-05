@@ -1,5 +1,5 @@
 from .algorithm_base import MazeAlgorithm
-from .algorithms import Backtracking
+from .algorithms import DFS
 from typing import Optional, Generator
 
 
@@ -31,7 +31,7 @@ class MazeGenerator:
         )
         self.__algo: MazeAlgorithm = (
             algo if algo
-            else Backtracking(
+            else DFS(
                 self.__width,
                 self.__height,
                 initial_grid,

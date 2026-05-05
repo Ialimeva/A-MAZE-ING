@@ -2,7 +2,7 @@ from ..algorithm_base import MazeAlgoError, MazeAlgorithm
 from typing import Generator, Optional
 
 
-class Backtracking(MazeAlgorithm):
+class DFS(MazeAlgorithm):
     def __init__(
         self,
         width: int,
