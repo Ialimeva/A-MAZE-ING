@@ -49,27 +49,25 @@ class Render:
         time.sleep(0.01)
         print(output)
 
-    def _expand_path(self, path: list[tuple[int, int]]) -> set[tuple[int, int]]:
-        full_path: set[tuple[int, int]] = set()
+    def _expand_path(self, path: list[tuple[int, int]]) -> list[tuple[int, int]]:
+        full_path: list[tuple[int, int]] = []
 
         for i in range(len(path) - 1):
             x1, y1 = path[i]
             x2, y2 = path[i + 1]
 
-            full_path.add((x1, y1))
-            full_path.add((x2, y2))
+            full_path.append((x1, y1))
+            full_path.append((x2, y2))
 
             # add the wall between them
             mid_x = (x1 + x2) // 2
             mid_y = (y1 + y2) // 2
-            full_path.add((mid_x, mid_y))
+            full_path.append((mid_x, mid_y))
 
         return full_path
 
     def render_path(self, path: list[tuple[int, int]]) -> None:
         output: str = Render.clear
-
-        full_path = self._expand_path(path)
 
         for y, row in enumerate(self._maze.grid):
             for x, cell in enumerate(row):
@@ -78,7 +76,7 @@ class Render:
                     (x, y) == self._maze.exit
                 ):
                     output += Brick.POINT.value
-                elif (x, y) in full_path:
+                elif (x, y) in path:
                     output += Brick.RES.value
                 elif cell == 2:
                     output += Brick.FT.value
@@ -88,6 +86,5 @@ class Render:
                     output += Brick.WALL.value
             output += "\n"
 
-        time.sleep(0.01)
         print(output)
 
