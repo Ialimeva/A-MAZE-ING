@@ -1,10 +1,10 @@
 from .read_config import ConfigManager
-from .maze_writter import MazeWritter
+from .maze_writer import MazeWriter
 from .forty_two_pattern import Pattern42
 
 
 __all__ = [
     "ConfigManager",
-    "MazeWritter",
+    "MazeWriter",
     "Pattern42"
 ]

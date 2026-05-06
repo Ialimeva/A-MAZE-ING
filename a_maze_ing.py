@@ -2,7 +2,7 @@
 
 import sys
 from typing import Any, Optional
-from config import ConfigManager, Pattern42, MazeWritter
+from config import ConfigManager, Pattern42, MazeWriter
 from mazegen import Maze, MazeGenerator, GeneratorDFS, SolverBFS
 from cli_render import Render
 
@@ -84,7 +84,7 @@ def main() -> None:
     full_path = render._expand_path(path)
     render.render_maze(maze, full_path)
 
-    MazeWritter.write_maze(
+    MazeWriter.write_maze(
         configs["output_file"],
         maze.grid_hex,
         configs["entry"],
