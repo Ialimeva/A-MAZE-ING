@@ -74,13 +74,9 @@ class SolverBFS(MazeSolver):
         }
         self.__visited.add(self._maze.entry)
 
-        res: list[tuple[int, int]] = []
         while queue:
             pos_x, pos_y = queue.popleft()
-            if self.is_valid_pos(pos_x, pos_y):
-                res.append((pos_x, pos_y))
-
-            yield res
+            yield list(self.__visited)
 
             if (pos_x, pos_y) == self._maze.exit:
                 self.__reconstruct_path(parent)
@@ -95,16 +91,16 @@ class SolverBFS(MazeSolver):
             self._random.shuffle(directions)
 
             for dx, dy in directions:
-                npos: tuple[int, int] = (dx + pos_x, dy + pos_y)
+                npos_x, npos_y = dx + pos_x, dy + pos_y
                 if (
-                    self.is_valid_pos(*npos) and
-                    npos not in self.__visited
+                    self.is_valid_pos(npos_x, npos_y) and
+                    (npos_x, npos_y) not in self.__visited
                 ):
                     mid_x: int = pos_x + dx // 2
                     mid_y: int = pos_y + dy // 2
                     if (self._maze.grid[mid_y][mid_x] == 0):
-                        self.__visited.add(npos)
-                        queue.append(npos)
-                        parent[npos] = (pos_x, pos_y)
+                        self.__visited.add((npos_x, npos_y))
+                        queue.append((npos_x, npos_y))
+                        parent[(npos_x, npos_y)] = (pos_x, pos_y)
 
         return
