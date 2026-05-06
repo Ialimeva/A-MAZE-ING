@@ -84,4 +84,3 @@ class Maze:
 
     def set_exit(self, exit_point: tuple[int, int]) -> None:
         self.__exit = exit_point
-

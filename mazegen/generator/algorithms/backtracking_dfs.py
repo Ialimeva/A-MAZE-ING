@@ -14,7 +14,15 @@ class GeneratorDFS(MazeGenerator):
         seed: Optional[int],
         perfect: bool = True
     ) -> None:
-        super().__init__(width, height, entry_point, exit_point, grid, seed, perfect)
+        super().__init__(
+            width,
+            height,
+            entry_point,
+            exit_point,
+            grid,
+            seed,
+            perfect
+        )
         self.__visited: set[tuple[int, int]] = set()
 
     def generate(self) -> Maze:

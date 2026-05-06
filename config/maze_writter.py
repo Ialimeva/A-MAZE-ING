@@ -26,12 +26,19 @@ class MazeWritter:
 
                 if (entry_point and exit_point):
                     f.write("\n")
-                    f.write(str(entry_point[0]) + "," + str(entry_point[1]) + "\n")
-                    f.write(str(exit_point[0]) + "," + str(exit_point[1]) + "\n")
+                    f.write(
+                        str(entry_point[0]) +
+                        "," +
+                        str(entry_point[1]) + "\n"
+                    )
+                    f.write(
+                        str(exit_point[0]) +
+                        "," +
+                        str(exit_point[1]) + "\n"
+                    )
 
                 if path:
                     output = MazeWritter.__parse_path(path)
-                    f.write("\n")
                     f.write(output + "\n")
 
         except Exception as e:
@@ -51,7 +58,5 @@ class MazeWritter:
             x = path[i + 1][0] - path[i][0]
             y = path[i + 1][1] - path[i][1]
             res += directions[(x, y)]
-
-        print(res)
 
         return res

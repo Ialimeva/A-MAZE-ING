@@ -1,4 +1,3 @@
-import time
 from enum import Enum
 from mazegen import Maze
 from typing import Optional
@@ -15,7 +14,11 @@ class Brick(Enum):
 class Render:
     clear = "\033[H\033[J"
 
-    def render_maze(self, maze: Maze, path: Optional[list[tuple[int, int]]] = None) -> None:
+    def render_maze(
+        self,
+        maze: Maze,
+        path: Optional[list[tuple[int, int]]] = None
+    ) -> None:
         output: str = Render.clear
 
         for y, row in enumerate(maze.grid):
@@ -40,7 +43,10 @@ class Render:
         # time.sleep(0.01)
         print(output)
 
-    def _expand_path(self, path: list[tuple[int, int]]) -> list[tuple[int, int]]:
+    def _expand_path(
+        self,
+        path: list[tuple[int, int]]
+    ) -> list[tuple[int, int]]:
         full_path: list[tuple[int, int]] = []
 
         for i in range(len(path) - 1):

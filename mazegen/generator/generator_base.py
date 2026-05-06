@@ -28,7 +28,7 @@ class MazeGenerator(ABC):
             grid if grid is not None
             else MazeGenerator.initiate_grid(self.__width, self.__height)
         )
-        
+
         self.entry: tuple[int, int] = entry_point
         self.exit: tuple[int, int] = exit_point
         self._maze: Maze = Maze(
@@ -98,8 +98,14 @@ class MazeGenerator(ABC):
                     (x, y) not in protected
                 ):
 
-                    h_connection: bool = (self._maze.grid[y][x - 1] == 0 and self._maze.grid[y][x + 1] == 0)
-                    v_connection: bool = (self._maze.grid[y - 1][x] == 0 and self._maze.grid[y + 1][x] == 0)
+                    h_connection: bool = (
+                        self._maze.grid[y][x - 1] == 0 and
+                        self._maze.grid[y][x + 1] == 0
+                    )
+                    v_connection: bool = (
+                        self._maze.grid[y - 1][x] == 0 and
+                        self._maze.grid[y + 1][x] == 0
+                    )
 
                     if (
                         (h_connection or v_connection) and
@@ -120,8 +126,14 @@ class MazeGenerator(ABC):
                     (x, y) not in protected
                 ):
 
-                    h_connection: bool = (self._maze.grid[y][x - 1] == 0 and self._maze.grid[y][x + 1] == 0)
-                    v_connection: bool = (self._maze.grid[y - 1][x] == 0 and self._maze.grid[y + 1][x] == 0)
+                    h_connection: bool = (
+                        self._maze.grid[y][x - 1] == 0 and
+                        self._maze.grid[y][x + 1] == 0
+                    )
+                    v_connection: bool = (
+                        self._maze.grid[y - 1][x] == 0 and
+                        self._maze.grid[y + 1][x] == 0
+                    )
 
                     if (
                         (h_connection or v_connection) and
