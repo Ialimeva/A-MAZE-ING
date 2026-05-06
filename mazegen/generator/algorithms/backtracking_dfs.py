@@ -1,23 +1,26 @@
-from ..generator_base import MazeAlgoError, MazeAlgorithm
+from ..generator_base import GeneratorError, MazeGenerator
 from typing import Generator, Optional
+from mazegen.maze import Maze
 
 
-class DFS(MazeAlgorithm):
+class GeneratorDFS(MazeGenerator):
     def __init__(
         self,
         width: int,
         height: int,
-        grid: Optional[list[list[int]]] | None = None,
-        perfect: bool = True,
-        seed: Optional[int] = None
+        entry_point: tuple[int, int],
+        exit_point: tuple[int, int],
+        grid: Optional[list[list[int]]],
+        seed: Optional[int],
+        perfect: bool = True
     ) -> None:
-        super().__init__(width, height, grid, perfect, seed)
+        super().__init__(width, height, entry_point, exit_point, grid, seed, perfect)
         self.__visited: set[tuple[int, int]] = set()
 
-    def generate(self) -> list[list[int]]:
+    def generate(self) -> Maze:
         self.__visited.clear()
         if not self.__carve(1, 1):
-            raise MazeAlgoError("Error on generating the Maze")
+            raise GeneratorError("Error on generating the Maze")
         return super().generate()
 
     def __carve(
@@ -29,7 +32,7 @@ class DFS(MazeAlgorithm):
 
         stack: list[tuple[int, int]] = [(start_x, start_y)]
         self.__visited.add((start_x, start_y))
-        self._grid[start_y][start_x] = 0
+        self._maze.grid[start_y][start_x] = 0
 
         while stack:
             pos_x, pos_y = stack[-1]
@@ -53,8 +56,8 @@ class DFS(MazeAlgorithm):
                     self.__visited.add((npos_x, npos_y))
                     stack.append((npos_x, npos_y))
 
-                    self._grid[(dy // 2) + pos_y][(dx // 2) + pos_x] = 0
-                    self._grid[npos_y][npos_x] = 0
+                    self._maze.grid[(dy // 2) + pos_y][(dx // 2) + pos_x] = 0
+                    self._maze.grid[npos_y][npos_x] = 0
 
                     pushed = True
                     break
@@ -64,10 +67,10 @@ class DFS(MazeAlgorithm):
 
         return True
 
-    def generate_step(self) -> Generator[list[list[int]], None, None]:
+    def generate_step(self) -> Generator[Maze, None, None]:
         self.__visited.clear()
 
-        yield self._grid
+        yield self._maze
         yield from self.__carve_step(1, 1)
         yield from super().generate_step()
 
@@ -75,12 +78,12 @@ class DFS(MazeAlgorithm):
         self,
         start_x: int,
         start_y: int
-    ) -> Generator[list[list[int]], None, None]:
+    ) -> Generator[Maze, None, None]:
         self.__visited.clear()
 
         stack: list[tuple[int, int]] = [(start_x, start_y)]
         self.__visited.add((start_x, start_y))
-        self._grid[start_y][start_x] = 0
+        self._maze.grid[start_y][start_x] = 0
 
         while stack:
             pos_x, pos_y = stack[-1]
@@ -104,10 +107,10 @@ class DFS(MazeAlgorithm):
                     self.__visited.add((npos_x, npos_y))
                     stack.append((npos_x, npos_y))
 
-                    self._grid[(dy // 2) + pos_y][(dx // 2) + pos_x] = 0
-                    self._grid[npos_y][npos_x] = 0
+                    self._maze.grid[(dy // 2) + pos_y][(dx // 2) + pos_x] = 0
+                    self._maze.grid[npos_y][npos_x] = 0
 
-                    yield self._grid
+                    yield self._maze
 
                     pushed = True
                     break
@@ -115,4 +118,4 @@ class DFS(MazeAlgorithm):
             if not pushed:
                 stack.pop()
 
-        yield self._grid
+        yield self._maze

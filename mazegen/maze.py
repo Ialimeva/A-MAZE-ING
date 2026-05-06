@@ -13,8 +13,8 @@ class Maze:
         exit_point: Optional[tuple[int, int]] = None
     ) -> None:
         self.__grid: list[list[int]] = grid or []
-        self.__entry: tuple[int, int] = (-1, -1)
-        self.__exit: tuple[int, int] = (-1, -1)
+        self.__entry: Optional[tuple[int, int]] = entry_point
+        self.__exit: Optional[tuple[int, int]] = exit_point
 
         if entry_point:
             self.__entry = entry_point
@@ -39,27 +39,15 @@ class Maze:
 
     @property
     def entry(self) -> tuple[int, int]:
-        if self.__entry == (-1, -1):
+        if self.__entry is None:
             raise MazeError("No Entry point given")
         return (2 * self.__entry[0] + 1, 2 * self.__entry[1] + 1)
 
     @property
     def exit(self) -> tuple[int, int]:
-        if self.__exit == (-1, -1):
+        if self.__exit is None:
             raise MazeError("No Exit point given")
         return (2 * self.__exit[0] + 1, 2 * self.__exit[1] + 1)
-
-    # @property
-    # def entry_cell(self) -> tuple[int, int]:
-    #     if self.__entry == (-1, -1):
-    #         raise MazeError("No Entry point given")
-    #     return (2 * self.__entry[0] + 1, 2 * self.__entry[1] + 1)
-    #
-    # @property
-    # def exit_cell(self) -> tuple[int, int]:
-    #     if self.__exit == (-1, -1):
-    #         raise MazeError("No Exit point given")
-    #     return (2 * self.__exit[0] + 1, 2 * self.__exit[1] + 1)
 
     def __parsing_hex(self) -> list[list[str]]:
         if not self.__grid:
@@ -97,6 +85,3 @@ class Maze:
     def set_exit(self, exit_point: tuple[int, int]) -> None:
         self.__exit = exit_point
 
-    @property
-    def get_exti(self) -> tuple[int, int]:
-        return self.__exit

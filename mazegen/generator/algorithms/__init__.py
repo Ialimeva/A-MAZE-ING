@@ -1,6 +1,6 @@
-from .backtracking_dfs import DFS
+from .backtracking_dfs import GeneratorDFS
 
 __all__ = [
-    "DFS"
+    "GeneratorDFS"
 ]
 

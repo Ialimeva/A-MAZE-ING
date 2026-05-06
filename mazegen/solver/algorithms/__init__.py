@@ -1,6 +1,6 @@
-from .backtracking_bfs import BFS
+from .backtracking_bfs import SolverBFS
 
 
 __all__ = [
-    "BFS",
+    "SolverBFS",
 ]

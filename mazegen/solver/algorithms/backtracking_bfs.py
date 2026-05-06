@@ -1,10 +1,10 @@
-from ..algorithm_base import MazeSolver, SolverError
+from mazegen.solver.solver_base import MazeSolver, SolverError
 from mazegen.maze import Maze
 from typing import Generator, Optional, Deque
 from collections import deque
 
 
-class BFS(MazeSolver):
+class SolverBFS(MazeSolver):
     def __init__(self, maze: Maze, seed: Optional[int] = None) -> None:
         super().__init__(maze, seed)
         self.__visited: set[tuple[int, int]] = set()

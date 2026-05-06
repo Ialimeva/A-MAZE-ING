@@ -1,6 +1,7 @@
 import time
 from enum import Enum
 from mazegen import Maze
+from typing import Optional
 
 
 class Brick(Enum):
@@ -14,36 +15,25 @@ class Brick(Enum):
 class Render:
     clear = "\033[H\033[J"
 
-    def __init__(self) -> None:
-        self._maze: Maze = Maze()
-
-    def set_maze(self, maze: Maze) -> None:
-        self._maze = maze
-
-    def set_point(
-        self,
-        entry: tuple[int, int],
-        exit_: tuple[int, int]
-    ) -> None:
-        self._maze.set_entry((2 * entry[0] + 1, 2 * entry[1] + 1))
-        self._maze.set_exit((2 * exit_[0] + 1, 2 * exit_[1] + 1))
-
-    def render_maze(self) -> None:
+    def render_maze(self, maze: Maze, path: Optional[list[tuple[int, int]]] = None) -> None:
         output: str = Render.clear
 
-        for y, row in enumerate(self._maze.grid):
+        for y, row in enumerate(maze.grid):
             for x, cell in enumerate(row):
                 if (
-                    (x, y) == self._maze.entry or
-                    (x, y) == self._maze.exit
+                    (x, y) == maze.entry or
+                    (x, y) == maze.exit
                 ):
                     output += Brick.POINT.value
+                    if path is not None and (x, y) in path:
+                        output += Brick.RES.value
                 elif cell == 2:
                     output += Brick.FT.value
                 elif (cell % 2) == 0:
                     output += Brick.PATH.value
                 else:
                     output += Brick.WALL.value
+
             output += "\n"
 
         time.sleep(0.01)
@@ -65,26 +55,3 @@ class Render:
             full_path.append((mid_x, mid_y))
 
         return full_path
-
-    def render_path(self, path: list[tuple[int, int]]) -> None:
-        output: str = Render.clear
-
-        for y, row in enumerate(self._maze.grid):
-            for x, cell in enumerate(row):
-                if (
-                    (x, y) == self._maze.entry or
-                    (x, y) == self._maze.exit
-                ):
-                    output += Brick.POINT.value
-                elif (x, y) in path:
-                    output += Brick.RES.value
-                elif cell == 2:
-                    output += Brick.FT.value
-                elif (cell % 2) == 0:
-                    output += Brick.PATH.value
-                else:
-                    output += Brick.WALL.value
-            output += "\n"
-
-        print(output)
-

@@ -1,11 +1,10 @@
-from .generator import MazeGenerator, MazeAlgorithm, DFS
+from .generator import MazeGenerator, GeneratorDFS
 from .maze import Maze
-from .solver import BFS
+from .solver import SolverBFS
 
 __all__ = [
     "Maze",
     "MazeGenerator",
-    "MazeAlgorithm",
-    "DFS",
-    "BFS"
+    "GeneratorDFS",
+    "SolverBFS"
 ]
