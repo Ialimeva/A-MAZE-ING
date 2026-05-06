@@ -20,13 +20,14 @@ class Render:
 
         for y, row in enumerate(maze.grid):
             for x, cell in enumerate(row):
+                if path is not None and (x, y) in path:
+                    output += Brick.RES.value
+                    continue
                 if (
                     (x, y) == maze.entry or
                     (x, y) == maze.exit
                 ):
                     output += Brick.POINT.value
-                    if path is not None and (x, y) in path:
-                        output += Brick.RES.value
                 elif cell == 2:
                     output += Brick.FT.value
                 elif (cell % 2) == 0:
@@ -36,7 +37,7 @@ class Render:
 
             output += "\n"
 
-        time.sleep(0.01)
+        # time.sleep(0.01)
         print(output)
 
     def _expand_path(self, path: list[tuple[int, int]]) -> list[tuple[int, int]]:
