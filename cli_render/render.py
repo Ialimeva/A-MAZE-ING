@@ -1,3 +1,4 @@
+import time
 from enum import Enum
 from mazegen import Maze
 from typing import Optional
@@ -19,6 +20,9 @@ class Render:
         maze: Maze,
         path: Optional[list[tuple[int, int]]] = None
     ) -> None:
+        if maze.grid is None or not maze.grid:
+            raise ValueError("Maze grid empty")
+
         output: str = Render.clear
 
         for y, row in enumerate(maze.grid):
@@ -40,7 +44,7 @@ class Render:
 
             output += "\n"
 
-        # time.sleep(0.01)
+        time.sleep(0.01)
         print(output)
 
     def _expand_path(
