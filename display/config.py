@@ -10,7 +10,9 @@ maze_config: dict[str, Any] = {
 elements: dict[str, Any] = {
     "floor": (2, 3),
     "horizontal_wall": (0, 0),
+    "limit_horizontal_wall": (0, 2),
     "vertical_wall": (16, 0),
+    "limit_vertical_wall": (16, 3),
 }
 
 # set_map = {

@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/04 17:21:10 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/05 10:48:55 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -35,3 +35,17 @@ class Draw:
         for y in range(self.height):
             off_dst = offset(0, y, self.buff_line)
             self.buff_array[off_dst : off_dst + self.buff_line] = row
+
+    def horizontal_wall(self) -> None:
+        src_x, src_y = elements["horizontal_wall"]
+        off_src = offset((src_x * 16), (src_y * 16), self.img_line)
+        color = self.img_array[off_src : off_src + 4]
+        while not color[3]:
+            off_src = offset((src_x * 16), ((src_y + 1) * 16), self.img_line)
+            color = self.img_array[off_src + off_src + 4]
+        limit_x, limit_y = maze_config["limit_horizontal_wall"]
+        off_limit = offset((limit_x * 16), (limit_y * 16), self.img_line)
+        row_src = off_src // self.img_line
+        row_limit = off_limit // self.img_line
+        row_distance = abs(row_limit - row_src)
+        wall = self.img_array[off_src : (off_src + maze_config["cell_width"])]
