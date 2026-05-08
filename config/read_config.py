@@ -16,6 +16,8 @@ class Config:
         self.__output_file: str = "maze.txt"
         self.__perfect: bool = True
         self.__seed: Optional[int] = None
+        self.__generator: Optional[str] = "Auto"
+        self.__solver: Optional[str] = "Auto"
 
     def get_config(self) -> dict[str, Any]:
         config: dict[str, Any] = {}
@@ -27,6 +29,8 @@ class Config:
         config["output_file"] = self.__output_file
         config["perfect"] = self.__perfect
         config["seed"] = self.__seed
+        config["generator"] = self.__generator
+        config["solver"] = self.__solver
 
         return config
 
@@ -71,9 +75,20 @@ class Config:
         except Exception:
             raise ConfigError(f"Invalid seed value {seed}")
 
+    def set_generator(self, value: str) -> None:
+        self.__generator = value.lower()
+
+    def set_solver(self, value: str) -> None:
+        self.__solver = value.lower()
+
 
 class ConfigManager:
-    def __init__(self, filename: str) -> None:
+    def __init__(
+        self,
+        filename: str,
+        generators: list[str],
+        solvers: list[str]
+    ) -> None:
         if not filename:
             raise ValueError("No configuration file provided")
         self.__file: str = filename
@@ -84,7 +99,7 @@ class ConfigManager:
         self.__parsing()
 
         try:
-            ConfigManager._evaluation(self.__config)
+            ConfigManager._evaluation(self.__config, generators, solvers)
         except ConfigError as e:
             print(f"Config Error caugth: {e}")
             print("Using default value")
@@ -166,6 +181,13 @@ class ConfigManager:
             elif key == "exit":
                 self.__config.set_exit(ConfigManager.parse_tuple(value))
 
+            elif key == "generator":
+                self.__config.set_generator(value)
+
+            elif key == "solver":
+                self.__config.set_solver(value)
+
+
             else:
                 raise ConfigError(f"Unknown key value: {key} - {value}")
 
@@ -196,7 +218,12 @@ class ConfigManager:
         return self.__config.get_config()
 
     @classmethod
-    def _evaluation(cls, config: Config) -> None:
+    def _evaluation(
+        cls,
+        config: Config,
+        generators: list[str],
+        solvers: list[str]
+    ) -> None:
         conf = config.get_config()
 
         entry_point = conf["entry"]
@@ -222,3 +249,9 @@ class ConfigManager:
 
         if Pattern42.is_42_position(exit_point, width, height):
             raise ConfigError("Exit point collide with 42 pattern")
+
+        if conf["generator"] not in generators:
+            raise ConfigError(f"Generator {conf['generator']} Unknown")
+
+        if conf["solver"] not in solvers:
+            raise ConfigError(f"Solver {conf['solver']} Unknown")

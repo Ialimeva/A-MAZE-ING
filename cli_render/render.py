@@ -1,3 +1,4 @@
+import time
 from enum import Enum
 from mazegen import Maze
 from typing import Optional
@@ -40,7 +41,7 @@ class Render:
 
             output += "\n"
 
-        # time.sleep(0.01)
+        time.sleep(0.01)
         print(output)
 
     def _expand_path(

@@ -1,7 +1,7 @@
-
 from typing import Optional, Generator
 from abc import ABC, abstractmethod
 from mazegen.maze import Maze
+from mazegen.maze_config import MazeConfig
 import random
 
 
@@ -14,31 +14,26 @@ class MazeGenerator(ABC):
 
     def __init__(
         self,
-        width: int,
-        height: int,
-        entry_point: tuple[int, int],
-        exit_point: tuple[int, int],
-        grid: Optional[list[list[int]]],
-        seed: Optional[int],
-        perfect: bool = True
+        configs: MazeConfig,
+        grid: Optional[list[list[int]]] = None
     ) -> None:
-        self.__width: int = 2 * width + 1
-        self.__height: int = 2 * height + 1
+        self.__width: int = 2 * configs.width + 1
+        self.__height: int = 2 * configs.height + 1
         self._grid: list[list[int]] = (
             grid if grid is not None
             else MazeGenerator.initiate_grid(self.__width, self.__height)
         )
 
-        self.entry: tuple[int, int] = entry_point
-        self.exit: tuple[int, int] = exit_point
+        self.entry: tuple[int, int] = configs.entry_point
+        self.exit: tuple[int, int] = configs.exit_point
         self._maze: Maze = Maze(
             grid=self._grid,
             entry_point=self.entry,
             exit_point=self.exit
         )
 
-        self._perfect: bool = perfect
-        self._random: random.Random = random.Random(seed)
+        self._perfect: bool = configs.perfect
+        self._random: random.Random = random.Random(configs.seed)
 
     @abstractmethod
     def generate(self) -> Maze:
