@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Generator, Optional
 import random
 from mazegen.maze import Maze
+from mazegen.maze_register import SolverRegistry
 
 
 class SolverError(Exception):
@@ -9,6 +10,9 @@ class SolverError(Exception):
 
 
 class MazeSolver(ABC):
+
+    algorithm_name: str | None = None
+
     def __init__(
         self,
         maze: Maze,
@@ -16,6 +20,15 @@ class MazeSolver(ABC):
     ) -> None:
         self._maze: Maze = maze
         self._random: random.Random = random.Random(seed)
+
+    def __init_subclass__(cls) -> None:
+        super().__init_subclass__()
+
+        if cls.algorithm_name is not None:
+            SolverRegistry.register(
+                cls.algorithm_name,
+                cls
+            )
 
     @abstractmethod
     def solve(self) -> list[tuple[int, int]]:

@@ -1,28 +1,18 @@
 from ..generator_base import GeneratorError, MazeGenerator
 from typing import Generator, Optional
 from mazegen.maze import Maze
+from mazegen.maze_config import MazeConfig
 
 
 class GeneratorDFS(MazeGenerator):
+    algorithm_name = "dfs"
+
     def __init__(
         self,
-        width: int,
-        height: int,
-        entry_point: tuple[int, int],
-        exit_point: tuple[int, int],
-        grid: Optional[list[list[int]]],
-        seed: Optional[int],
-        perfect: bool = True
+        configs: MazeConfig,
+        grid: Optional[list[list[int]]] = None
     ) -> None:
-        super().__init__(
-            width,
-            height,
-            entry_point,
-            exit_point,
-            grid,
-            seed,
-            perfect
-        )
+        super().__init__(configs, grid)
         self.__visited: set[tuple[int, int]] = set()
 
     def generate(self) -> Maze:
