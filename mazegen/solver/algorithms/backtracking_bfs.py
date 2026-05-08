@@ -5,6 +5,9 @@ from collections import deque
 
 
 class SolverBFS(MazeSolver):
+
+    algorithm_name = "bfs"
+
     def __init__(self, maze: Maze, seed: Optional[int] = None) -> None:
         super().__init__(maze, seed)
         self.__visited: set[tuple[int, int]] = set()

@@ -16,8 +16,8 @@ class Config:
         self.__output_file: str = "maze.txt"
         self.__perfect: bool = True
         self.__seed: Optional[int] = None
-        self.__generator: Optional[str] = "Auto"
-        self.__solver: Optional[str] = "Auto"
+        self.__generator: Optional[str] = "auto"
+        self.__solver: Optional[str] = "auto"
 
     def get_config(self) -> dict[str, Any]:
         config: dict[str, Any] = {}
@@ -86,8 +86,8 @@ class ConfigManager:
     def __init__(
         self,
         filename: str,
-        generators: list[str],
-        solvers: list[str]
+        generators: dict[str, type],
+        solvers: dict[str, type]
     ) -> None:
         if not filename:
             raise ValueError("No configuration file provided")
@@ -221,8 +221,8 @@ class ConfigManager:
     def _evaluation(
         cls,
         config: Config,
-        generators: list[str],
-        solvers: list[str]
+        generators: dict[str, type],
+        solvers: dict[str, type]
     ) -> None:
         conf = config.get_config()
 
@@ -250,8 +250,8 @@ class ConfigManager:
         if Pattern42.is_42_position(exit_point, width, height):
             raise ConfigError("Exit point collide with 42 pattern")
 
-        if conf["generator"] not in generators:
+        if conf["generator"] not in generators and conf["generator"].lower() != "auto":
             raise ConfigError(f"Generator {conf['generator']} Unknown")
 
-        if conf["solver"] not in solvers:
+        if conf["solver"] not in solvers and conf["solver"].lower() != "auto":
             raise ConfigError(f"Solver {conf['solver']} Unknown")

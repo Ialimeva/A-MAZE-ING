@@ -2,6 +2,7 @@ from typing import Optional, Generator
 from abc import ABC, abstractmethod
 from mazegen.maze import Maze
 from mazegen.maze_config import MazeConfig
+from mazegen.maze_register import GeneratorRegistry
 import random
 
 
@@ -10,6 +11,8 @@ class GeneratorError(Exception):
 
 
 class MazeGenerator(ABC):
+
+    algorithm_name: str | None = None
     _chance: float = 0.05
 
     def __init__(
@@ -34,6 +37,15 @@ class MazeGenerator(ABC):
 
         self._perfect: bool = configs.perfect
         self._random: random.Random = random.Random(configs.seed)
+
+    def __init_subclass__(cls) -> None:
+        super().__init_subclass__()
+
+        if cls.algorithm_name is not None:
+            GeneratorRegistry.register(
+                cls.algorithm_name,
+                cls
+            )
 
     @abstractmethod
     def generate(self) -> Maze:

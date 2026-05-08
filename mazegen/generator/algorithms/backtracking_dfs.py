@@ -5,6 +5,8 @@ from mazegen.maze_config import MazeConfig
 
 
 class GeneratorDFS(MazeGenerator):
+    algorithm_name = "dfs"
+
     def __init__(
         self,
         configs: MazeConfig,
