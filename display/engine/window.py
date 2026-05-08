@@ -6,13 +6,13 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 11:42:50 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/04 17:23:23 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/05 07:55:16 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from mlx import Mlx
 from typing import Any
-from ..utils import MlxApp, MlxPtr, WindowPtr
+from ..utils import MlxApp, MlxPtr, WindowPtr, ImagePtr
 from ..config import maze_config
 from .input_manager import Hooks
 
