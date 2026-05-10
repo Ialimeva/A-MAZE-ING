@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 11:42:50 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/05 07:55:16 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/10 11:59:19 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -52,7 +52,12 @@ class Window():
         (self.img_adr, _, self.img_line, _) = self.m.mlx_get_data_addr(
                                                 self.img_ptr
                                             )
-        return (self.img_ptr, self.img_adr, self.img_line)
+        return (self.img_ptr,
+                self.img_adr,
+                self.img_line,
+                self.img_width,
+                self.height
+            )
     
     def buff_data(self) -> tuple:
         self.buff_ptr = self.m.mlx_new_image(

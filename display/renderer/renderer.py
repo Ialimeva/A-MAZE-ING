@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/05 10:48:55 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/10 12:09:56 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -17,24 +17,37 @@ from ..config import elements, maze_config
 class Draw:
     def __init__(self, img_data: tuple, buff_data: tuple):
         # Image and Buff data are still in Ctypes wrapped memory
-        (self.img_ptr, self.img_adr, self.img_line) = img_data
+        (self.img_ptr,
+         self.img_adr,
+         self.img_line,
+         self.img_width,
+         self.img_height,
+        ) = img_data
         (self.buff_ptr, self.buff_adr, self.buff_line) = buff_data
 
         # Image and Buff are in raw C memory adresses
         self.img_array = np.frombuffer(self.img_adr, dtype=np.uint8)
         self.buff_array = np.frombuffer(self.buff_adr, dtype=np.uint8)
 
-        self.width = maze_config["colums"] * maze_config["cell_width"]
-        self.height = maze_config["rows"] * maze_config["cell_height"]
+        self.buff_width = maze_config["colums"] * maze_config["cell_width"]
+        self.buff_height = maze_config["rows"] * maze_config["cell_height"]
+        self.three_dimension_img = self.img_array.reshape(
+                                    self.img_height,
+                                    self.img_width,
+                                    4
+                                )
+        self.three_dimension_buff = self.buff_array.reshape(
+                                    self.buff_height,
+                                    self.buff_width,
+                                    4
+                                )
 
     def floor(self) -> None:
         src_x, src_y = elements["floor"]
-        off_src = offset((src_x * 16), (src_y * 16), self.img_line)
-        color = self.img_array[off_src : off_src + 4]
-        row = np.tile(color, self.width)
-        for y in range(self.height):
-            off_dst = offset(0, y, self.buff_line)
-            self.buff_array[off_dst : off_dst + self.buff_line] = row
+        color = self.three_dimension_img[(src_y * 16), (src_x * 16)]
+        row = np.tile(color, self.buff_width)
+        for y in range(self.buff_height):
+            self.three_dimension_buff[y, 0:self.buff_width + 1] = row
 
     def horizontal_wall(self) -> None:
         src_x, src_y = elements["horizontal_wall"]
