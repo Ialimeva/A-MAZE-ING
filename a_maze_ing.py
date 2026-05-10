@@ -5,7 +5,7 @@ from typing import Any
 from config import MazeManager, ConfigManager, MazeWriter
 from mazegen import Maze, GeneratorRegistry, SolverRegistry
 from cli_render import Render
-
+from display import Game, DisplayConfig
 
 def usage_and_exit() -> None:
     print("Usage: python/python3 a_maze_ing.py <config file>")
@@ -30,24 +30,31 @@ def main() -> None:
     path: list[tuple[int, int]] = []
     render: Render = Render()
 
-    gen = MazeManager.generate_step(configs)
-    for g in gen:
-        maze = g
-        render.render_maze(maze)
+    # gen = MazeManager.generate_step(configs)
+    # for g in gen:
+    #     maze = g
+    #     render.render_maze(maze)
 
-    gen = MazeManager.solve_step(maze, configs)
-    visited: list[tuple[int, int]] = []
-    for sf in gen:
-        if sf.visited is not None:
-            visited.append(sf.visited)
+    # gen = MazeManager.solve_step(maze, configs)
+    # visited: list[tuple[int, int]] = []
+    # for sf in gen:
+    #     if sf.visited is not None:
+    #         visited.append(sf.visited)
 
-        if sf.solution is not None:
-            path = sf.solution
+    #     if sf.solution is not None:
+    #         path = sf.solution
 
-        render.render_maze(maze=maze, path=visited)
+    #     render.render_maze(maze=maze, path=visited)
 
-    render.render_maze(maze=maze, path=render._expand_path(path))
+    # render.render_maze(maze=maze, path=render._expand_path(path))
 
+    #Display(MEVA)
+    display_config: DisplayConfig = DisplayConfig(
+        columns = configs["width"],
+        rows = configs["height"]
+    )
+    game = Game(display_config)
+    game.run()
     MazeWriter.write_maze(
         configs["output_file"],
         maze.grid_hex,

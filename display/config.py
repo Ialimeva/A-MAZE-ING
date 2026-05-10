@@ -1,19 +1,15 @@
 from typing import Any
+from dataclasses import dataclass
 
-maze_config: dict[str, Any] = {
-    "colums": 0,
-    "rows": 0,
-    "cell_width": 48,
-    "cell_height": 64
-}
-
-elements: dict[str, Any] = {
-    "floor": (2, 3),
-    "horizontal_wall": (0, 0),
-    "limit_horizontal_wall": (0, 2),
-    "vertical_wall": (16, 0),
-    "limit_vertical_wall": (16, 3),
-}
+@dataclass
+class DisplayConfig:
+    columns: int
+    rows: int
+    cell_width: int = 48
+    cell_height: int = 64
+    floor: tuple = (2, 3)
+    horizontal_wall: tuple = (0, 0)
+    vertical_wall: tuple = (16, 0)
 
 # set_map = {
 #     (0x0) : ["floor"],
@@ -21,4 +17,3 @@ elements: dict[str, Any] = {
 #     (0x1) : ["north"],
 #     (0x)
 # }
-

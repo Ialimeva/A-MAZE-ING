@@ -6,22 +6,22 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 11:42:50 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/10 11:59:19 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/10 14:49:18 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from mlx import Mlx
 from typing import Any
 from ..utils import MlxApp, MlxPtr, WindowPtr, ImagePtr
-from ..config import maze_config
+from ..config import DisplayConfig
 from .input_manager import Hooks
 
 class Window():
-    def __init__(self):
+    def __init__(self, display_config: DisplayConfig):
         self.m: MlxApp = Mlx()
         self.mlx_ptr: MlxPtr = self.m.mlx_init()
-        self.width: int = maze_config["colums"] * maze_config["cell_width"]
-        self.height: int = maze_config["rows"] * maze_config["cell_height"]
+        self.width: int = display_config.columns * display_config.cell_width
+        self.height: int = display_config.rows * display_config.cell_height
         self.win_ptr: WindowPtr = self.m.mlx_new_window(
                         self.mlx_ptr,
                         self.width,
@@ -56,7 +56,7 @@ class Window():
                 self.img_adr,
                 self.img_line,
                 self.img_width,
-                self.height
+                self.img_height
             )
     
     def buff_data(self) -> tuple:
