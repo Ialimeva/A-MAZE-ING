@@ -10,9 +10,8 @@ class GeneratorDFS(MazeGenerator):
     def __init__(
         self,
         configs: MazeConfig,
-        grid: Optional[list[list[int]]] = None
     ) -> None:
-        super().__init__(configs, grid)
+        super().__init__(configs)
         self.__visited: set[tuple[int, int]] = set()
 
     def generate(self) -> Maze:

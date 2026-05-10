@@ -1,6 +1,7 @@
 class RegistryError(Exception):
     pass
 
+
 class GeneratorRegistry:
     _algorithms: dict[str, type] = {}
 

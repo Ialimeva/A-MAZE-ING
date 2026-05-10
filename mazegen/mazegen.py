@@ -10,20 +10,17 @@ class MazeGen:
     def generate(
         generator_cls: type[MazeGenerator],
         config: MazeConfig,
-        grid: Optional[list[list[int]]] = None
     ) -> Maze:
-        generator: MazeGenerator = generator_cls(config, grid)
+        generator: MazeGenerator = generator_cls(config)
         return generator.generate()
 
     @staticmethod
     def generate_step(
         generator_cls: type[MazeGenerator],
         config: MazeConfig,
-        grid: Optional[list[list[int]]] = None
     ) -> Generator[Maze, None, None]:
-        generator: MazeGenerator = generator_cls(config, grid)
+        generator: MazeGenerator = generator_cls(config)
         yield from generator.generate_step()
-
 
     @staticmethod
     def solve(
@@ -39,6 +36,6 @@ class MazeGen:
         solver_cls: type[MazeSolver],
         maze: Maze,
         seed: Optional[int] = None
-    ) -> Generator[list[tuple[int, int]], None, None]:
+    ) -> Generator[tuple[int, int], None, list[tuple[int, int]]]:
         solver: MazeSolver = solver_cls(maze, seed)
-        yield from solver.solve_step()
+        return (yield from solver.solve_step())
