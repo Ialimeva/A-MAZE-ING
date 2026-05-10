@@ -70,12 +70,11 @@ class SolverBFS(MazeSolver):
 
         return False
 
-    def solve_step(self) -> Generator[list[tuple[int, int]], None, None]:
+    def solve_step(self) -> Generator[tuple[int, int], None, list[tuple[int, int]]]:
         self.__visited.clear()
-        yield from self.__find_step()
-        yield self.__path
+        return (yield from self.__find_step())
 
-    def __find_step(self) -> Generator[list[tuple[int, int]], None, None]:
+    def __find_step(self) -> Generator[tuple[int, int], None, list[tuple[int, int]]]:
         queue: Deque[tuple[int, int]] = deque([self._maze.entry])
         parent: dict[tuple[int, int], tuple[int, int] | None] = {
             self._maze.entry: None
@@ -84,11 +83,11 @@ class SolverBFS(MazeSolver):
 
         while queue:
             pos_x, pos_y = queue.popleft()
-            yield list(self.__visited)
+            yield (pos_x, pos_y)
 
             if (pos_x, pos_y) == self._maze.exit:
                 self.__reconstruct_path(parent)
-                return
+                return self.__path
 
             directions: list[tuple[int, int]] = [
                 (0, -2),
@@ -111,4 +110,4 @@ class SolverBFS(MazeSolver):
                         queue.append((npos_x, npos_y))
                         parent[(npos_x, npos_y)] = (pos_x, pos_y)
 
-        return
+        return self.__path

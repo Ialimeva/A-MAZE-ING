@@ -9,3 +9,4 @@ class MazeConfig:
     exit_point: tuple[int, int]
     perfect: bool
     seed: Optional[int] = None
+    grid: Optional[list[list[int]]] = None

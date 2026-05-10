@@ -18,12 +18,11 @@ class MazeGenerator(ABC):
     def __init__(
         self,
         configs: MazeConfig,
-        grid: Optional[list[list[int]]] = None
     ) -> None:
         self.__width: int = 2 * configs.width + 1
         self.__height: int = 2 * configs.height + 1
         self._grid: list[list[int]] = (
-            grid if grid is not None
+            configs.grid if configs.grid is not None
             else MazeGenerator.initiate_grid(self.__width, self.__height)
         )
 
