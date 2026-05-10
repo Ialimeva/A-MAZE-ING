@@ -187,7 +187,6 @@ class ConfigManager:
             elif key == "solver":
                 self.__config.set_solver(value)
 
-
             else:
                 raise ConfigError(f"Unknown key value: {key} - {value}")
 
@@ -250,8 +249,14 @@ class ConfigManager:
         if Pattern42.is_42_position(exit_point, width, height):
             raise ConfigError("Exit point collide with 42 pattern")
 
-        if conf["generator"] not in generators and conf["generator"].lower() != "auto":
+        if (
+            conf["generator"] not in generators and
+            conf["generator"].lower() != "auto"
+        ):
             raise ConfigError(f"Generator {conf['generator']} Unknown")
 
-        if conf["solver"] not in solvers and conf["solver"].lower() != "auto":
+        if (
+            conf["solver"] not in solvers and
+            conf["solver"].lower() != "auto"
+        ):
             raise ConfigError(f"Solver {conf['solver']} Unknown")

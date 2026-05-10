@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
 import sys
-from typing import Any, Optional
-from config import ConfigManager, Pattern42, MazeWriter
-from mazegen import Maze, MazeGenerator, GeneratorDFS, SolverBFS
+from typing import Any
+from config import MazeManager, ConfigManager, MazeWriter
+from mazegen import Maze, GeneratorRegistry, SolverRegistry
 from cli_render import Render
 
 
@@ -14,36 +14,11 @@ def usage_and_exit() -> None:
 
 
 def get_config(filename: str) -> dict[str, Any]:
-    return ConfigManager(filename).get_config()
-
-
-def algo_generator(
-    algo: str,
-    width: int, height: int,
-    entry_point: tuple[int, int], exit_point: tuple[int, int],
-    seed: Optional[int],
-    grid: Optional[list[list[int]]],
-    perfect: bool = True
-) -> MazeGenerator:
-    if algo.lower() == "dfs":
-        return GeneratorDFS(
-            width,
-            height,
-            entry_point,
-            exit_point,
-            seed=seed,
-            grid=grid,
-            perfect=perfect
-        )
-    return GeneratorDFS(
-        width,
-        height,
-        entry_point,
-        exit_point,
-        seed=seed,
-        grid=grid,
-        perfect=perfect
-    )
+    return ConfigManager(
+        filename,
+        GeneratorRegistry.avaliable(),
+        SolverRegistry.avaliable()
+    ).get_config()
 
 
 def main() -> None:
@@ -51,38 +26,27 @@ def main() -> None:
         usage_and_exit()
 
     configs: dict[str, Any] = get_config(sys.argv[1])
-    grid, _ = Pattern42.create_grid_42pattern(
-        configs["width"],
-        configs["height"]
-    )
-
-    generator: MazeGenerator = algo_generator(
-        "DFS",
-        width=configs["width"],
-        height=configs["height"],
-        entry_point=configs["entry"],
-        exit_point=configs["exit"],
-        seed=configs["seed"],
-        grid=grid,
-        perfect=configs["perfect"]
-    )
+    maze: Maze = Maze()
+    path: list[tuple[int, int]] = []
     render: Render = Render()
 
-    gen = generator.generate_step()
-    maze: Maze = Maze()
+    gen = MazeManager.generate_step(configs)
     for g in gen:
         maze = g
         render.render_maze(maze)
 
-    solver: SolverBFS = SolverBFS(maze)
-    path: list[tuple[int, int]] = []
-    gen = solver.solve_step()
+    gen = MazeManager.solve_step(maze, configs)
+    visited: list[tuple[int, int]] = []
+    for sf in gen:
+        if sf.visited is not None:
+            visited.append(sf.visited)
 
-    for g in gen:
-        path = g
-        render.render_maze(maze, path)
-    full_path = render._expand_path(path)
-    render.render_maze(maze, full_path)
+        if sf.solution is not None:
+            path = sf.solution
+
+        render.render_maze(maze=maze, path=visited)
+
+    render.render_maze(maze=maze, path=render._expand_path(path))
 
     MazeWriter.write_maze(
         configs["output_file"],
