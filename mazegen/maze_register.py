@@ -13,7 +13,8 @@ class GeneratorRegistry:
     ) -> None:
         if name in cls._algorithms:
             raise RegistryError(
-                f"Generator {name} already register as an algorithm typle {algorithm} - "
+                f"Generator {name} already register as an algorithm "
+                f"type {algorithm} - "
                 "Please choose another name"
             )
 
@@ -42,7 +43,8 @@ class SolverRegistry:
     ) -> None:
         if name in cls._algorithms:
             raise RegistryError(
-                f"Solver {name} already register as an algorithm typle {algorithm} - "
+                f"Solver {name} already register as an algorithm "
+                f"type {algorithm} - "
                 "Please choose another name"
             )
 
@@ -58,4 +60,3 @@ class SolverRegistry:
     @classmethod
     def avaliable(cls) -> dict[str, type]:
         return cls._algorithms
-

@@ -1,5 +1,5 @@
 from ..generator_base import GeneratorError, MazeGenerator
-from typing import Generator, Optional
+from typing import Generator
 from mazegen.maze import Maze
 from mazegen.maze_config import MazeConfig
 

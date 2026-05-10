@@ -35,7 +35,11 @@ class MazeSolver(ABC):
         ...
 
     @abstractmethod
-    def solve_step(self) -> Generator[tuple[int, int], None, list[tuple[int, int]]]:
+    def solve_step(self) -> Generator[
+        tuple[int, int],
+        None,
+        list[tuple[int, int]]
+    ]:
         ...
 
     def is_valid_pos(self, x: int, y: int) -> bool:

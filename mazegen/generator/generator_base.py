@@ -1,4 +1,4 @@
-from typing import Optional, Generator
+from typing import Generator
 from abc import ABC, abstractmethod
 from mazegen.maze import Maze
 from mazegen.maze_config import MazeConfig
