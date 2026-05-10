@@ -72,7 +72,7 @@ lint-strict	: install
 	@ $(PYTHON) -m mypy . --strict
 
 debug		: 
-	@ $(PYTHON) -m ipdb $(PROGRAM)
+	@ $(PYTHON) -m ipdb $(PROGRAM) $(CONFIG)
 
 re			: fclean all
 
