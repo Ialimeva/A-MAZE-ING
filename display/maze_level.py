@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 14:51:46 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/10 14:58:54 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/11 15:46:53 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -15,13 +15,19 @@ from .engine.window import Window
 from .engine.input_manager import input_manager
 from .renderer.renderer import Draw
 from .config import DisplayConfig
+from display import Maze
 
 class Game:
-    def __init__(self, display_config: DisplayConfig):
+    def __init__(self, display_config: DisplayConfig, maze: Maze):
         self.window = Window(display_config)
         self.img_data: tuple = self.window.img_data()
         self.buff_data: tuple = self.window.buff_data()
-        self.draw = Draw(self.img_data, self.buff_data, display_config)
+        self.draw = Draw(
+                        self.img_data,
+                        self.buff_data,
+                        display_config,
+                        maze
+                    )
 
     def run(self) -> None:
         self.window.start(self.update)

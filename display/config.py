@@ -8,8 +8,10 @@ class DisplayConfig:
     cell_width: int = 48
     cell_height: int = 64
     floor: tuple = (2, 3)
-    horizontal_wall: tuple = (0, 0)
-    vertical_wall: tuple = (16, 0)
+    horizontal_wall_x: tuple = (0, 3)
+    horizontal_wall_y: tuple = (0, 2)
+    vertical_wall_x: tuple = (16, 17)
+    vertical_wall_y: tuple = (0, 3)
 
 # set_map = {
 #     (0x0) : ["floor"],
