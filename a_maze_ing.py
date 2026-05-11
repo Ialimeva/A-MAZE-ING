@@ -53,7 +53,7 @@ def main() -> None:
         columns = configs["width"],
         rows = configs["height"]
     )
-    game = Game(display_config)
+    game = Game(display_config, maze)
     game.run()
     MazeWriter.write_maze(
         configs["output_file"],

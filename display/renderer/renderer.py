@@ -6,19 +6,21 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/10 15:42:20 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/11 17:18:38 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
-import numpy as np
 from ..utils import offset
 from ..config import DisplayConfig
+from display import np, Maze
+from .spritsheet import Spritesheet
 
 class Draw:
     def __init__(self,
                  img_data: tuple,
                  buff_data: tuple,
-                 display_config: DisplayConfig
+                 display_config: DisplayConfig,
+                 maze: Maze
                 ):
         
         self.configs = display_config
@@ -38,33 +40,69 @@ class Draw:
 
         self.buff_width = self.configs.columns * self.configs.cell_width
         self.buff_height = self.configs.rows * self.configs.cell_height
-        self.three_dimension_img = self.img_array.reshape(
+        self.img_3d = self.img_array.reshape(
                                     self.img_height,
                                     self.img_width,
                                     4
                                 )
-        self.three_dimension_buff = self.buff_array.reshape(
+        self.buff_3d = self.buff_array.reshape(
                                     self.buff_height,
                                     self.buff_width,
                                     4
                                 )
+        
+        self.spritesheet = Spritesheet(self.img_3d)
+        self.maze_hex = maze.grid_hex
 
     def floor(self) -> None:
         src_x, src_y = self.configs.floor
-        color = self.three_dimension_img[(src_y * 16), (src_x * 16)]
+        color = self.img_3d[(src_y * 16), (src_x * 16)]
         for y in range(self.buff_height):
-            self.three_dimension_buff[y] = color
+            self.buff_3d[y] = color
 
-    # def horizontal_wall(self) -> None:
-    #     src_x, src_y = elements["horizontal_wall"]
-    #     off_src = offset((src_x * 16), (src_y * 16), self.img_line)
-    #     color = self.img_array[off_src : off_src + 4]
-    #     while not color[3]:
-    #         off_src = offset((src_x * 16), ((src_y + 1) * 16), self.img_line)
-    #         color = self.img_array[off_src + off_src + 4]
-    #     limit_x, limit_y = maze_config["limit_horizontal_wall"]
-    #     off_limit = offset((limit_x * 16), (limit_y * 16), self.img_line)
-    #     row_src = off_src // self.img_line
-    #     row_limit = off_limit // self.img_line
-    #     row_distance = abs(row_limit - row_src)
-    #     wall = self.img_array[off_src : (off_src + maze_config["cell_width"])]
+    @property
+    def horizontal_wall(self) -> list[list[list]]:
+        x_min, x_max = self.configs.horizontal_wall_x
+        y_min, y_max = self.configs.horizontal_wall_y
+        horizontall_wall = self.spritesheet.get_tileset(
+                                (x_min * 16),
+                                (x_max * 16),
+                                (y_min * 16),
+                                (y_max * 16)
+                            )
+        h_wall_height, h_wall_width, _ = horizontall_wall.shape
+        return (horizontall_wall, h_wall_width, h_wall_height)
+    
+    @property
+    def vertical_wall(self) -> list[list[list]]:
+        x_min, x_max = self.configs.vertical_wall_x
+        y_min, y_max = self.configs.vertical_wall_y
+        vertical_wall = self.spritesheet.get_tileset(
+                            (x_min * 16),
+                            (x_max * 16),
+                            (y_min * 16),
+                            (y_max * 16)
+                        )
+        v_wall_height, v_wall_width, _ = vertical_wall.shape
+        return (vertical_wall, v_wall_width, v_wall_height)
+        
+    def cell(self) -> None:
+        for y in range(len(self.maze_hex)):
+            dest_y = 0
+            for x in range(len(self.maze_hex[0])):
+                dest_x = 0
+                hex_value = int(self.maze_hex[y][x], 16)
+                if (hex_value & 1):
+                    h_wall, h_wall_width, h_wall_height = self.horizontal_wall
+                    self.buff_3d[
+                        dest_y : h_wall_height,
+                        dest_x : h_wall_width
+                    ] = h_wall
+                if (hex_value >> 1 & 1):
+                    v_wall, v_wall_width, v_wall_height = self.vertical_wall
+                    self.buff_3d[
+                        dest_y : v_wall_height,
+                        (
+                            dest_x + (self.configs.cell_width - v_wall_width)
+                        ) : v_wall_width,
+                    ] = v_wall
