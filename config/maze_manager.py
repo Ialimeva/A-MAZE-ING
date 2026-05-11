@@ -1,4 +1,7 @@
 from dataclasses import dataclass
+from typing import Any, Generator
+from mazegen import MazeGenerator
+from .forty_two_pattern import Pattern42
 from mazegen import (
     Maze,
     MazeConfig,
@@ -6,8 +9,6 @@ from mazegen import (
     GeneratorRegistry,
     SolverRegistry
 )
-from typing import Any, Generator
-from .forty_two_pattern import Pattern42
 
 
 @dataclass
@@ -17,6 +18,15 @@ class SolverFrame:
 
 
 class MazeManager:
+    @staticmethod
+    def initiate_maze(
+        maze: Maze,
+        width: int,
+        height: int
+    ) -> None:
+        grid: list[list[int]] = MazeGenerator.initiate_grid(width, height)
+        maze.set_grid(grid)
+
     @staticmethod
     def get_generator(name: str) -> type:
         return (
