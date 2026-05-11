@@ -53,6 +53,7 @@ def main() -> None:
         columns = configs["width"],
         rows = configs["height"]
     )
+    MazeManager.initiate_maze(maze, configs["width"], configs["height"])
     game = Game(display_config, maze)
     game.run()
     MazeWriter.write_maze(
