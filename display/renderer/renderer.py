@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/11 17:18:38 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/13 14:47:29 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -85,24 +85,41 @@ class Draw:
                         )
         v_wall_height, v_wall_width, _ = vertical_wall.shape
         return (vertical_wall, v_wall_width, v_wall_height)
-        
+
     def cell(self) -> None:
+        h_wall, h_wall_width, h_wall_height = self.horizontal_wall
+        v_wall, v_wall_width, v_wall_height = self.vertical_wall
+        dest_y = 0
         for y in range(len(self.maze_hex)):
-            dest_y = 0
+            dest_x = 0
             for x in range(len(self.maze_hex[0])):
-                dest_x = 0
                 hex_value = int(self.maze_hex[y][x], 16)
                 if (hex_value & 1):
-                    h_wall, h_wall_width, h_wall_height = self.horizontal_wall
                     self.buff_3d[
                         dest_y : h_wall_height,
                         dest_x : h_wall_width
                     ] = h_wall
                 if (hex_value >> 1 & 1):
-                    v_wall, v_wall_width, v_wall_height = self.vertical_wall
                     self.buff_3d[
                         dest_y : v_wall_height,
                         (
-                            dest_x + (self.configs.cell_width - v_wall_width)
-                        ) : v_wall_width,
+                            (dest_x + self.configs.cell_width) - v_wall_width
+                        ) : (dest_x + self.configs.cell_width),
                     ] = v_wall
+
+                if (hex_value >> 2 & 1):
+                    self.buff_3d[
+                        (
+                            (dest_y + self.configs.cell_height) - h_wall_height
+                        ) : (dest_y + self.configs.cell_height),
+                        dest_x : h_wall_width
+                    ] = h_wall
+
+                if (hex_value >> 3 & 1):
+                    self.buff_3d[
+                            dest_y : v_wall_height,
+                            dest_x : v_wall_width
+                    ] = v_wall
+
+                dest_x = dest_x + self.configs.cell_width
+            dest_y = dest_y + self.configs.cell_height

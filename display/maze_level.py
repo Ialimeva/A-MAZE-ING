@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 14:51:46 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/11 15:46:53 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/13 14:47:07 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -37,4 +37,6 @@ class Game:
             self.window.exit_window(None)
         if (input_manager["ENTER"]):
             self.draw.floor()
+            self.window.render_image()
+            self.draw.cell()
             self.window.render_image()
