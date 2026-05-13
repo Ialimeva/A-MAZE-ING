@@ -68,8 +68,8 @@ class MazeGenerator(ABC):
     @staticmethod
     def initiate_grid(width: int, height: int) -> list[list[int]]:
         return [
-            [1 for _ in range(width)]
-            for _ in range(height)
+            [1 for _ in range(2 * width + 1)]
+            for _ in range(2 * height + 1)
         ]
 
     def _compute_protected(self) -> set[tuple[int, int]]:
