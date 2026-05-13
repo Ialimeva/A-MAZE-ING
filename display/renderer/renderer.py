@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/13 14:47:29 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/13 15:02:22 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -96,12 +96,12 @@ class Draw:
                 hex_value = int(self.maze_hex[y][x], 16)
                 if (hex_value & 1):
                     self.buff_3d[
-                        dest_y : h_wall_height,
-                        dest_x : h_wall_width
+                        dest_y : dest_y + h_wall_height,
+                        dest_x : dest_x + h_wall_width
                     ] = h_wall
                 if (hex_value >> 1 & 1):
                     self.buff_3d[
-                        dest_y : v_wall_height,
+                        dest_y : dest_y + v_wall_height,
                         (
                             (dest_x + self.configs.cell_width) - v_wall_width
                         ) : (dest_x + self.configs.cell_width),
@@ -112,13 +112,13 @@ class Draw:
                         (
                             (dest_y + self.configs.cell_height) - h_wall_height
                         ) : (dest_y + self.configs.cell_height),
-                        dest_x : h_wall_width
+                        dest_x : dest_x + h_wall_width
                     ] = h_wall
 
                 if (hex_value >> 3 & 1):
                     self.buff_3d[
-                            dest_y : v_wall_height,
-                            dest_x : v_wall_width
+                            dest_y : dest_y + v_wall_height,
+                            dest_x : dest_x + v_wall_width
                     ] = v_wall
 
                 dest_x = dest_x + self.configs.cell_width
