@@ -23,7 +23,7 @@ class MazeGenerator(ABC):
         self.__height: int = 2 * configs.height + 1
         self._grid: list[list[int]] = (
             configs.grid if configs.grid is not None
-            else MazeGenerator.initiate_grid(self.__width, self.__height)
+            else MazeGenerator.initiate_grid(configs.width, configs.height)
         )
 
         self.entry: tuple[int, int] = configs.entry_point
@@ -68,8 +68,8 @@ class MazeGenerator(ABC):
     @staticmethod
     def initiate_grid(width: int, height: int) -> list[list[int]]:
         return [
-            [1 for _ in range(width)]
-            for _ in range(height)
+            [1 for _ in range(2 * width + 1)]
+            for _ in range(2 * height + 1)
         ]
 
     def _compute_protected(self) -> set[tuple[int, int]]:
