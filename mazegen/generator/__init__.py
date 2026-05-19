@@ -5,5 +5,5 @@ from .algorithms import GeneratorDFS, GeneratorPrims
 __all__ = [
     "MazeGenerator",
     "GeneratorDFS",
-    "GeneratorPrims"
+    "GeneratorPrims",
 ]

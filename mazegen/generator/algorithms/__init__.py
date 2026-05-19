@@ -3,5 +3,5 @@ from .prims import GeneratorPrims
 
 __all__ = [
     "GeneratorDFS",
-    "GeneratorPrims"
+    "GeneratorPrims",
 ]
