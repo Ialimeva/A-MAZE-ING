@@ -8,7 +8,7 @@ from typing import Optional, Generator
 class MazeGen:
     @staticmethod
     def initiate_grid(width: int, height: int) -> list[list[int]]:
-        return MazeGenerator.initiate_grid(width, height)    
+        return MazeGenerator.initiate_grid(width, height)
 
     @staticmethod
     def generate(

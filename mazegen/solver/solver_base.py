@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Generator, Optional
 import random
-from mazegen.maze import Maze
-from mazegen.maze_register import SolverRegistry
+from ..maze import Maze
+from ..maze_register import SolverRegistry
 
 
 class SolverError(Exception):
