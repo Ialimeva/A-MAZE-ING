@@ -1,8 +1,8 @@
 from typing import Generator
 from abc import ABC, abstractmethod
-from mazegen.maze import Maze
-from mazegen.maze_config import MazeConfig
-from mazegen.maze_register import GeneratorRegistry
+from ..maze import Maze
+from ..maze_config import MazeConfig
+from ..maze_register import GeneratorRegistry
 import random
 
 

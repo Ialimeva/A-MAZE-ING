@@ -1,7 +1,7 @@
 from ..generator_base import MazeGenerator
 from typing import Generator
-from mazegen.maze import Maze
-from mazegen.maze_config import MazeConfig
+from ...maze import Maze
+from ...maze_config import MazeConfig
 
 
 class GeneratorDFS(MazeGenerator):
