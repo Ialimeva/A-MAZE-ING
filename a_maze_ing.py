@@ -55,7 +55,7 @@ def main() -> None:
     )
     MazeManager.initiate_maze(maze, configs["width"], configs["height"])
     maze = MazeManager.generate(configs)
-    game = Game(display_config, maze)
+    game = Game(display_config, maze, configs)
     game.run()
     MazeWriter.write_maze(
         configs["output_file"],

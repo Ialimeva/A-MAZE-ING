@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  spritsheet.py                                     :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
+#  By: meva <meva@student.42.fr>                 +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/05 19:28:27 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/11 13:52:45 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/18 09:50:15 by meva            ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -22,5 +22,5 @@ class Spritesheet:
         rows, cols = np.where(tile_mask)
         start_x, end_x = (min(cols), max(cols))
         start_y, end_y = (min(rows), max(rows))
-        final_tile = self.img_3d[start_y : end_y + 1, start_x : end_x + 1]
+        final_tile = tileset[start_y : end_y + 1, start_x : end_x + 1]
         return (final_tile)

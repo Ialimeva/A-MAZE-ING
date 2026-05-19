@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  window.py                                         :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
+#  By: meva <meva@student.42.fr>                 +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 11:42:50 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/10 14:49:18 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/18 19:27:16 by meva            ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -20,8 +20,14 @@ class Window():
     def __init__(self, display_config: DisplayConfig):
         self.m: MlxApp = Mlx()
         self.mlx_ptr: MlxPtr = self.m.mlx_init()
-        self.width: int = display_config.columns * display_config.cell_width
-        self.height: int = display_config.rows * display_config.cell_height
+        self.width: int = (
+            display_config.columns * display_config.cell_width +
+            display_config.last_wall_width
+        )
+        self.height: int = (
+            display_config.rows * display_config.cell_height +
+            display_config.last_wall_height
+        )
         self.win_ptr: WindowPtr = self.m.mlx_new_window(
                         self.mlx_ptr,
                         self.width,
@@ -68,7 +74,13 @@ class Window():
         self.buff_adr, _, self.buff_line, _ = self.m.mlx_get_data_addr(
                                                 self.buff_ptr
                                     )
-        return (self.buff_ptr, self.buff_adr, self.buff_line)
+        return (
+            self.buff_ptr,
+            self.buff_adr,
+            self.buff_line,
+            self.width,
+            self.height    
+        )
 
     def render_image(self) -> None:
         self.m.mlx_put_image_to_window(

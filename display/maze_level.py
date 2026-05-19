@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 14:51:46 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/13 14:47:07 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/19 09:57:46 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -16,27 +16,61 @@ from .engine.input_manager import input_manager
 from .renderer.renderer import Draw
 from .config import DisplayConfig
 from display import Maze
+from config import MazeManager
+
+# class Game:
+#     def __init__(self, display_config: DisplayConfig, maze: Maze):
+#         self.window = Window(display_config)
+#         self.img_data: tuple = self.window.img_data()
+#         self.buff_data: tuple = self.window.buff_data()
+#         self.draw = Draw(
+#                         self.img_data,
+#                         self.buff_data,
+#                         display_config,
+#                         maze
+#                     )
+
+#     def run(self) -> None:
+#         self.window.start(self.update)
+
+#     def update(self, param: Any) -> None:
+#         if (input_manager["ESC"]):
+#             self.window.exit_window(None)
+#         if (input_manager["ENTER"]):
+#             self.draw.floor()
+#             self.draw.cell()
+#             self.window.render_image()
 
 class Game:
-    def __init__(self, display_config: DisplayConfig, maze: Maze):
+    def __init__(self, display_config: DisplayConfig, maze: Maze, configs: dict):
         self.window = Window(display_config)
-        self.img_data: tuple = self.window.img_data()
-        self.buff_data: tuple = self.window.buff_data()
-        self.draw = Draw(
-                        self.img_data,
-                        self.buff_data,
-                        display_config,
-                        maze
-                    )
+        self.img_data = self.window.img_data()
+        self.buff_data = self.window.buff_data()
+        self.draw = Draw(self.img_data, self.buff_data, display_config, maze)
+
+        self.gen = MazeManager.generate_step(configs)  # generator, not consumed yet
+        self.done = False
 
     def run(self) -> None:
         self.window.start(self.update)
 
     def update(self, param: Any) -> None:
-        if (input_manager["ESC"]):
+        if input_manager["ESC"]:
             self.window.exit_window(None)
-        if (input_manager["ENTER"]):
+
+        if input_manager["ENTER"] and not self.done:
+            try:
+                maze_state: Maze = next(self.gen)        # one step per ENTER press
+                self.draw.maze_hex = maze_state.grid_hex
+                print("\033[H\033[J")
+                for row in self.draw.maze_hex:
+                    for cell in row:
+                        print(cell, end="")
+                    print()
+            except StopIteration as e:
+                self.done = True
+                # self.draw.maze_hex = e.value.grid_hex   # final state if generator returns it
+
             self.draw.floor()
-            self.window.render_image()
             self.draw.cell()
             self.window.render_image()
