@@ -35,14 +35,14 @@ check		:
 		exit 1; \
 	}
 
-install		: $(VENV)
+install		: $(VENV) check
 	@ echo "$(C_MAGENTA)> Installing $(REQ)$(C_RESET)"
 	@ $(PIP) install -r $(REQ) -q
 	@ echo "$(C_MAGENTA)> Installing $(DEP) $(C_RESET)"
 	@ echo "$(C_BLUE)$(WHL)$(C_RESET)"
 	@ $(PIP) install $(WHL) -q
 
-$(VENV)		: check
+$(VENV)		:
 	@ echo "$(C_MAGENTA)> Creating Virtual environment$(C_RESET)"
 	@ $(PYTHON_INSTALL) -m venv $@
 	@ echo "$(C_MAGENTA)> Upgrade pip, latest version$(C_RESET)"
