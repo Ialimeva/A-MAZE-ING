@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/19 09:53:01 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/19 10:07:01 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -154,7 +154,7 @@ class Draw:
                         (dest_x + v_wall_width) + h_wall_width
                     ] = h_wall
                 
-                if (hex_value & 1) and not (hex_value >> 3 & 1):
+                if not (hex_value >> 3 & 1):
                     self.buff_3d[
                         dest_y : dest_y + wall_joint_height,
                         dest_x : dest_x + wall_joint_width

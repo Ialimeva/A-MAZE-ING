@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 14:51:46 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/19 09:57:46 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/19 10:08:48 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -62,11 +62,6 @@ class Game:
             try:
                 maze_state: Maze = next(self.gen)        # one step per ENTER press
                 self.draw.maze_hex = maze_state.grid_hex
-                print("\033[H\033[J")
-                for row in self.draw.maze_hex:
-                    for cell in row:
-                        print(cell, end="")
-                    print()
             except StopIteration as e:
                 self.done = True
                 # self.draw.maze_hex = e.value.grid_hex   # final state if generator returns it
