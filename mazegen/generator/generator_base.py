@@ -1,8 +1,8 @@
 from typing import Generator
 from abc import ABC, abstractmethod
-from mazegen.maze import Maze
-from mazegen.maze_config import MazeConfig
-from mazegen.maze_register import GeneratorRegistry
+from ..maze import Maze
+from ..maze_config import MazeConfig
+from ..maze_register import GeneratorRegistry
 import random
 
 
@@ -91,59 +91,44 @@ class MazeGenerator(ABC):
 
         return protected
 
-    def _add_loop(self) -> None:
-        protected: set[tuple[int, int]] = self._compute_protected()
+    def __loop_core(
+        self,
+        protected: set[tuple[int, int]]
+    ) -> Generator[tuple[int, int], None, None]:
+        grid: list[list[int]] = self._maze.grid
 
         for y in range(1, self.__height - 1):
             for x in range(1, self.__width - 1):
 
                 if (
-                    self._maze.grid[y][x] != 2 and
-                    self._maze.grid[y][x] == 1 and
+                    grid[y][x] != 2 and
                     (x % 2 != 0 or y % 2 != 0) and
                     (x, y) not in protected
                 ):
 
                     h_connection: bool = (
-                        self._maze.grid[y][x - 1] == 0 and
-                        self._maze.grid[y][x + 1] == 0
+                        grid[y][x - 1] == 0 and
+                        grid[y][x + 1] == 0
                     )
                     v_connection: bool = (
-                        self._maze.grid[y - 1][x] == 0 and
-                        self._maze.grid[y + 1][x] == 0
+                        grid[y - 1][x] == 0 and
+                        grid[y + 1][x] == 0
                     )
 
                     if (
                         (h_connection or v_connection) and
                         self._random.random() < MazeGenerator._chance
                     ):
-                        self._maze.grid[y][x] = 0
+                        yield (x, y)
+
+    def _add_loop(self) -> None:
+        protected: set[tuple[int, int]] = self._compute_protected()
+        for x, y in self.__loop_core(protected):
+            self._maze.grid[y][x] = 0
 
     def _add_loop_step(self) -> Generator[Maze, None, None]:
         protected: set[tuple[int, int]] = self._compute_protected()
 
-        for y in range(1, self.__height - 1):
-            for x in range(1, self.__width - 1):
-
-                if (
-                    self._maze.grid[y][x] != 2 and
-                    self._maze.grid[y][x] == 1 and
-                    (x % 2 != 0 or y % 2 != 0) and
-                    (x, y) not in protected
-                ):
-
-                    h_connection: bool = (
-                        self._maze.grid[y][x - 1] == 0 and
-                        self._maze.grid[y][x + 1] == 0
-                    )
-                    v_connection: bool = (
-                        self._maze.grid[y - 1][x] == 0 and
-                        self._maze.grid[y + 1][x] == 0
-                    )
-
-                    if (
-                        (h_connection or v_connection) and
-                        self._random.random() < MazeGenerator._chance
-                    ):
-                        self._maze.grid[y][x] = 0
-                        yield self._maze
+        for x, y in self.__loop_core(protected):
+            self._maze.grid[y][x] = 0
+            yield self._maze
