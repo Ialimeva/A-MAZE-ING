@@ -72,8 +72,12 @@ class SolverBFS(MazeSolver):
     def solve(self) -> list[tuple[int, int]]:
         self.__visited.clear()
         gen = self.__find()
-        for _ in gen:
-            pass
+
+        try:
+            next(gen)
+        except StopIteration as e:
+            self.__path = e.value if e.value else []
+
         return (self.__path)
 
     def solve_step(self) -> Generator[
