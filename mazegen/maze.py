@@ -90,3 +90,9 @@ class Maze:
             self.grid[y][x] = 0
         except Exception as e:
             raise MazeError(e)
+
+    def get_value(self, x, y) -> int:
+        try:
+            return self.grid[y][x]
+        except Exception as e:
+            raise MazeError(e)

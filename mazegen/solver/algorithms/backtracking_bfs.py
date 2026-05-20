@@ -62,7 +62,7 @@ class SolverBFS(MazeSolver):
                 ):
                     mid_x: int = pos_x + dx // 2
                     mid_y: int = pos_y + dy // 2
-                    if (self._maze.grid[mid_y][mid_x] == 0):
+                    if (self._maze.get_value(mid_x, mid_y) == 0):
                         self.__visited.add((npos_x, npos_y))
                         queue.append((npos_x, npos_y))
                         parent[(npos_x, npos_y)] = (pos_x, pos_y)

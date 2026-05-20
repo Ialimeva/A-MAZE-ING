@@ -23,7 +23,7 @@ class GeneratorDFS(MazeGenerator):
 
         stack: list[tuple[int, int]] = [(start_x, start_y)]
         self.__visited.add((start_x, start_y))
-        self._maze.grid[start_y][start_x] = 0
+        self._maze.set_path(start_x, start_y)
 
         while stack:
             pos_x, pos_y = stack[-1]
@@ -47,8 +47,8 @@ class GeneratorDFS(MazeGenerator):
                     self.__visited.add((npos_x, npos_y))
                     stack.append((npos_x, npos_y))
 
-                    self._maze.grid[(dy // 2) + pos_y][(dx // 2) + pos_x] = 0
-                    self._maze.grid[npos_y][npos_x] = 0
+                    self._maze.set_path((dx // 2) + pos_x, (dy // 2) + pos_y)
+                    self._maze.set_path(npos_x, npos_y)
 
                     yield self._maze
 

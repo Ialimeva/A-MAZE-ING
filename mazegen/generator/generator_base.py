@@ -62,7 +62,7 @@ class MazeGenerator(ABC):
         return (
             0 < x < self.__width and
             0 < y < self.__height and
-            self._maze.grid[y][x] != 2
+            self._maze.get_value(x, y) != 2
         )
 
     @staticmethod
@@ -77,7 +77,7 @@ class MazeGenerator(ABC):
 
         for y in range(1, self.__height, 2):
             for x in range(1, self.__width, 2):
-                if self._maze.grid[y][x] == 2:
+                if self._maze.get_value(x, y) == 2:
 
                     for dy in (-1, 0, 1):
                         for dx in (-1, 0, 1):
@@ -124,11 +124,11 @@ class MazeGenerator(ABC):
     def _add_loop(self) -> None:
         protected: set[tuple[int, int]] = self._compute_protected()
         for x, y in self.__loop_core(protected):
-            self._maze.grid[y][x] = 0
+            self._maze.set_path(x, y)
 
     def _add_loop_step(self) -> Generator[Maze, None, None]:
         protected: set[tuple[int, int]] = self._compute_protected()
 
         for x, y in self.__loop_core(protected):
-            self._maze.grid[y][x] = 0
+            self._maze.set_path(x, y)
             yield self._maze

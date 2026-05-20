@@ -34,7 +34,7 @@ class GeneratorPrims(MazeGenerator):
         self.__visited.clear()
 
         self.__visited.add((start_x, start_y))
-        self._maze.grid[start_y][start_x] = 0
+        self._maze.set_path(start_x, start_y)
 
         frontiers: list[tuple[
             int,
@@ -52,8 +52,8 @@ class GeneratorPrims(MazeGenerator):
                 wall_x = (cx + nx) // 2
                 wall_y = (cy + ny) // 2
 
-                self._maze.grid[wall_y][wall_x] = 0
-                self._maze.grid[ny][nx] = 0
+                self._maze.set_path(wall_x, wall_y)
+                self._maze.set_path(nx, ny)
 
                 self.__visited.add((nx, ny))
                 frontiers.extend(self.__get_neighbors(nx, ny))

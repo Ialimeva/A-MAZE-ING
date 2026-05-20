@@ -46,5 +46,5 @@ class MazeSolver(ABC):
         return (
             0 < x < self._maze.width and
             0 < y < self._maze.height and
-            self._maze.grid[y][x] not in (1, 2)
+            self._maze.get_value(x, y) not in (1, 2)
         )
