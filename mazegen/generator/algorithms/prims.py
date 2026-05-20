@@ -66,8 +66,8 @@ class GeneratorPrims(MazeGenerator):
         self.__visited.clear()
         gen = self.__carve(1, 1)
 
-        for val in gen:
-            self._maze = val
+        for _ in gen:
+            pass
         return super().generate()
 
     def generate_step(self) -> Generator[Maze, None, None]:
