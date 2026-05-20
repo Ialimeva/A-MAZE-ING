@@ -84,3 +84,9 @@ class Maze:
 
     def set_exit(self, exit_point: tuple[int, int]) -> None:
         self.__exit = exit_point
+
+    def set_path(self, x, y) -> None:
+        try:
+            self.grid[y][x] = 0
+        except Exception as e:
+            raise MazeError(e)
