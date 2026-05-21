@@ -14,7 +14,7 @@ WHL			= $(shell find $(DEP) -name "*whl" -type f 2>/dev/null)
 
 # Program and Args
 PROGRAM		= a_maze_ing.py
-CONFIG		= config.conf
+CONFIG		= config.txt
 
 RM			= rm -rf
 
