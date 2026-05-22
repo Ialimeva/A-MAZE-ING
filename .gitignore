@@ -19,3 +19,5 @@ output_maze.txt
 # Build packages
 dist/
 *.egg-info
+
+todo.*
