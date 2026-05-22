@@ -3,6 +3,7 @@ from typing import Any
 from mazegen import Maze
 from core import MazeManager
 from enum import Enum
+import time
 
 
 class VisualTermError(Exception):
@@ -18,18 +19,17 @@ class Color(Enum):
 
 
 a_maze_ing: str = (r"""
- █████╗       ███╗   ███╗  █████╗ ███████╗███████╗       ██╗███╗   ██╗ ██████╗
-██╔══██╗      ████╗ ████║ ██╔══██╗╚══███╔╝██╔════╝       ██║████╗  ██║██╔════╝
-███████║█████╗██╔████╔██║ ███████║  ███╔╝ █████╗  █████╗ ██║██╔██╗ ██║██║  ███╗
-██╔══██║╚════╝██║╚██╔╝██║ ██╔══██║ ███╔╝  ██╔══╝  ╚════╝ ██║██║╚██╗██║██║   ██║
-██║  ██║      ██║ ╚═╝ ██║ ██║  ██║███████╗███████╗       ██║██║ ╚████║╚██████╔╝
-╚═╝  ╚═╝      ╚═╝     ╚═╝ ╚═╝  ╚═╝╚══════╝╚══════╝       ╚═╝╚═╝  ╚═══╝ ╚═════╝
+ █████╗       ███╗   ███╗ █████╗ ███████╗███████╗      ██╗███╗   ██╗ ██████╗
+██╔══██╗      ████╗ ████║██╔══██╗╚══███╔╝██╔════╝      ██║████╗  ██║██╔════╝
+███████║█████╗██╔████╔██║███████║  ███╔╝ █████╗  █████╗██║██╔██╗ ██║██║  ███╗
+██╔══██║╚════╝██║╚██╔╝██║██╔══██║ ███╔╝  ██╔══╝  ╚════╝██║██║╚██╗██║██║   ██║
+██║  ██║      ██║ ╚═╝ ██║██║  ██║███████╗███████╗      ██║██║ ╚████║╚██████╔╝
+╚═╝  ╚═╝      ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝      ╚═╝╚═╝  ╚═══╝ ╚═════╝
 """)
 
 
 class VisualTerm:
     def __init__(self, config: dict[str, Any]) -> None:
-        print(a_maze_ing)
         self.__render: Render = Render()
         self.__config: dict[str, Any] = config
         self.__maze: Maze = Maze()
@@ -42,16 +42,29 @@ class VisualTerm:
         self.__path_show = True
 
         self.__menu: str = VisualTerm.get_menu()
+        VisualTerm.introduction()
+
+    @staticmethod
+    def introduction():
+        output: list[str] = a_maze_ing.split("\n")
+        for line in output:
+            print(line)
+            time.sleep(0.25)
+        print("Loading ...")
+        time.sleep(2)
 
     def __render_maze(self) -> None:
+        if not self.__is_maze_generate:
+            self.__generate_maze()
+        self.__render.render_maze(self.__maze)
+
+    def __generate_maze(self) -> None:
         if not self.__is_maze_generate:
             gen = MazeManager.generate_step(self.__config)
             for maze in gen:
                 self.__maze = maze
                 self.__render.render_maze(self.__maze)
             self.__is_maze_generate = True
-        else:
-            self.__render.render_maze(self.__maze)
 
     def __solve_maze(self) -> None:
         gen = MazeManager.solve_step(self.__maze, self.__config)
@@ -88,17 +101,22 @@ class VisualTerm:
 
         if val == "c":
             self.__render.change_color()
-            self.__render_maze()
             if self.__is_solve:
                 self.__render_path()
+            else:
+                self.__render_maze()
 
         if val == "p":
+            if not self.__is_maze_generate:
+                self.__generate_maze()
+                self.__solve_maze()
             if self.__path_show:
                 self.__render.render_maze(self.__maze)
                 self.__path_show = False
             else:
                 self.__render_path()
                 self.__path_show = True
+
 
     def run(self) -> None:
         while self.__is_running:
