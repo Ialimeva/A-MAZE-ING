@@ -55,13 +55,16 @@ class VisualTerm:
 
     def __render_maze(self) -> None:
         if not self.__is_maze_generate:
+            self.__generate_maze()
+        self.__render.render_maze(self.__maze)
+
+    def __generate_maze(self) -> None:
+        if not self.__is_maze_generate:
             gen = MazeManager.generate_step(self.__config)
             for maze in gen:
                 self.__maze = maze
                 self.__render.render_maze(self.__maze)
             self.__is_maze_generate = True
-        else:
-            self.__render.render_maze(self.__maze)
 
     def __solve_maze(self) -> None:
         gen = MazeManager.solve_step(self.__maze, self.__config)
@@ -104,6 +107,9 @@ class VisualTerm:
                 self.__render_maze()
 
         if val == "p":
+            if not self.__is_maze_generate:
+                self.__generate_maze()
+                self.__solve_maze()
             if self.__path_show:
                 self.__render.render_maze(self.__maze)
                 self.__path_show = False
@@ -111,8 +117,6 @@ class VisualTerm:
                 self.__render_path()
                 self.__path_show = True
 
-        else:
-            pass
 
     def run(self) -> None:
         while self.__is_running:
