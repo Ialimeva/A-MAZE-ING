@@ -88,8 +88,8 @@ class Brick:
         self.update()
 
     def update(self) -> None:
-        self.wall: str = self.palette["wall"] + "██" + ColorPalette.RESET.value
-        self.path: str = self.palette["path"] + "▓▓" + ColorPalette.RESET.value
+        self.wall: str = self.palette["path"] + "▓▓" + ColorPalette.RESET.value
+        self.path: str = self.palette["wall"] + "██" + ColorPalette.RESET.value
         self.res: str = self.palette["res"] + "▓▓" + ColorPalette.RESET.value
         self.ft: str = self.palette["ft"] + "▓▓" + ColorPalette.RESET.value
         self.point: str = (
