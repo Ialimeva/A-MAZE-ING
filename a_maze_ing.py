@@ -2,7 +2,7 @@
 
 import sys
 from typing import Any
-from core import ConfigManager, MazeManager
+from config import ConfigManager, MazeManager
 from mazegen import GeneratorRegistry, SolverRegistry, Maze
 from cli_render import VisualTerm
 from display import Game, DisplayConfig
@@ -34,13 +34,6 @@ def main() -> None:
         term_render: VisualTerm = VisualTerm(configs)
         term_render.run()
     else:
-        # display_conf: DisplayConfig = DisplayConfig(configs["width"], configs["height"])
-        # maze: Maze = Maze()
-        #
-        # MazeManager.initiate_maze(maze, configs["width"], configs["height"])
-        #
-        # game: Game = Game(display_conf, maze, configs)
-        # game.run()
         print("Need Meva")
 
 
