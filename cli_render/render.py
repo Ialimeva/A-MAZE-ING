@@ -81,13 +81,7 @@ class Brick:
     def __init__(self) -> None:
         self.palette: dict[str, str] = {}
         self.change_color()
-        self.wall: str = self.palette["wall"] + "██" + ColorPalette.RESET.value
-        self.path: str = self.palette["path"] + "  " + ColorPalette.RESET.value
-        self.res: str = self.palette["res"] + "▓▓" + ColorPalette.RESET.value
-        self.ft: str = self.palette["ft"] + "▓▓" + ColorPalette.RESET.value
-        self.point: str = (
-            self.palette["point"] + "██" + ColorPalette.RESET.value
-        )
+        self.update()
 
     def change_color(self) -> None:
         self.palette = Palette.get_color()
@@ -95,7 +89,7 @@ class Brick:
 
     def update(self) -> None:
         self.wall: str = self.palette["wall"] + "██" + ColorPalette.RESET.value
-        self.path: str = self.palette["path"] + "  " + ColorPalette.RESET.value
+        self.path: str = self.palette["path"] + "▓▓" + ColorPalette.RESET.value
         self.res: str = self.palette["res"] + "▓▓" + ColorPalette.RESET.value
         self.ft: str = self.palette["ft"] + "▓▓" + ColorPalette.RESET.value
         self.point: str = (

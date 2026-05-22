@@ -3,6 +3,7 @@ from typing import Any
 from mazegen import Maze
 from core import MazeManager
 from enum import Enum
+import time
 
 
 class VisualTermError(Exception):
@@ -18,18 +19,17 @@ class Color(Enum):
 
 
 a_maze_ing: str = (r"""
- █████╗       ███╗   ███╗  █████╗ ███████╗███████╗       ██╗███╗   ██╗ ██████╗
-██╔══██╗      ████╗ ████║ ██╔══██╗╚══███╔╝██╔════╝       ██║████╗  ██║██╔════╝
-███████║█████╗██╔████╔██║ ███████║  ███╔╝ █████╗  █████╗ ██║██╔██╗ ██║██║  ███╗
-██╔══██║╚════╝██║╚██╔╝██║ ██╔══██║ ███╔╝  ██╔══╝  ╚════╝ ██║██║╚██╗██║██║   ██║
-██║  ██║      ██║ ╚═╝ ██║ ██║  ██║███████╗███████╗       ██║██║ ╚████║╚██████╔╝
-╚═╝  ╚═╝      ╚═╝     ╚═╝ ╚═╝  ╚═╝╚══════╝╚══════╝       ╚═╝╚═╝  ╚═══╝ ╚═════╝
+ █████╗       ███╗   ███╗ █████╗ ███████╗███████╗      ██╗███╗   ██╗ ██████╗
+██╔══██╗      ████╗ ████║██╔══██╗╚══███╔╝██╔════╝      ██║████╗  ██║██╔════╝
+███████║█████╗██╔████╔██║███████║  ███╔╝ █████╗  █████╗██║██╔██╗ ██║██║  ███╗
+██╔══██║╚════╝██║╚██╔╝██║██╔══██║ ███╔╝  ██╔══╝  ╚════╝██║██║╚██╗██║██║   ██║
+██║  ██║      ██║ ╚═╝ ██║██║  ██║███████╗███████╗      ██║██║ ╚████║╚██████╔╝
+╚═╝  ╚═╝      ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝      ╚═╝╚═╝  ╚═══╝ ╚═════╝
 """)
 
 
 class VisualTerm:
     def __init__(self, config: dict[str, Any]) -> None:
-        print(a_maze_ing)
         self.__render: Render = Render()
         self.__config: dict[str, Any] = config
         self.__maze: Maze = Maze()
@@ -42,6 +42,16 @@ class VisualTerm:
         self.__path_show = True
 
         self.__menu: str = VisualTerm.get_menu()
+        VisualTerm.introduction()
+
+    @staticmethod
+    def introduction():
+        output: list[str] = a_maze_ing.split("\n")
+        for line in output:
+            print(line)
+            time.sleep(0.25)
+        print("Loading ...")
+        time.sleep(2)
 
     def __render_maze(self) -> None:
         if not self.__is_maze_generate:
@@ -88,9 +98,10 @@ class VisualTerm:
 
         if val == "c":
             self.__render.change_color()
-            self.__render_maze()
             if self.__is_solve:
                 self.__render_path()
+            else:
+                self.__render_maze()
 
         if val == "p":
             if self.__path_show:
@@ -99,6 +110,9 @@ class VisualTerm:
             else:
                 self.__render_path()
                 self.__path_show = True
+
+        else:
+            pass
 
     def run(self) -> None:
         while self.__is_running:
