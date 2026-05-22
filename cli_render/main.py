@@ -75,6 +75,7 @@ class VisualTerm:
         val = input("Your choice: ")
 
         if val == "g":
+            self.__is_maze_generate = False
             self.__render_maze()
 
         if val == "q":
@@ -94,8 +95,10 @@ class VisualTerm:
         if val == "p":
             if self.__path_show:
                 self.__render.render_maze(self.__maze)
+                self.__path_show = False
             else:
                 self.__render_path()
+                self.__path_show = True
 
     def run(self) -> None:
         while self.__is_running:
