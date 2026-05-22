@@ -1,4 +1,4 @@
-from .render import Render
+from .main import VisualTerm
 
 
-__all__ = ["Render"]
+__all__ = ["VisualTerm"]
