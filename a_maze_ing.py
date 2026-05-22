@@ -2,7 +2,7 @@
 
 import sys
 from typing import Any
-from config import ConfigManager, MazeManager
+from core import ConfigManager
 from mazegen import GeneratorRegistry, SolverRegistry, Maze
 from cli_render import VisualTerm
 from display import Game, DisplayConfig

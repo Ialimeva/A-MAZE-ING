@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 14:51:46 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/19 10:08:48 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/22 15:14:36 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -16,7 +16,7 @@ from .engine.input_manager import input_manager
 from .renderer.renderer import Draw
 from .config import DisplayConfig
 from display import Maze
-from config import MazeManager
+from core import MazeManager
 
 # class Game:
 #     def __init__(self, display_config: DisplayConfig, maze: Maze):
@@ -42,7 +42,9 @@ from config import MazeManager
 #             self.window.render_image()
 
 class Game:
-    def __init__(self, display_config: DisplayConfig, maze: Maze, configs: dict):
+    def __init__(
+            self, display_config: DisplayConfig, maze: Maze, configs: dict
+    ):
         self.window = Window(display_config)
         self.img_data = self.window.img_data()
         self.buff_data = self.window.buff_data()
@@ -64,7 +66,6 @@ class Game:
                 self.draw.maze_hex = maze_state.grid_hex
             except StopIteration as e:
                 self.done = True
-                # self.draw.maze_hex = e.value.grid_hex   # final state if generator returns it
 
             self.draw.floor()
             self.draw.cell()

@@ -18,4 +18,4 @@ SEED		= None
 
 Generator = prims
 
-Visual = term
+Visual = mlx

@@ -6,15 +6,13 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/19 10:07:01 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/22 15:56:25 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
-from ..utils import offset
 from ..config import DisplayConfig
 from display import np, Maze
 from .spritsheet import Spritesheet
-from config import MazeManager
 
 class Draw:
     def __init__(self,
@@ -33,6 +31,7 @@ class Draw:
          self.img_width,
          self.img_height,
         ) = img_data
+        
         (self.buff_ptr,
          self.buff_adr,
          self.buff_line,
@@ -61,9 +60,8 @@ class Draw:
     def floor(self) -> None:
         src_x, src_y = self.display_configs.floor
         color = self.img_3d[(src_y * 16), (src_x * 16)]
-        # color[0], color[1], color[2] = (255, 246, 222)
         for y in range(self.buff_height):
-            self.buff_3d[y] = color
+            self.buff_3d[y] = color #//TODO Render floor per cell 
 
     @property
     def horizontal_wall(self) -> tuple:
