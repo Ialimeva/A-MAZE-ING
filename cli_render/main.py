@@ -17,8 +17,19 @@ class Color(Enum):
     magenta = "\033[35m"
 
 
+a_maze_ing: str = (r"""
+ █████╗       ███╗   ███╗  █████╗ ███████╗███████╗       ██╗███╗   ██╗ ██████╗
+██╔══██╗      ████╗ ████║ ██╔══██╗╚══███╔╝██╔════╝       ██║████╗  ██║██╔════╝
+███████║█████╗██╔████╔██║ ███████║  ███╔╝ █████╗  █████╗ ██║██╔██╗ ██║██║  ███╗
+██╔══██║╚════╝██║╚██╔╝██║ ██╔══██║ ███╔╝  ██╔══╝  ╚════╝ ██║██║╚██╗██║██║   ██║
+██║  ██║      ██║ ╚═╝ ██║ ██║  ██║███████╗███████╗       ██║██║ ╚████║╚██████╔╝
+╚═╝  ╚═╝      ╚═╝     ╚═╝ ╚═╝  ╚═╝╚══════╝╚══════╝       ╚═╝╚═╝  ╚═══╝ ╚═════╝
+""")
+
+
 class VisualTerm:
     def __init__(self, config: dict[str, Any]) -> None:
+        print(a_maze_ing)
         self.__render: Render = Render()
         self.__config: dict[str, Any] = config
         self.__maze: Maze = Maze()
@@ -42,7 +53,7 @@ class VisualTerm:
         else:
             self.__render.render_maze(self.__maze)
 
-    def __solve_maze(self) -> None:        
+    def __solve_maze(self) -> None:
         gen = MazeManager.solve_step(self.__maze, self.__config)
         for path in gen:
             if path.visited is not None:
@@ -93,10 +104,41 @@ class VisualTerm:
     @staticmethod
     def get_menu() -> str:
         menu: str = ""
-        menu += Color.magenta.value + "=== A-Maze-ing Menu ===" + Color.reset.value + "\n"
-        menu += Color.blue.value + "q) - " + Color.reset.value + "Quit" + "\n"
-        menu += Color.blue.value + "g) - " + Color.reset.value + "Generate new maze" + "\n"
-        menu += Color.blue.value + "s) - " + Color.reset.value + "Solve maze" + "\n"
-        menu += Color.blue.value + "c) - " + Color.reset.value + "Change color" + "\n"
-        menu += Color.blue.value + "p) - " + Color.reset.value + "Show path" + "\n"
+        menu += (
+            Color.magenta.value +
+            "=== A-Maze-ing Menu ===" +
+            Color.reset.value + "\n"
+        )
+        menu += (
+            Color.blue.value +
+            "q) - " +
+            Color.reset.value + "Quit" + "\n"
+        )
+        menu += (
+            Color.blue.value +
+            "g) - " +
+            Color.reset.value +
+            "Generate new maze" + "\n"
+        )
+        menu += (
+            Color.blue.value +
+            "s) - " +
+            Color.reset.value +
+            "Solve maze" +
+            "\n"
+        )
+        menu += (
+            Color.blue.value +
+            "c) - " +
+            Color.reset.value +
+            "Change color" +
+            "\n"
+        )
+        menu += (
+            Color.blue.value +
+            "p) - " +
+            Color.reset.value +
+            "Show path" +
+            "\n"
+        )
         return menu

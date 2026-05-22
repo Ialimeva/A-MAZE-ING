@@ -2,7 +2,6 @@ import time
 from enum import Enum
 from mazegen import Maze
 from typing import Optional
-from enum import Enum
 import random
 
 
@@ -36,6 +35,7 @@ class ColorPalette(Enum):
     BG_BLUE = "\033[44m"
     BG_MAGENTA = "\033[45m"
     BG_CYAN = "\033[46m"
+
 
 class Palette:
     PALETTES = [
@@ -71,9 +71,11 @@ class Palette:
             "point": ColorPalette.BRIGHT_WHITE.value,
         },
     ]
+
     @classmethod
     def get_color(cls) -> dict[str, str]:
         return random.choice(cls.PALETTES)
+
 
 class Brick:
     def __init__(self) -> None:
@@ -83,7 +85,9 @@ class Brick:
         self.path: str = self.palette["path"] + " " + ColorPalette.RESET.value
         self.res: str = self.palette["res"] + "▓" + ColorPalette.RESET.value
         self.ft: str = self.palette["ft"] + "▓" + ColorPalette.RESET.value
-        self.point: str = self.palette["point"] + "█" + ColorPalette.RESET.value
+        self.point: str = (
+            self.palette["point"] + "█" + ColorPalette.RESET.value
+        )
 
     def change_color(self) -> None:
         self.palette = Palette.get_color()
@@ -94,7 +98,9 @@ class Brick:
         self.path: str = self.palette["path"] + " " + ColorPalette.RESET.value
         self.res: str = self.palette["res"] + "▓" + ColorPalette.RESET.value
         self.ft: str = self.palette["ft"] + "▓" + ColorPalette.RESET.value
-        self.point: str = self.palette["point"] + "█" + ColorPalette.RESET.value
+        self.point: str = (
+            self.palette["point"] + "█" + ColorPalette.RESET.value
+        )
 
 
 class Render:
