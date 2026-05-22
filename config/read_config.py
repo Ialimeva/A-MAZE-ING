@@ -18,6 +18,7 @@ class Config:
         self.__seed: Optional[int] = None
         self.__generator: Optional[str] = "auto"
         self.__solver: Optional[str] = "auto"
+        self.__visual: str = "mlx"
 
     def get_config(self) -> dict[str, Any]:
         config: dict[str, Any] = {}
@@ -31,6 +32,7 @@ class Config:
         config["seed"] = self.__seed
         config["generator"] = self.__generator
         config["solver"] = self.__solver
+        config["visual"] = self.__visual
 
         return config
 
@@ -80,6 +82,16 @@ class Config:
 
     def set_solver(self, value: str) -> None:
         self.__solver = value.lower()
+
+    def set_visual(self, value: str) -> None:
+        if not value:
+            raise ConfigError(f"Invalid visual value {value}")
+        if value.lower() == "mlx":
+            self.__visual = "mlx"
+        elif value.lower() == "term":
+            self.__visual = "term"
+        else:
+            raise ConfigError(f"Invalid visual value {value}")
 
 
 class ConfigManager:
@@ -186,6 +198,9 @@ class ConfigManager:
 
             elif key == "solver":
                 self.__config.set_solver(value)
+
+            elif key == "visual":
+                self.__config.set_visual(value)
 
             else:
                 raise ConfigError(f"Unknown key value: {key} - {value}")

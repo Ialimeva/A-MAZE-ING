@@ -18,3 +18,4 @@ SEED		= 42
 
 Generator = prims
 
+Visual = term
