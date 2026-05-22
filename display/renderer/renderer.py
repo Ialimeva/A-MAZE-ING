@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/22 15:56:25 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/23 00:47:32 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -19,7 +19,6 @@ class Draw:
                  img_data: tuple,
                  buff_data: tuple,
                  display_config: DisplayConfig,
-                 maze: Maze,
                 ):
         
         self.display_configs = display_config
@@ -55,13 +54,13 @@ class Draw:
                                 )
         
         self.spritesheet = Spritesheet(self.img_3d)
-        self.maze_hex = maze.grid_hex
+        self.maze_hex = None
 
     def floor(self) -> None:
         src_x, src_y = self.display_configs.floor
         color = self.img_3d[(src_y * 16), (src_x * 16)]
         for y in range(self.buff_height):
-            self.buff_3d[y] = color #//TODO Render floor per cell 
+            self.buff_3d[y] = color     #//TODO Render floor per cell 
 
     @property
     def horizontal_wall(self) -> tuple:
@@ -172,11 +171,12 @@ class Draw:
                         dest_x + v_wall_width : 
                         (dest_x + v_wall_width) + s_wall_width
                     ] = s_wall
-                    self.buff_3d[
-                        dest_y : dest_y + lv_wall_height,
-                        dest_x : dest_x + lv_wall_width
-                    ] = lv_wall 
-                    
+                    if (hex_value >> 3 & 1):
+                        self.buff_3d[
+                            dest_y : dest_y + lv_wall_height,
+                            dest_x : dest_x + lv_wall_width
+                        ] = lv_wall 
+                        
                     if (x == (len(self.maze_hex[0])) - 1):
                         self.buff_3d[
                             dest_y : dest_y + lv_wall_height,

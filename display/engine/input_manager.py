@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 13:14:59 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/04 17:32:01 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/23 00:32:34 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -32,3 +32,5 @@ class Hooks():
     def key_released(keycode: int, param: Any) -> None:
         if keycode == Keymap.get("esc"):
             input_manager["ESC"] = False
+        # if keycode == Keymap.get("enter"):
+        #     input_manager["ENTER"] = False

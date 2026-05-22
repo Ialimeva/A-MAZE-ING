@@ -14,7 +14,7 @@ OUTPUT_FILE	= maze.txt
 PERFECT		= yes
 
 # give a value if you want a seed randomize map generator
-SEED		= None
+SEED		= 42
 
 Generator = prims
 
