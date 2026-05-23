@@ -78,7 +78,6 @@ def main() -> None:
         )
         game = Game(display_config, configs)
         game.run()
-        print("Need Meva")
 
 
 if __name__ == "__main__":

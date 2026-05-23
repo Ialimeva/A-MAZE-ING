@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  window.py                                         :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: meva <meva@student.42.fr>                 +#+  +:+       +#+         #
+#  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 11:42:50 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/18 19:27:16 by meva            ###   ########.fr        #
+#  Updated: 2026/05/23 09:31:36 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -22,11 +22,11 @@ class Window():
         self.mlx_ptr: MlxPtr = self.m.mlx_init()
         self.width: int = (
             display_config.columns * display_config.cell_width +
-            display_config.last_wall_width
+            display_config.extra_width
         )
         self.height: int = (
             display_config.rows * display_config.cell_height +
-            display_config.last_wall_height
+            display_config.extra_height
         )
         self.win_ptr: WindowPtr = self.m.mlx_new_window(
                         self.mlx_ptr,

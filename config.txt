@@ -11,7 +11,7 @@ EXIT		= 29,19
 OUTPUT_FILE	= maze.txt
 
 # Set true if you want a perfect maze
-PERFECT		= yes
+PERFECT		= no
 
 # give a value if you want a seed randomize map generator
 SEED		= 42

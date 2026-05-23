@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/23 00:47:32 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/23 11:27:57 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -54,135 +54,117 @@ class Draw:
                                 )
         
         self.spritesheet = Spritesheet(self.img_3d)
-        self.maze_hex = None
+        self.maze_hex = []
 
     def floor(self) -> None:
         src_x, src_y = self.display_configs.floor
         color = self.img_3d[(src_y * 16), (src_x * 16)]
+        color[0], color[1], color[2], color[3] = (147, 71, 97, 255)
         for y in range(self.buff_height):
             self.buff_3d[y] = color     #//TODO Render floor per cell 
 
-    @property
-    def horizontal_wall(self) -> tuple:
-        x_min, x_max = self.display_configs.horizontal_wall_x
-        y_min, y_max = self.display_configs.horizontal_wall_y
-        horizontall_wall = self.spritesheet.get_tileset(
-                                (x_min),
-                                (x_max),
-                                (y_min * 16),
-                                (y_max * 16)
-                            )
-        h_wall_height, h_wall_width, _ = horizontall_wall.shape
-        return (horizontall_wall, h_wall_width, h_wall_height)
+    def wall(self, x_coordinates: tuple, y_coordinates: tuple) -> tuple:
+        x_min, x_max = x_coordinates
+        y_min, y_max = y_coordinates
+        tileset = self.spritesheet.get_tileset(
+                    x_min,
+                    x_max,
+                    y_min,
+                    y_max
+                )
+        tileset_height, tileset_witdth, _ = tileset.shape
+        return (tileset, tileset_height, tileset_witdth)
     
-    @property
-    def vertical_wall(self) -> tuple:
-        x_min, x_max = self.display_configs.vertical_wall_x
-        y_min, y_max = self.display_configs.vertical_wall_y
-        vertical_wall = self.spritesheet.get_tileset(
-                            (x_min * 16),
-                            (x_max * 16),
-                            (y_min * 16),
-                            (y_max * 16)
-                        )
-        v_wall_height, v_wall_width, _ = vertical_wall.shape
-        return (vertical_wall, v_wall_width, v_wall_height)
-
-    @property
-    def south_wall(self) -> tuple:
-        x_min, x_max = self.display_configs.horizontal_wall_x
-        y_min, y_max = self.display_configs.south_wall_y
-        south_wall = self.spritesheet.get_tileset(
-                                (x_min),
-                                (x_max),
-                                (y_min),
-                                (y_max)
-                    )
-        s_wall_height, s_wall_width, _ = south_wall.shape
-        return (south_wall, s_wall_width, s_wall_height)
     
-    @property
-    def last_vertical_wall(self) -> tuple:
-        x_min, x_max = self.display_configs.vertical_wall_x
-        y_min, y_max = self.display_configs.last_vertical_wall_y
-        last_vertical_wall = self.spritesheet.get_tileset(
-                            (x_min * 16),
-                            (x_max * 16),
-                            (y_min * 16),
-                            (y_max * 16)
-                        )
-        lv_wall_height, lv_wall_width, _ = last_vertical_wall.shape
-        return (last_vertical_wall, lv_wall_width, lv_wall_height)
-
-    @property
-    def wall_joint(self) -> tuple:
-        x_min, x_max = self.display_configs.horizontal_wall_joint_x
-        y_min, y_max = self.display_configs.horizontal_wall_joint_y
-        wall_joint = self.spritesheet.get_tileset(
-                                (x_min),
-                                (x_max),
-                                (y_min * 16),
-                                (y_max * 16),
-                            )
-        wall_joint_height, wall_joint_width,_ = wall_joint.shape
-        return (wall_joint, wall_joint_width, wall_joint_height)
-
     def cell(self) -> None:
-        h_wall, h_wall_width, h_wall_height = self.horizontal_wall
-        v_wall, v_wall_width, v_wall_height = self.vertical_wall
-        s_wall, s_wall_width, s_wall_height = self.south_wall
-        lv_wall, lv_wall_width, lv_wall_height = self.last_vertical_wall
-        wall_joint, wall_joint_width, wall_joint_height = self.wall_joint
+        h_wall, h_wall_height, h_wall_width = self.wall(
+            self.display_configs.horizontal_wall_x,
+            self.display_configs.horizontal_wall_y
+        )
+
+        v_wall, v_wall_height, v_wall_width = self.wall(
+            self.display_configs.vertical_wall_x,
+            self.display_configs.vertical_wall_y
+        )
+
+        b_wall, b_wall_height, b_wall_width = self.wall(
+            self.display_configs.bottom_wall_x,
+            self.display_configs.bottom_wall_y,
+        )
+
+        sv_wall, sv_wall_height, sv_wall_width = self.wall(
+            self.display_configs.side_v_wall_x,
+            self.display_configs.side_v_wall_y,
+        )
+
+        h_joint, h_joint_height, h_joint_width = self.wall(
+            self.display_configs.horizontal_joint_x,
+            self.display_configs.horizontal_joint_y,
+        )
+
+        empty_joint, empty_joint_height, empty_joint_width = self.wall(
+            self.display_configs.empty_joint_x,
+            self.display_configs.empty_joint_y,
+        )
+
         dest_y = 0
         for y in range(len(self.maze_hex)):
             dest_x = 0
             for x in range(len(self.maze_hex[0])):
                 hex_value = int(self.maze_hex[y][x], 16)
+
+                # Draw vertical wall at dest_x = 0
                 if (hex_value >> 3 & 1):
                     self.buff_3d[
                         dest_y : dest_y + v_wall_height,
-                        dest_x : dest_x + v_wall_width
+                        dest_x : dest_x + v_wall_width 
                     ] = v_wall
-                
+
+                # Draw horizontal wall at dest_x = dest_x + v_wall_width
                 if (hex_value & 1):
                     self.buff_3d[
                         dest_y : dest_y + h_wall_height,
-                        dest_x + v_wall_width :
-                        (dest_x + v_wall_width) + h_wall_width
+                        dest_x + v_wall_width : dest_x + v_wall_width + h_wall_width
                     ] = h_wall
                 
-                if not (hex_value >> 3 & 1):
+                # Draw horizontal wall joint when there is no v_wall
+                if (hex_value & 1) and not (hex_value >> 3 & 1):
                     self.buff_3d[
-                        dest_y : dest_y + wall_joint_height,
-                        dest_x : dest_x + wall_joint_width
-                    ] = wall_joint
-                
-                if (x == (len(self.maze_hex[0]) - 1)):
+                        dest_y : dest_y + h_joint_height,
+                        dest_x : dest_x + h_joint_width
+                    ] = h_joint
+
+                # Draw joint when no north and lest wall
+                if not (hex_value & 1) and  not (hex_value >> 3 & 1):
+                    self.buff_3d[
+                        dest_y : dest_y + empty_joint_height,
+                        dest_x : dest_x + empty_joint_width
+                    ] = empty_joint
+
+                # Draw rightmost wall
+                if (x == len(self.maze_hex[0]) - 1):
                     self.buff_3d[
                         dest_y : dest_y + v_wall_height,
-                        dest_x + h_wall_width + v_wall_width : 
-                        dest_x + h_wall_width + (v_wall_width * 2)
+                        dest_x + v_wall_width + h_wall_width:
+                        (dest_x + (v_wall_width * 2) + h_wall_width)
                     ] = v_wall
-                
-                if (y == (len(self.maze_hex)) - 1):
+
+                # Draw last row
+                if (y == len(self.maze_hex) - 1):
+                    # Draw bottom walls
                     self.buff_3d[
-                        dest_y + (v_wall_height - s_wall_height + self.display_configs.last_wall_height) : 
-                        dest_y + v_wall_height + self.display_configs.last_wall_height,
-                        dest_x + v_wall_width : 
-                        (dest_x + v_wall_width) + s_wall_width
-                    ] = s_wall
+                        dest_y + sv_wall_height - b_wall_height : (
+                            dest_y + sv_wall_height + b_wall_height
+                        ),
+                        dest_x + v_wall_width : dest_x + v_wall_width + b_wall_width
+                    ] = b_wall
+
                     if (hex_value >> 3 & 1):
+                        # Draw last vertical wall
                         self.buff_3d[
-                            dest_y : dest_y + lv_wall_height,
-                            dest_x : dest_x + lv_wall_width
-                        ] = lv_wall 
-                        
-                    if (x == (len(self.maze_hex[0])) - 1):
-                        self.buff_3d[
-                            dest_y : dest_y + lv_wall_height,
-                            dest_x + s_wall_width + self.display_configs.last_wall_width:
-                            dest_x + lv_wall_width + s_wall_width + self.display_configs.last_wall_width
-                        ] = lv_wall
-                dest_x = dest_x + h_wall_width + v_wall_width
+                            dest_y : dest_y + sv_wall_height,
+                            dest_x : dest_x + sv_wall_width  
+                        ] = sv_wall
+
+                dest_x = dest_x + v_wall_width + h_wall_width
             dest_y = dest_y + v_wall_height
-                
