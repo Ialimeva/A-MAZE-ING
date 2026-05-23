@@ -6,14 +6,14 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 11:42:50 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/23 09:31:36 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/23 13:00:33 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from mlx import Mlx
 from typing import Any
 from ..utils import MlxApp, MlxPtr, WindowPtr, ImagePtr
-from ..config import DisplayConfig
+from ..display_config import DisplayConfig
 from .input_manager import Hooks
 
 class Window():

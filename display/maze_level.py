@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 14:51:46 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/22 23:28:12 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/23 13:00:51 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -14,7 +14,7 @@ from typing import Any
 from .engine.window import Window
 from .engine.input_manager import input_manager
 from .renderer.renderer import Draw
-from .config import DisplayConfig
+from .display_config import DisplayConfig
 from display import Maze
 from core import MazeManager
 

@@ -6,11 +6,11 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/23 11:27:57 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/23 13:00:38 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
-from ..config import DisplayConfig
+from ..display_config import DisplayConfig
 from display import np, Maze
 from .spritsheet import Spritesheet
 
