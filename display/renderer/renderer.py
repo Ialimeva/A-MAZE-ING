@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/23 15:08:00 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/23 16:09:34 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -56,12 +56,31 @@ class Draw:
         self.spritesheet = Spritesheet(self.img_3d)
         self.maze_hex = []
 
+    #//TODO Render floor per cell
     def floor(self) -> None:
         src_x, src_y = self.display_configs.floor
         color = self.img_3d[(src_y * 16), (src_x * 16)]
-        color[0], color[1], color[2], color[3] = (147, 71, 97, 255)
-        for y in range(self.buff_height):
-            self.buff_3d[y] = color     #//TODO Render floor per cell 
+        # color[0], color[1], color[2], color[3] = (97, 71, 147, 255)
+        color2 = [215, 240, 246, 255]
+
+        dest_y: int = 0
+        for y in range(len(self.maze_hex)):
+            dest_x: int = 0
+            for x in range(len(self.maze_hex[0])):
+                hex_value: str = self.maze_hex[y][x]
+                if (hex_value == "F"):
+                    self.buff_3d[
+                        dest_y : dest_y + self.display_configs.cell_height,
+                        dest_x : dest_x + self.display_configs.cell_width
+                    ] = color2
+                else:
+                    self.buff_3d[
+                        dest_y : dest_y + self.display_configs.cell_height,
+                        dest_x : dest_x + self.display_configs.cell_width
+                    ] = color
+                dest_x = dest_x + self.display_configs.cell_width
+            dest_y = dest_y + self.display_configs.cell_height
+
 
     def wall(self, x_coordinates: tuple, y_coordinates: tuple) -> tuple:
         x_min, x_max = x_coordinates
