@@ -28,5 +28,5 @@ class DisplayConfig:
     horizontal_joint_x = (3, 8)
     horizontal_joint_y = (0, 32)
     
-    empty_joint_x = (3, 6)
+    empty_joint_x = (3, 7)
     empty_joint_y = (0, 32)

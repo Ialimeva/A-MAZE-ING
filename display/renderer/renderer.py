@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/23 13:00:38 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/23 15:08:00 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -106,7 +106,7 @@ class Draw:
             self.display_configs.empty_joint_x,
             self.display_configs.empty_joint_y,
         )
-
+        #// TODO: code structuration(repetition) 
         dest_y = 0
         for y in range(len(self.maze_hex)):
             dest_x = 0
@@ -138,7 +138,7 @@ class Draw:
                 if not (hex_value & 1) and  not (hex_value >> 3 & 1):
                     self.buff_3d[
                         dest_y : dest_y + empty_joint_height,
-                        dest_x : dest_x + empty_joint_width
+                        dest_x : dest_x + empty_joint_width #//TODO: FIX EMPTY JOINT WALLS SPACE
                     ] = empty_joint
 
                 # Draw rightmost wall
@@ -153,17 +153,23 @@ class Draw:
                 if (y == len(self.maze_hex) - 1):
                     # Draw bottom walls
                     self.buff_3d[
+                        dest_y + sv_wall_height - h_joint_height : dest_y + sv_wall_height + h_joint_height,
+                        dest_x : dest_x + h_joint_width 
+                    ] = h_joint
+
+                    self.buff_3d[
                         dest_y + sv_wall_height - b_wall_height : (
                             dest_y + sv_wall_height + b_wall_height
                         ),
                         dest_x + v_wall_width : dest_x + v_wall_width + b_wall_width
                     ] = b_wall
 
-                    if (hex_value >> 3 & 1):
-                        # Draw last vertical wall
+                    # Draw rightmost bottom wall
+                    if (x == len(self.maze_hex[0]) - 1):
                         self.buff_3d[
                             dest_y : dest_y + sv_wall_height,
-                            dest_x : dest_x + sv_wall_width  
+                            dest_x + v_wall_width + h_wall_width:
+                            (dest_x + (v_wall_width * 2) + h_wall_width)
                         ] = sv_wall
 
                 dest_x = dest_x + v_wall_width + h_wall_width
