@@ -43,7 +43,7 @@ def get_config(filename: str) -> dict[str, Any]:
 
 
 def print_config(configs: dict[str, Any]) -> None:
-    output: str = "=== Configuration ===\n"
+    output: str = "\n=== Configuration ===\n"
 
     output += "WIDTH: " + f"{configs['width']}\n"
     output += "HEIGHT: " + f"{configs['height']}\n"
@@ -55,7 +55,7 @@ def print_config(configs: dict[str, Any]) -> None:
     output += "GENERATOR: " + f"{configs['generator']}\n"
     output += "SOLVER: " + f"{configs['solver']}\n"
     output += "VISUAL: " + f"{configs['visual']}\n"
-    output += "====================="
+    output += "=====================\n"
 
     print(output)
 
