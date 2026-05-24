@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 11:42:50 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/23 13:00:33 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/24 12:45:41 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -79,7 +79,7 @@ class Window():
             self.buff_adr,
             self.buff_line,
             self.width,
-            self.height    
+            self.height
         )
 
     def render_image(self) -> None:

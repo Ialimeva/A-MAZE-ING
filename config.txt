@@ -1,10 +1,10 @@
 # width and height of the maze
 WIDTH		= 30
-HEIGHT		= 20
+HEIGHT		= 15
 
 # entry and exit point of the solver
-ENTRY		= 14,9
-EXIT		= 29,19
+ENTRY		= 0,0
+EXIT		= 29,14
 
 
 # The output file of the maze in format hexadecimal
@@ -16,6 +16,6 @@ PERFECT		= 0
 # give a value if you want a seed randomize map generator
 SEED		= 42
 
-Generator = prims
+Generator = PRIMS
 
 Visual = mlx

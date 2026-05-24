@@ -6,13 +6,14 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/24 10:40:30 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/24 15:50:41 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from ..display_config import DisplayConfig
 from display import np, Maze
 from .spritsheet import Spritesheet
+from .renderer_utils import recolor_pixel
 
 class Draw:
     def __init__(self,
@@ -58,9 +59,7 @@ class Draw:
 
     #//TODO Optimize code readebility for floor rendering and color change
     def floor(self) -> None:
-        src_x, src_y = self.display_configs.floor
-        color = self.img_3d[(src_y * 16), (src_x * 16)]
-        # color[0], color[1], color[2], color[3] = (97, 71, 147, 255)
+        color1 = [143, 164, 194, 255]
         color2 = [215, 240, 246, 255]
 
         dest_y: int = 0
@@ -77,7 +76,7 @@ class Draw:
                     self.buff_3d[
                         dest_y : dest_y + self.display_configs.cell_height,
                         dest_x : dest_x + self.display_configs.cell_width
-                    ] = color
+                    ] = color1
                 dest_x = dest_x + self.display_configs.cell_width
             dest_y = dest_y + self.display_configs.cell_height
 
@@ -199,14 +198,26 @@ class Draw:
         entry_x, entry_y = self.display_configs.entry_point
         exit_x, exit_y = self.display_configs.exit_point
 
-        hole, hole_height, hole_width  = self.tileset(
+        torch, torch_height, torch_width  = self.tileset(
             self.display_configs.hole_x,
             self.display_configs.hole_y
         )
-        
+
+        torch_copy = torch.copy()
+        recolor_pixel(torch_copy, [47, 35, 58, 255], [215, 240, 246, 255])
+
         dest_entry_x = entry_x * self.display_configs.cell_width
         dest_entry_y = entry_y * self.display_configs.cell_height
+
+        dest_exit_x = exit_x * self.display_configs.cell_width
+        dest_exit_y = exit_y * self.display_configs.cell_height
+        
         self.buff_3d[
-            dest_entry_y + 30: dest_entry_y + hole_height + 30,
-            dest_entry_x + 20 : dest_entry_x + hole_width + 20,
-        ] = hole
+            dest_entry_y + 18 : dest_entry_y + torch_height + 18,
+            dest_entry_x + 12 : dest_entry_x + torch_width + 12,
+        ] = torch_copy
+        
+        self.buff_3d[
+            dest_exit_y + 10 : dest_exit_y + torch_height + 10,
+            dest_exit_x + 12 : dest_exit_x + torch_width + 12,
+        ] = torch_copy
