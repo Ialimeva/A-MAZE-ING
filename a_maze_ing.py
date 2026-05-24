@@ -59,6 +59,7 @@ def print_config(configs: dict[str, Any]) -> None:
 
     print(output)
 
+
 def main() -> None:
     if len(sys.argv) != 2:
         usage_exit()

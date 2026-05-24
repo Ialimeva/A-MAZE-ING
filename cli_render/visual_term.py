@@ -96,7 +96,6 @@ class VisualTerm:
                 self.__render_path()
                 self.__path_show = True
 
-
     def run(self) -> None:
         while self.__is_running:
             self.__manage_input()
