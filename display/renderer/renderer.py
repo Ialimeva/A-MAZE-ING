@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/24 15:50:41 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/24 17:21:25 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -14,6 +14,7 @@ from ..display_config import DisplayConfig
 from display import np, Maze
 from .spritsheet import Spritesheet
 from .renderer_utils import recolor_pixel
+from core import MazeManager
 
 class Draw:
     def __init__(self,
@@ -56,11 +57,12 @@ class Draw:
         
         self.spritesheet = Spritesheet(self.img_3d)
         self.maze_hex = []
+        self.path = []
 
     #//TODO Optimize code readebility for floor rendering and color change
     def floor(self) -> None:
-        color1 = [143, 164, 194, 255]
-        color2 = [215, 240, 246, 255]
+        self.color1 = [143, 164, 194, 255]
+        self.color2 = [215, 240, 246, 255]
 
         dest_y: int = 0
         for y in range(len(self.maze_hex)):
@@ -71,12 +73,12 @@ class Draw:
                     self.buff_3d[
                         dest_y : dest_y + self.display_configs.cell_height,
                         dest_x : dest_x + self.display_configs.cell_width
-                    ] = color2
+                    ] = self.color2
                 else:
                     self.buff_3d[
                         dest_y : dest_y + self.display_configs.cell_height,
                         dest_x : dest_x + self.display_configs.cell_width
-                    ] = color1
+                    ] = self.color1
                 dest_x = dest_x + self.display_configs.cell_width
             dest_y = dest_y + self.display_configs.cell_height
 
@@ -221,3 +223,18 @@ class Draw:
             dest_exit_y + 10 : dest_exit_y + torch_height + 10,
             dest_exit_x + 12 : dest_exit_x + torch_width + 12,
         ] = torch_copy
+
+    
+    def render_path(self):
+        for coord in self.path:
+            x, y = coord
+
+            dest_x = x * self.display_configs.cell_width
+            dest_y = y * self.display_configs.cell_height
+
+            self.buff_3d[
+                dest_y : dest_y + self.display_configs.cell_height,
+                dest_x : dest_x + self.display_configs.cell_width
+            ] = self.color2
+
+        self.cell()
