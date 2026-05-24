@@ -4,6 +4,8 @@ from dataclasses import dataclass
 class DisplayConfig:
     columns: int
     rows: int
+    entry_point: tuple[int, int]
+    exit_point: tuple[int, int]
     cell_width: int = 47
     cell_height: int = 36
 
@@ -30,3 +32,6 @@ class DisplayConfig:
     
     empty_joint_x = (3, 7)
     empty_joint_y = (0, 32)
+
+    hole_x = (18 * 16, 19 * 16)
+    hole_y = (7 * 16, 8 * 16)

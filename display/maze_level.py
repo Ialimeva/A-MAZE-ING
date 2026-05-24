@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 14:51:46 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/23 13:48:25 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/24 11:33:28 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -20,13 +20,17 @@ from core import MazeManager
 
 
 class Game:
-    def __init__(
-            self, display_config: DisplayConfig, configs: dict
-    ):
-        self.window = Window(display_config)
+    def __init__(self, configs: dict):
+        self.display_config = DisplayConfig(
+            columns = configs["width"],
+            rows = configs["height"],
+            entry_point = configs["entry"],
+            exit_point = configs["exit"],
+        )
+        self.window = Window(self.display_config)
         self.img_data = self.window.img_data()
         self.buff_data = self.window.buff_data()
-        self.draw = Draw(self.img_data, self.buff_data, display_config)
+        self.draw = Draw(self.img_data, self.buff_data, self.display_config)
 
         self.gen = MazeManager.generate_step(configs)
         self.done = False
@@ -47,4 +51,8 @@ class Game:
 
             self.draw.floor()
             self.draw.cell()
+            self.window.render_image()
+
+        if input_manager["S"]:
+            self.draw.entry_and_exit()
             self.window.render_image()

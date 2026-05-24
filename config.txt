@@ -3,7 +3,7 @@ WIDTH		= 30
 HEIGHT		= 20
 
 # entry and exit point of the solver
-ENTRY		= 0,0
+ENTRY		= 14,9
 EXIT		= 29,19
 
 
@@ -11,7 +11,7 @@ EXIT		= 29,19
 OUTPUT_FILE	= maze.txt
 
 # Set true if you want a perfect maze
-PERFECT		= no
+PERFECT		= 0
 
 # give a value if you want a seed randomize map generator
 SEED		= 42

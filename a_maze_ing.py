@@ -72,11 +72,7 @@ def main() -> None:
         term_render: VisualTerm = VisualTerm(configs)
         term_render.run()
     else:
-        display_config = DisplayConfig(
-            columns = configs["width"],
-            rows = configs["height"]
-        )
-        game = Game(display_config, configs)
+        game = Game(configs)
         game.run()
 
 

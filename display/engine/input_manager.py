@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 13:14:59 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/23 00:32:34 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/24 10:37:50 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -16,6 +16,7 @@ from .keymap import Keymap
 input_manager: dict[str, bool] = {
     "ESC": False,
     "ENTER": False,
+    "S": False,
 }
 
 
@@ -24,13 +25,21 @@ class Hooks():
     def key_pressed(keycode: int, param: Any) -> None:
         if keycode == Keymap.get("esc"):
             input_manager["ESC"] = True
+        
         if keycode == Keymap.get("enter"):
             input_manager["ENTER"] = True
+        
+        if keycode == Keymap.get("s"):
+            input_manager["S"] = True
 
 
     @staticmethod
     def key_released(keycode: int, param: Any) -> None:
         if keycode == Keymap.get("esc"):
             input_manager["ESC"] = False
+        
         # if keycode == Keymap.get("enter"):
         #     input_manager["ENTER"] = False
+        
+        if keycode == Keymap.get("s"):
+            input_manager["S"] = False

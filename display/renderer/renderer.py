@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/23 16:09:34 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/24 10:40:30 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -56,7 +56,7 @@ class Draw:
         self.spritesheet = Spritesheet(self.img_3d)
         self.maze_hex = []
 
-    #//TODO Render floor per cell
+    #//TODO Optimize code readebility for floor rendering and color change
     def floor(self) -> None:
         src_x, src_y = self.display_configs.floor
         color = self.img_3d[(src_y * 16), (src_x * 16)]
@@ -82,7 +82,7 @@ class Draw:
             dest_y = dest_y + self.display_configs.cell_height
 
 
-    def wall(self, x_coordinates: tuple, y_coordinates: tuple) -> tuple:
+    def tileset(self, x_coordinates: tuple, y_coordinates: tuple) -> tuple:
         x_min, x_max = x_coordinates
         y_min, y_max = y_coordinates
         tileset = self.spritesheet.get_tileset(
@@ -96,32 +96,32 @@ class Draw:
     
     
     def cell(self) -> None:
-        h_wall, h_wall_height, h_wall_width = self.wall(
+        h_wall, h_wall_height, h_wall_width = self.tileset(
             self.display_configs.horizontal_wall_x,
             self.display_configs.horizontal_wall_y
         )
 
-        v_wall, v_wall_height, v_wall_width = self.wall(
+        v_wall, v_wall_height, v_wall_width = self.tileset(
             self.display_configs.vertical_wall_x,
             self.display_configs.vertical_wall_y
         )
 
-        b_wall, b_wall_height, b_wall_width = self.wall(
+        b_wall, b_wall_height, b_wall_width = self.tileset(
             self.display_configs.bottom_wall_x,
             self.display_configs.bottom_wall_y,
         )
 
-        sv_wall, sv_wall_height, sv_wall_width = self.wall(
+        sv_wall, sv_wall_height, sv_wall_width = self.tileset(
             self.display_configs.side_v_wall_x,
             self.display_configs.side_v_wall_y,
         )
 
-        h_joint, h_joint_height, h_joint_width = self.wall(
+        h_joint, h_joint_height, h_joint_width = self.tileset(
             self.display_configs.horizontal_joint_x,
             self.display_configs.horizontal_joint_y,
         )
 
-        empty_joint, empty_joint_height, empty_joint_width = self.wall(
+        empty_joint, empty_joint_height, empty_joint_width = self.tileset(
             self.display_configs.empty_joint_x,
             self.display_configs.empty_joint_y,
         )
@@ -193,3 +193,20 @@ class Draw:
 
                 dest_x = dest_x + v_wall_width + h_wall_width
             dest_y = dest_y + v_wall_height
+
+    
+    def entry_and_exit(self) -> None:
+        entry_x, entry_y = self.display_configs.entry_point
+        exit_x, exit_y = self.display_configs.exit_point
+
+        hole, hole_height, hole_width  = self.tileset(
+            self.display_configs.hole_x,
+            self.display_configs.hole_y
+        )
+        
+        dest_entry_x = entry_x * self.display_configs.cell_width
+        dest_entry_y = entry_y * self.display_configs.cell_height
+        self.buff_3d[
+            dest_entry_y + 30: dest_entry_y + hole_height + 30,
+            dest_entry_x + 20 : dest_entry_x + hole_width + 20,
+        ] = hole
