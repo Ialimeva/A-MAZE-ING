@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import Any, Generator
 from mazegen import MazeGenerator
 from .forty_two_pattern import Pattern42
@@ -9,12 +8,6 @@ from mazegen import (
     GeneratorRegistry,
     SolverRegistry
 )
-
-
-@dataclass
-class SolverFrame:
-    visited: tuple[int, int] | None
-    solution: list[tuple[int, int]] | None
 
 
 class MazeManager:
@@ -101,25 +94,13 @@ class MazeManager:
     def solve_step(
         maze: Maze,
         configs: dict[str, Any]
-    ) -> Generator[SolverFrame, None, None]:
+    ) -> Generator[tuple[int, int], None, list[tuple[int, int]]]:
         gen = MazeGen.solve_step(
             solver_cls=MazeManager.get_solver(configs["solver"]),
             maze=maze,
             seed=configs["seed"]
         )
-
-        try:
-            while True:
-                pos = next(gen)
-                yield SolverFrame(
-                    visited=pos,
-                    solution=None
-                )
-        except StopIteration as e:
-            yield SolverFrame(
-                visited=None,
-                solution=e.value
-            )
+        return (yield from gen)
 
     @staticmethod
     def grid_to_cell(pos: tuple[int, int]) -> tuple[int, int]:

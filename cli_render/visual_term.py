@@ -22,8 +22,7 @@ class VisualTerm:
         self.__render: Render = Render()
         self.__config: dict[str, Any] = config
         self.__maze: Maze = Maze()
-        self.__path_visited: list[tuple[int, int]] = []
-        self.__path_solution: list[tuple[int, int]] = []
+        self.__path: list[tuple[int, int]] = []
 
         self.__is_solve = False
         self.__is_running = True
@@ -47,19 +46,19 @@ class VisualTerm:
 
     def __solve_maze(self) -> None:
         gen = MazeManager.solve_step(self.__maze, self.__config)
-        for path in gen:
-            if path.visited is not None:
-                self.__path_visited.append(path.visited)
-            if path.solution is not None:
-                self.__path_solution = path.solution
+        try:
+            while True:
+                self.__path.append(next(gen))
+                self.__render.render_maze(self.__maze, self.__path)
+        except StopIteration as e:
+            self.__path = e.value
 
-            self.__render.render_maze(self.__maze, self.__path_visited)
         self.__is_solve = True
 
     def __render_path(self) -> None:
         if not self.__is_solve:
             self.__solve_maze()
-        expand = self.__render.expand_path(self.__path_solution)
+        expand = self.__render.expand_path(self.__path)
         self.__render.render_maze(self.__maze, expand)
 
     def __manage_input(self) -> None:
