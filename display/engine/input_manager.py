@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 13:14:59 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/24 13:41:49 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/24 17:00:12 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -46,8 +46,8 @@ class Hooks():
         # if keycode == Keymap.get("enter"):
         #     input_manager["ENTER"] = False
         
-        if keycode == Keymap.get("s"):
-            input_manager["S"] = False
+        # if keycode == Keymap.get("s"):
+        #     input_manager["S"] = False
         
         if keycode == Keymap.get("h"):
             input_manager["H"] = False
