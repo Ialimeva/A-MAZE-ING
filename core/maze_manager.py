@@ -120,3 +120,13 @@ class MazeManager:
                 visited=None,
                 solution=e.value
             )
+
+    @staticmethod
+    def grid_to_cell(pos: tuple[int, int]) -> tuple[int, int]:
+        x: int = 0
+        y: int = 0
+        try:
+            x, y = pos[0] // 2, pos[1] // 2
+        except Exception as e:
+            print(f"[Grid to Cell value] Can't export ({x}, {y}): {e}")
+        return (x, y)

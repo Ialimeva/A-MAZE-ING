@@ -246,17 +246,20 @@ class ConfigManager:
         width = conf["width"]
         height = conf["height"]
 
-        if width < Pattern42._CELL_WIDTH or height < Pattern42._CELL_HEIGHT:
+        if (
+            width < Pattern42._CELL_WIDTH or
+            height < Pattern42._CELL_HEIGHT + 1
+        ):
             raise ConfigError("Size to small for 42 pattern")
 
         if entry_point == exit_point:
             raise ConfigError("Entry and exit can't be the same")
 
         if (entry_point[0] > width - 1 or entry_point[1] > height - 1):
-            raise ConfigError("Entry point out of bound {entry_point}")
+            raise ConfigError(f"Entry point out of bound {entry_point}")
 
         if (exit_point[0] > width - 1 or exit_point[1] > height - 1):
-            raise ConfigError("Exit point out of bound {exit_point}")
+            raise ConfigError(f"Exit point out of bound {exit_point}")
 
         if Pattern42.is_42_position(entry_point, width, height):
             raise ConfigError("Entry point collide with 42 pattern")
