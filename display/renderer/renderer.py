@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/24 17:21:25 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/24 17:35:58 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -58,11 +58,13 @@ class Draw:
         self.spritesheet = Spritesheet(self.img_3d)
         self.maze_hex = []
         self.path = []
+        self.color1 = [143, 164, 194, 255]
+        self.color2 = [215, 240, 246, 255]
+        # rgb(133, 57, 83)
+        self.color3 = [83, 57, 133, 255]
 
     #//TODO Optimize code readebility for floor rendering and color change
     def floor(self) -> None:
-        self.color1 = [143, 164, 194, 255]
-        self.color2 = [215, 240, 246, 255]
 
         dest_y: int = 0
         for y in range(len(self.maze_hex)):
@@ -235,6 +237,6 @@ class Draw:
             self.buff_3d[
                 dest_y : dest_y + self.display_configs.cell_height,
                 dest_x : dest_x + self.display_configs.cell_width
-            ] = self.color2
+            ] = self.color3
 
         self.cell()
