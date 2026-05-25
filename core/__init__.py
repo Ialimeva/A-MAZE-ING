@@ -1,7 +1,7 @@
 from .read_config import ConfigManager
 from .maze_writer import MazeWriter
 from .forty_two_pattern import Pattern42
-from .maze_manager import MazeManager, SolverFrame
+from .maze_manager import MazeManager
 
 
 __all__ = [
@@ -9,5 +9,4 @@ __all__ = [
     "MazeWriter",
     "Pattern42",
     "MazeManager",
-    "SolverFrame"
 ]
