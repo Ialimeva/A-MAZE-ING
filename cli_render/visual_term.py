@@ -3,6 +3,7 @@ from typing import Any
 from mazegen import Maze
 from core import MazeManager
 from enum import Enum
+import random
 
 
 class VisualTermError(Exception):
@@ -30,6 +31,7 @@ class VisualTerm:
         self.__path_show = True
 
         self.__menu: str = VisualTerm.get_menu()
+        self.__generate_maze()
 
     def __render_maze(self) -> None:
         if not self.__is_maze_generate:
@@ -67,6 +69,9 @@ class VisualTerm:
 
         if val == "g":
             self.__is_maze_generate = False
+            self.__is_solve = False
+            self.__path = []
+            self.__config["seed"] = random.randint(0, 10000)
             self.__render_maze()
 
         if val == "q":
