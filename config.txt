@@ -3,7 +3,7 @@ WIDTH		= 30
 HEIGHT		= 15
 
 # entry and exit point of the solver
-ENTRY		= 0,0
+ENTRY		= 0,8
 EXIT		= 29,14
 
 

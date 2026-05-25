@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/25 12:36:25 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/25 17:44:18 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -249,3 +249,8 @@ class Draw:
             ] = self.color3
 
         self.cell()
+
+    def maze(self) -> None:
+        self.floor()
+        self.cell()
+            

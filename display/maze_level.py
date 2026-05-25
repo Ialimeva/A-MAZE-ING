@@ -6,10 +6,11 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 14:51:46 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/25 12:28:53 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/25 18:01:03 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
+import random
 from typing import Any
 from display import np
 from .engine.window import Window
@@ -34,12 +35,12 @@ class Game:
         self.buff_data = self.window.buff_data()
         self.draw = Draw(self.img_data, self.buff_data, self.display_config)
         self.maze = Maze()
-
         self.gen = MazeManager.generate_step(self.configs)
-
-        self.done = False
-        self.done_solve = False
+        
         self.buff_cache = None
+        
+        self.regen_maze = False
+        self.path_show = False
 
     def run(self) -> None:
         self.window.start(self.update)
@@ -48,36 +49,62 @@ class Game:
         if input_manager["ESC"]:
             self.window.exit_window(None)
 
-        if input_manager["ENTER"] and not self.done:
+        if input_manager["ENTER"]:
             try:
                 self.maze = next(self.gen)
                 self.draw.maze_hex = self.maze.grid_hex
             except StopIteration:
                 self.buff_cache = np.copy(self.draw.buff_3d)
-                self.done = True
-
-            self.draw.floor()
-            self.draw.cell()
+                self.done_gen = True
+                input_manager["ENTER"] = False
+            self.draw.maze()  
             self.window.render_image()
-            self.solve = MazeManager.solve_step(self.maze, self.configs)
-        
-        if input_manager["S"] and not self.done_solve: #and self.buff_cache is None: //TODO: 1 buttun for entry exit and solve
-            # self.buff_cache = np.copy(self.draw.buff_3d)
             
+            if self.done_gen:
+                self.solve = MazeManager.solve_step(self.maze, self.configs)
+        
+        if input_manager["S"]: #and self.buff_cache is None: //TODO: 1 buttun for entry exit and solve            
             self.draw.path = []
             try:
                 self.draw.path.append(MazeManager.grid_to_cell(next(self.solve)))
             except StopIteration as e:
                 self.draw.buff_3d[:] = self.buff_cache
                 self.draw.path = [MazeManager.grid_to_cell(coord) for coord in e.value]
-                self.done_solve = True
+                input_manager["S"] = False
 
             self.draw.render_path()
             self.draw.entry_and_exit()
             self.window.render_image()
 
+        if input_manager["P"]:
+            if self.path_show:
+               self.draw.render_path()
+               self.draw.entry_and_exit()
+               self.window.render_image()
+               self.path_show = False
+               input_manager["P"] = False
+            elif not self.path_show:
+                self.draw.buff_3d[:] = self.buff_cache
+                self.window.render_image()
+                self.path_show = True
+                input_manager["P"] = False
 
-        if input_manager["H"] and self.buff_cache is not None:
-            self.draw.buff_3d[:] = self.buff_cache
-            self.window.render_image()
-            self.buff_cache = None
+        # //TODO: Potential bug on self.done_gen condition
+        if input_manager["G"]:
+            if not self.regen_maze:
+                self.regen_maze = True
+                self.path_show = False
+            elif self.regen_maze:
+                self.configs["seed"] = random.randint(0, 10000)
+                self.gen = MazeManager.generate_step(self.configs)
+                try:
+                    self.maze = next(self.gen)
+                    self.draw.maze_hex = self.maze.grid_hex
+                except StopIteration:
+                    self.buff_cache = np.copy(self.draw.buff_3d)
+                    input_manager["G"] = False
+                self.draw.maze()  
+                self.window.render_image()
+                
+                if self.done_gen:
+                    self.solve = MazeManager.solve_step(self.maze, self.configs)

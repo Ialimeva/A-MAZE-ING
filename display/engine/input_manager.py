@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 13:14:59 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/24 17:00:12 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/25 17:17:37 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -18,7 +18,7 @@ input_manager: dict[str, bool] = {
     "ENTER": False,
     "S": False,
     "P": False,
-    "H": False,
+    "G": False,
 }
 
 
@@ -34,8 +34,11 @@ class Hooks():
         if keycode == Keymap.get("s"):
             input_manager["S"] = True
         
-        if keycode == Keymap.get("h"):
-            input_manager["H"] = True
+        if keycode == Keymap.get("p"):
+            input_manager["P"] = True
+        
+        if keycode == Keymap.get("g"):
+            input_manager["G"] = True
 
 
     @staticmethod
@@ -49,5 +52,5 @@ class Hooks():
         # if keycode == Keymap.get("s"):
         #     input_manager["S"] = False
         
-        if keycode == Keymap.get("h"):
-            input_manager["H"] = False
+        if keycode == Keymap.get("p"):
+            input_manager["P"] = False
