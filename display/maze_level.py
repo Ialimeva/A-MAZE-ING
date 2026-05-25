@@ -6,16 +6,16 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 14:51:46 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/24 17:26:53 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/25 10:57:33 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from typing import Any
+from display import np
 from .engine.window import Window
 from .engine.input_manager import input_manager
 from .renderer.renderer import Draw
 from .display_config import DisplayConfig
-from display import np
 from core import MazeManager
 from mazegen import Maze
 
@@ -57,9 +57,9 @@ class Game:
             self.draw.floor()
             self.draw.cell()
             self.window.render_image()
-            self.buff_cache = np.copy(self.draw.buff_3d)
             self.solve = MazeManager.solve_step(self.maze, self.configs)
 
+        self.buff_cache = np.copy(self.draw.buff_3d)
         if input_manager["S"]: #and self.buff_cache is None: //TODO: 1 buttun for entry exit and solve
             # self.buff_cache = np.copy(self.draw.buff_3d)
             
