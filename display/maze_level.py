@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 14:51:46 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/25 10:57:33 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/25 12:28:53 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -38,6 +38,7 @@ class Game:
         self.gen = MazeManager.generate_step(self.configs)
 
         self.done = False
+        self.done_solve = False
         self.buff_cache = None
 
     def run(self) -> None:
@@ -52,15 +53,15 @@ class Game:
                 self.maze = next(self.gen)
                 self.draw.maze_hex = self.maze.grid_hex
             except StopIteration:
+                self.buff_cache = np.copy(self.draw.buff_3d)
                 self.done = True
 
             self.draw.floor()
             self.draw.cell()
             self.window.render_image()
             self.solve = MazeManager.solve_step(self.maze, self.configs)
-
-        self.buff_cache = np.copy(self.draw.buff_3d)
-        if input_manager["S"]: #and self.buff_cache is None: //TODO: 1 buttun for entry exit and solve
+        
+        if input_manager["S"] and not self.done_solve: #and self.buff_cache is None: //TODO: 1 buttun for entry exit and solve
             # self.buff_cache = np.copy(self.draw.buff_3d)
             
             self.draw.path = []
@@ -68,7 +69,8 @@ class Game:
                 self.draw.path.append(MazeManager.grid_to_cell(next(self.solve)))
             except StopIteration as e:
                 self.draw.buff_3d[:] = self.buff_cache
-                self.draw.path = MazeManager.grid_to_cell(e.value)
+                self.draw.path = [MazeManager.grid_to_cell(coord) for coord in e.value]
+                self.done_solve = True
 
             self.draw.render_path()
             self.draw.entry_and_exit()

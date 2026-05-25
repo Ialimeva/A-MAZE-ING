@@ -33,5 +33,8 @@ class DisplayConfig:
     empty_joint_x = (3, 7)
     empty_joint_y = (0, 32)
 
-    hole_x = (8 * 16, 9 * 16)
-    hole_y = (9 * 16, 11 * 16)
+    dude_x = (10 * 16, 11 * 16)
+    dude_y = (14 * 16, 15 * 16)
+    
+    money_x = (15 * 16, 16 * 16)
+    money_y = (13 * 16, 14 * 16)
