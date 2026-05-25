@@ -6,14 +6,14 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/05/24 17:35:58 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/05/25 12:36:25 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from ..display_config import DisplayConfig
 from display import np, Maze
 from .spritsheet import Spritesheet
-from .renderer_utils import recolor_pixel
+from .renderer_utils import scale_pixel
 from core import MazeManager
 
 class Draw:
@@ -202,13 +202,22 @@ class Draw:
         entry_x, entry_y = self.display_configs.entry_point
         exit_x, exit_y = self.display_configs.exit_point
 
-        torch, torch_height, torch_width  = self.tileset(
-            self.display_configs.hole_x,
-            self.display_configs.hole_y
+        dude, dude_height, dude_width  = self.tileset(
+            self.display_configs.dude_x,
+            self.display_configs.dude_y
+        )
+        money, money_height, money_width  = self.tileset(
+            self.display_configs.money_x,
+            self.display_configs.money_y
         )
 
-        torch_copy = torch.copy()
-        recolor_pixel(torch_copy, [47, 35, 58, 255], [215, 240, 246, 255])
+        dude = scale_pixel(dude, 2)
+        dude_height, dude_width, _ = dude.shape
+
+        money = scale_pixel(money, 2)
+        money_height, money_width, _ = money.shape
+        # torch_copy = torch.copy()
+        # recolor_pixel(torch_copy, [47, 35, 58, 255], [215, 240, 246, 255])
 
         dest_entry_x = entry_x * self.display_configs.cell_width
         dest_entry_y = entry_y * self.display_configs.cell_height
@@ -217,14 +226,14 @@ class Draw:
         dest_exit_y = exit_y * self.display_configs.cell_height
         
         self.buff_3d[
-            dest_entry_y + 18 : dest_entry_y + torch_height + 18,
-            dest_entry_x + 12 : dest_entry_x + torch_width + 12,
-        ] = torch_copy
+            dest_entry_y + 10 : dest_entry_y + dude_height + 10,
+            dest_entry_x + 12 : dest_entry_x + dude_width + 12,
+        ] = dude
         
         self.buff_3d[
-            dest_exit_y + 10 : dest_exit_y + torch_height + 10,
-            dest_exit_x + 12 : dest_exit_x + torch_width + 12,
-        ] = torch_copy
+            dest_exit_y + 10 : dest_exit_y + money_height + 10,
+            dest_exit_x + 12 : dest_exit_x + money_width + 12,
+        ] = money
 
     
     def render_path(self):
