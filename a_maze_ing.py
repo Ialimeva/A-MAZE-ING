@@ -5,7 +5,7 @@ from typing import Any
 from core import ConfigManager
 from mazegen import GeneratorRegistry, SolverRegistry
 from cli_render import VisualTerm
-from display import Game, DisplayConfig
+from display import Game
 import time
 
 
