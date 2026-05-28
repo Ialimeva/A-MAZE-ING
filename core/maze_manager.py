@@ -1,4 +1,4 @@
-from typing import Any, Generator
+from typing import Any, Generator, Optional
 from mazegen import MazeGenerator
 from .forty_two_pattern import Pattern42
 from mazegen import (
@@ -8,6 +8,7 @@ from mazegen import (
     GeneratorRegistry,
     SolverRegistry
 )
+from .maze_writer import MazeWriter
 
 
 class MazeManager:
@@ -111,3 +112,18 @@ class MazeManager:
         except Exception as e:
             print(f"[Grid to Cell value] Can't export ({x}, {y}): {e}")
         return (x, y)
+
+    @staticmethod
+    def write_maze(
+        filename: str,
+        grid_hex: list[list[str]],
+        entry_point: Optional[tuple[int, int]],
+        exit_point: Optional[tuple[int, int]],
+        path: Optional[list[tuple[int, int]]] = None
+    ) -> None:
+        MazeWriter.write_maze(
+            filename,
+            grid_hex,
+            entry_point,
+            exit_point, path
+        )
