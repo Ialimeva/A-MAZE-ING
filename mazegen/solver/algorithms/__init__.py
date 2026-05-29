@@ -1,8 +1,8 @@
 from .backtracking_bfs import SolverBFS
-from .a_star import SolverAStar
+from .dijkstra import SolverDijkstra
 
 
 __all__ = [
     "SolverBFS",
-    "SolverAStar"
+    "SolverDijkstra"
 ]

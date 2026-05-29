@@ -1,6 +1,7 @@
-from ...solver.solver_base import *
-from typing import Deque
+from ...solver.solver_base import MazeSolver
+from typing import Deque, Generator, Optional
 from collections import deque
+from ...maze import Maze
 
 
 class SolverBFS(MazeSolver):
@@ -72,10 +73,12 @@ class SolverBFS(MazeSolver):
         self.__visited.clear()
         gen = self.__find()
 
-        try:
-            next(gen)
-        except StopIteration as e:
-            self.__path = e.value if e.value else []
+        while True:
+            try:
+                next(gen)
+            except StopIteration as e:
+                self.__path = e.value if e.value else []
+                break
 
         return (self.__path)
 
