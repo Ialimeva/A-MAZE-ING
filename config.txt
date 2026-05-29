@@ -1,21 +1,25 @@
 # width and height of the maze
-WIDTH		= 30
+WIDTH		= 20
 HEIGHT		= 15
 
 # entry and exit point of the solver
-ENTRY		= 0,8
-EXIT		= 29,14
-
+ENTRY		= 0,0
+EXIT		= 19,14
 
 # The output file of the maze in format hexadecimal
 OUTPUT_FILE	= maze.txt
 
 # Set true if you want a perfect maze
-PERFECT		= 0
+PERFECT		= True
 
 # give a value if you want a seed randomize map generator
-SEED		= 42
+SEED		= None
 
-Generator = PRIMS
+# Algorithm to use for maze generator: DFS, Prims, Wilsons
+Generator	= Auto
 
-Visual = mlx
+# Algorithm to use for solving the maze: BFS, Dijkstra, Astar
+Solver		= Astar
+
+# Mode visual can be: term (terminal) or mlx (graphical)
+Visual		= mlx
