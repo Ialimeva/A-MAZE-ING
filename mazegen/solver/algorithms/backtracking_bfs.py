@@ -1,6 +1,5 @@
-from ...solver.solver_base import MazeSolver
-from ...maze import Maze
-from typing import Generator, Optional, Deque
+from ...solver.solver_base import *
+from typing import Deque
 from collections import deque
 
 
