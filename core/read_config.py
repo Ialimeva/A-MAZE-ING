@@ -37,12 +37,12 @@ class Config:
         return config
 
     def set_width(self, width: int) -> None:
-        if width <= 0:
+        if width <= 0 or width > 200:
             raise ConfigError(f"Invalid width value: {width}")
         self.__width = width
 
     def set_height(self, height: int) -> None:
-        if height <= 0:
+        if height <= 0 or height > 200:
             raise ConfigError(f"Invalid height value {height}")
         self.__height = height
 

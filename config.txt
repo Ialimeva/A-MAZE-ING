@@ -19,7 +19,7 @@ SEED		= None
 Generator	= Auto
 
 # Algorithm to use for solving the maze: BFS, Dijkstra, Astar
-Solver		= Astar
+Solver		= Auto
 
 # Mode visual can be: term (terminal) or mlx (graphical)
 Visual		= mlx
