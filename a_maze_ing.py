@@ -10,6 +10,10 @@ import time
 
 
 def usage_exit() -> None:
+    """
+        Print usage instruction and exit with the value 1 status
+    """
+
     print("No argument or multiple arguments found")
     print("Usage: \033[34mpython a_maze_ing.py <file config>\033[0m")
     print("Please try again :)")
@@ -17,6 +21,10 @@ def usage_exit() -> None:
 
 
 def introduction():
+    """
+        Display the A-Maze-ing ASCII banner with a loading animation
+    """
+
     a_maze_ing: str = r"""
  █████╗       ███╗   ███╗ █████╗ ███████╗███████╗      ██╗███╗   ██╗ ██████╗
 ██╔══██╗      ████╗ ████║██╔══██╗╚══███╔╝██╔════╝      ██║████╗  ██║██╔════╝
@@ -35,6 +43,16 @@ def introduction():
 
 
 def get_config(filename: str) -> dict[str, Any]:
+    """
+        Load and Validate the configuration from a file
+
+        Args:
+            filename (str): Path to the configuration file
+
+        Returns:
+            config (dict[str, Any]): the configuration on format key, value
+    """
+
     return ConfigManager(
         filename,
         GeneratorRegistry.avaliable(),
@@ -43,6 +61,13 @@ def get_config(filename: str) -> dict[str, Any]:
 
 
 def print_config(configs: dict[str, Any]) -> None:
+    """
+        Display the configuration used on for the run of the program
+
+        Args:
+            configs (dict[str, Any]): The configuration already in format key:value
+    """
+
     output: str = "\n=== Configuration ===\n"
 
     output += "WIDTH: " + f"{configs['width']}\n"
@@ -61,6 +86,16 @@ def print_config(configs: dict[str, Any]) -> None:
 
 
 def main() -> None:
+    """
+        Entry Point of the A-Maze-ing Program
+
+        Validate command-line argument, run introduction loading, parse
+        configuration from config file and run the visualization of the program
+
+        Configuration in format dict, avaliable key: 'width', 'height', 'entry', 'exit',
+            'output_file', 'perfect', 'seed', 'generator', 'solver', 'visual'
+    """
+
     if len(sys.argv) != 2:
         usage_exit()
 
