@@ -1,3 +1,5 @@
+"""Prim's algorithm for maze generation."""
+
 from ..generator_base import MazeGenerator
 from typing import Generator
 from ...maze import Maze
@@ -5,13 +7,33 @@ from ...maze_config import MazeConfig
 
 
 class GeneratorPrims(MazeGenerator):
+    """Maze generation using Prim's algorithm (MST-based)."""
+    
     algorithm_name = "prims"
 
     def __init__(self, configs: MazeConfig) -> None:
+        """Initialize Prim's generator.
+        
+        Args:
+            configs: Maze configuration.
+        """
         super().__init__(configs)
         self.__visited: set[tuple[int, int]] = set()
 
-    def __get_neighbors(self, x, y) -> list[tuple[int, int, int, int]]:
+    def __get_neighbors(
+        self,
+        x: int,
+        y: int
+    ) -> list[tuple[int, int, int, int]]:
+        """Get unvisited neighboring cells.
+        
+        Args:
+            x: X coordinate.
+            y: Y coordinate.
+        
+        Returns:
+            List of (nx, ny, wx, wy) tuples.
+        """
         edges: list[tuple[int, int, int, int]] = []
         directions: list[tuple[int, int]] = [
             (2, 0),
@@ -30,7 +52,20 @@ class GeneratorPrims(MazeGenerator):
 
         return edges
 
-    def __carve(self, start_x, start_y) -> Generator[Maze, None, None]:
+    def __carve(
+        self,
+        start_x: int,
+        start_y: int
+    ) -> Generator[Maze, None, None]:
+        """Carve passages using Prim's algorithm.
+        
+        Args:
+            start_x: Starting X coordinate.
+            start_y: Starting Y coordinate.
+        
+        Yields:
+            Intermediate maze states.
+        """
         self.__visited.clear()
 
         self.__visited.add((start_x, start_y))
@@ -63,6 +98,11 @@ class GeneratorPrims(MazeGenerator):
         yield self._maze
 
     def generate(self) -> Maze:
+        """Generate the complete maze.
+        
+        Returns:
+            Generated Maze instance.
+        """
         self.__visited.clear()
         gen = self.__carve(1, 1)
 
@@ -71,6 +111,11 @@ class GeneratorPrims(MazeGenerator):
         return super().generate()
 
     def generate_step(self) -> Generator[Maze, None, None]:
+        """Generate maze incrementally.
+        
+        Yields:
+            Intermediate maze states.
+        """
         self.__visited.clear()
         gen = self.__carve(1, 1)
 

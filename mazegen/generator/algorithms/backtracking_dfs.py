@@ -1,3 +1,5 @@
+"""Depth-first search maze generation algorithm."""
+
 from ..generator_base import MazeGenerator
 from typing import Generator
 from ...maze import Maze
@@ -5,12 +7,19 @@ from ...maze_config import MazeConfig
 
 
 class GeneratorDFS(MazeGenerator):
+    """Maze generation using depth-first search backtracking."""
+
     algorithm_name = "dfs"
 
     def __init__(
         self,
         configs: MazeConfig,
     ) -> None:
+        """Initialize DFS generator.
+
+        Args:
+            configs: Maze configuration.
+        """
         super().__init__(configs)
         self.__visited: set[tuple[int, int]] = set()
 
@@ -19,6 +28,16 @@ class GeneratorDFS(MazeGenerator):
         start_x: int,
         start_y: int
     ) -> Generator[Maze, None, None]:
+        """Carve passages using depth-first search.
+
+        Args:
+            start_x: Starting X coordinate.
+            start_y: Starting Y coordinate.
+        
+        Yields:
+            Intermediate maze states.
+        """
+
         self.__visited.clear()
 
         stack: list[tuple[int, int]] = [(start_x, start_y)]
@@ -61,6 +80,11 @@ class GeneratorDFS(MazeGenerator):
         yield self._maze
 
     def generate(self) -> Maze:
+        """Generate the complete maze.
+
+        Returns:
+            Generated Maze instance.
+        """
         self.__visited.clear()
         gen = self.__carve(1, 1)
 
@@ -69,6 +93,11 @@ class GeneratorDFS(MazeGenerator):
         return super().generate()
 
     def generate_step(self) -> Generator[Maze, None, None]:
+        """Generate maze incrementally.
+
+        Yields:
+            Intermediate maze states.
+        """
         self.__visited.clear()
         gen = self.__carve(1, 1)
 

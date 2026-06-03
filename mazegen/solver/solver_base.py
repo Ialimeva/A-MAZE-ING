@@ -1,3 +1,5 @@
+"""Base class for maze solving algorithms."""
+
 from abc import ABC, abstractmethod
 from typing import Generator, Optional
 import random
@@ -6,10 +8,12 @@ from ..maze_register import SolverRegistry
 
 
 class SolverError(Exception):
+    """Error raised by solver operations."""
     pass
 
 
 class MazeSolver(ABC):
+    """Base class for maze-solving algorithms."""
 
     algorithm_name: str | None = None
 
@@ -18,6 +22,12 @@ class MazeSolver(ABC):
         maze: Maze,
         seed: Optional[int] = None
     ) -> None:
+        """Initialize the maze solver.
+
+        Args:
+            maze: Maze to solve.
+            seed: Random seed for reproducibility.
+        """
         self._maze: Maze = maze
         self._random: random.Random = random.Random(seed)
 
@@ -32,6 +42,11 @@ class MazeSolver(ABC):
 
     @abstractmethod
     def solve(self) -> list[tuple[int, int]]:
+        """Find a path from start to goal.
+
+        Returns:
+            List of coordinates forming the solution path.
+        """
         ...
 
     @abstractmethod
@@ -40,9 +55,23 @@ class MazeSolver(ABC):
         None,
         list[tuple[int, int]]
     ]:
+        """Find a path incrementally.
+
+        Yields:
+            Visited coordinates during solving.
+        """
         ...
 
     def is_valid_pos(self, x: int, y: int) -> bool:
+        """Check if a position is valid and traversable.
+
+        Args:
+            x: X-coordinate.
+            y: Y-coordinate.
+
+        Returns:
+            True if valid, False otherwise.
+        """
         return (
             0 < x < self._maze.width and
             0 < y < self._maze.height and
