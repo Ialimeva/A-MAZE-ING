@@ -4,7 +4,12 @@ class Keymap:
     S = 0x73
     P = 0x70
     G = 0x67
-
+    C = 0x63
+    UP = 0xff52
+    DOWN = 0xff54
+    LEFT = 0xff51
+    RIGHT = 0xff53
+    
     @classmethod
     def get(cls, key: str) -> int | str:
         return getattr(cls, key.upper(), "Unknown key")
