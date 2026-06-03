@@ -13,7 +13,7 @@ class DisplayConfig:
     extra_height: int = 16
 
     display_width: int = 1920
-    display_height: int = 1080
+    display_height: int = 1020
     
     floor: tuple = (2, 3)
     
