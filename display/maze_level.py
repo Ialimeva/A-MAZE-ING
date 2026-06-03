@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  maze_level.py                                     :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: meva <meva@student.42.fr>                 +#+  +:+       +#+         #
+#  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 14:51:46 by ialrandr        #+#    #+#               #
-#  Updated: 2026/06/01 07:54:20 by meva            ###   ########.fr        #
+#  Updated: 2026/06/03 17:47:48 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -81,9 +81,9 @@ class Game:
             self.draw.maze()
             self.draw.present()
             self.window.render_image()
-            
 
-    def update(self, param: Any) -> None:
+
+    def update(self, _: Any) -> None:
         try:
             if input_manager["ESC"]:
                 self.window.exit_window(None)
@@ -184,6 +184,6 @@ class Game:
                 self.window.render_image()
 
         except (KeyboardInterrupt, EOFError):
-            return
+            self.window.exit_window(None)
         except Exception as e:
             print(f"Error: {e}")

@@ -6,13 +6,13 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/01 11:42:50 by ialrandr        #+#    #+#               #
-#  Updated: 2026/06/03 15:58:47 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/06/03 17:48:31 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from mlx import Mlx
 from typing import Any
-from ..utils import MlxApp, MlxPtr, WindowPtr, ImagePtr
+from ..utils import MlxApp, MlxPtr, WindowPtr
 from ..display_config import DisplayConfig
 from .input_manager import Hooks
 
