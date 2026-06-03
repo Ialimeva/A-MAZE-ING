@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/06/03 13:43:29 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/06/03 17:16:15 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -342,8 +342,9 @@ class Draw:
         self.cell()
 
     def change_wall_color(self):
-        n: int = random.randint(0, len(wall_colors) - 1)
-        key: str = self.wcolors_keys[n]
+        key: str = random.choice(self.wcolors_keys)
+        while self.active_theme is self.theme_cache[key]:
+            key: str = random.choice(self.wcolors_keys)
         self.active_theme = self.theme_cache[key]
         
         (self.h_wall,

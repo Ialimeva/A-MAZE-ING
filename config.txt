@@ -1,6 +1,6 @@
 # width and height of the maze
 WIDTH		= 30
-HEIGHT		= 15
+HEIGHT		= 30
 
 # entry and exit point of the solver
 ENTRY		= 0,8
