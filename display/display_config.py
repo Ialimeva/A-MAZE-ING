@@ -9,8 +9,11 @@ class DisplayConfig:
     cell_width: int = 47
     cell_height: int = 36
 
-    extra_width = 5
-    extra_height = 16
+    extra_width: int = 5
+    extra_height: int = 16
+
+    display_width: int = 1920
+    display_height: int = 1080
     
     floor: tuple = (2, 3)
     
