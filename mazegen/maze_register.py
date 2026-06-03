@@ -1,23 +1,13 @@
-"""
-    Contain the Register of the created algorithm on both
-        Solver and Generator
-"""
+"""Registry for maze generation and solving algorithms."""
 
 
 class RegistryError(Exception):
-    """
-        Error Raise by all Register
-    """
+    """Error raised when registry operation fails."""
     pass
 
 
 class GeneratorRegistry:
-    """
-        Represent the Register of all Generator algorithm when given a name
-
-        Class Attributes:
-            _algorithms (dict[str, type])
-    """
+    """Registry for maze generator algorithms."""
 
     _algorithms: dict[str, type] = {}
 
@@ -27,15 +17,14 @@ class GeneratorRegistry:
         name: str,
         algorithm: type
     ) -> None:
-        """
-            Save the given algorithm to the register
+        """Register a maze generator algorithm.
 
-            Args:
-                name (str): the name-key of the algorithm
-                algorithm (type): the class of the algorithm
+        Args:
+            name: Algorithm identifier.
+            algorithm: Generator class.
 
-            Raise:
-                RegistryError if name already on the register
+        Raises:
+            RegistryError: If name already registered.
         """
         if name in cls._algorithms:
             raise RegistryError(
@@ -48,17 +37,16 @@ class GeneratorRegistry:
 
     @classmethod
     def get(cls, name: str) -> type:
-        """
-            Getter of algorithm
+        """Get a registered generator by name.
 
-            Args:
-                name (str): the name-key of the algorithm to get
+        Args:
+            name: Algorithm identifier.
 
-            Raise:
-                RegistryError if name not present in the register
+        Returns:
+            Generator class.
 
-            Return:
-                type: The algorithm
+        Raises:
+            RegistryError: If name not found.
         """
         if name not in cls._algorithms:
             raise RegistryError(f"Generator {name} not found/register")
@@ -67,22 +55,13 @@ class GeneratorRegistry:
 
     @classmethod
     def avaliable(cls) -> dict[str, type]:
-        """
-            Getter of all register algorithm
-
-            Return:
-                dict[str, type]: format key: value -> name: algorithm
-        """
+        """Return all registered generators."""
         return cls._algorithms
 
 
 class SolverRegistry:
-    """
-        Represent the Register of all Solver algorithm when given a name
+    """Registry for maze solver algorithms."""
 
-        Class Attributes:
-            _algorithms (dict[str, type])
-    """
     _algorithms: dict[str, type] = {}
 
     @classmethod
@@ -91,15 +70,14 @@ class SolverRegistry:
         name: str,
         algorithm: type
     ) -> None:
-        """
-            Save the given algorithm to the register
+        """Register a maze solver algorithm.
 
-            Args:
-                name (str): the name-key of the algorithm
-                algorithm (type): the class of the algorithm
+        Args:
+            name: Algorithm identifier.
+            algorithm: Solver class.
 
-            Raise:
-                RegistryError if name already on the register
+        Raises:
+            RegistryError: If name already registered.
         """
         if name in cls._algorithms:
             raise RegistryError(
@@ -112,17 +90,16 @@ class SolverRegistry:
 
     @classmethod
     def get(cls, name: str) -> type:
-        """
-            Getter of algorithm
+        """Get a registered solver by name.
 
-            Args:
-                name (str): the name-key of the algorithm to get
+        Args:
+            name: Algorithm identifier.
 
-            Raise:
-                RegistryError if name not present in the register
+        Returns:
+            Solver class.
 
-            Return:
-                type: The algorithm
+        Raises:
+            RegistryError: If name not found.
         """
         if name not in cls._algorithms:
             raise RegistryError(f"Solver {name} not found/register")
@@ -131,10 +108,5 @@ class SolverRegistry:
 
     @classmethod
     def avaliable(cls) -> dict[str, type]:
-        """
-            Getter of all register algorithm
-
-            Return:
-                dict[str, type]: format key: value -> name: algorithm
-        """
+        """Return all registered solvers."""
         return cls._algorithms

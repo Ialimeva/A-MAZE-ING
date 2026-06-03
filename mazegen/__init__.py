@@ -1,16 +1,19 @@
-from .generator import MazeGenerator
-from .maze import Maze
-from .solver import MazeSolver
+"""Maze generation, solving, and data model."""
+
+from .maze import Maze, MazeError
 from .maze_config import MazeConfig
-from .mazegen import MazeGen
+from .generator import MazeGenerator
+from .solver import MazeSolver
 from .maze_register import GeneratorRegistry, SolverRegistry
+from .mazegen import MazeGen
 
 __all__ = [
     "Maze",
+    "MazeError",
     "MazeConfig",
-    "MazeGen",
     "MazeGenerator",
     "MazeSolver",
     "GeneratorRegistry",
-    "SolverRegistry"
+    "SolverRegistry",
+    "MazeGen",
 ]

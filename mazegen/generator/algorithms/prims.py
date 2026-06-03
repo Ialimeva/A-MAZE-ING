@@ -1,10 +1,4 @@
-"""
-    Algorithm Generator, Prim's approch
-
-    This algo is greedy algorithm used to
-    find the MST (Minimum Spanning Tree) of
-    a connected, weighted, undirected graph
-"""
+"""Prim's algorithm for maze generation."""
 
 from ..generator_base import MazeGenerator
 from typing import Generator
@@ -13,42 +7,32 @@ from ...maze_config import MazeConfig
 
 
 class GeneratorPrims(MazeGenerator):
-    """
-        Representation of the Prim's Algorithm
-
-        Class Attributes:
-            algorithm_name = "prims", for register
-    """
+    """Maze generation using Prim's algorithm (MST-based)."""
+    
     algorithm_name = "prims"
 
     def __init__(self, configs: MazeConfig) -> None:
-        """
-            Contructor, initialization of the instance
-
-            Attributes:
-                self.__visited (set[tuple[int, int]]):
-                    containt visited position
+        """Initialize Prim's generator.
+        
+        Args:
+            configs: Maze configuration.
         """
         super().__init__(configs)
         self.__visited: set[tuple[int, int]] = set()
 
-    def __get_neighbors(self, x: int, y: int) -> list[
-        tuple[
-            int,
-            int,
-            int,
-            int
-        ]
-    ]:
-        """
-            Return all unvisited neighboring cells of a position
-
-            Args:
-                x, y (int): Position to evaluate
-
-            Return:
-                list[tuple[int, int, int, int]]: position of the cell
-                                                + neighbors
+    def __get_neighbors(
+        self,
+        x: int,
+        y: int
+    ) -> list[tuple[int, int, int, int]]:
+        """Get unvisited neighboring cells.
+        
+        Args:
+            x: X coordinate.
+            y: Y coordinate.
+        
+        Returns:
+            List of (nx, ny, wx, wy) tuples.
         """
         edges: list[tuple[int, int, int, int]] = []
         directions: list[tuple[int, int]] = [
@@ -73,14 +57,14 @@ class GeneratorPrims(MazeGenerator):
         start_x: int,
         start_y: int
     ) -> Generator[Maze, None, None]:
-        """
-            The heart of the algorithm
-
-            Agrs:
-                start_x, start_y (int): starting position
-
-            Return:
-                Generator[Maze, None, None]: yield position visited
+        """Carve passages using Prim's algorithm.
+        
+        Args:
+            start_x: Starting X coordinate.
+            start_y: Starting Y coordinate.
+        
+        Yields:
+            Intermediate maze states.
         """
         self.__visited.clear()
 
@@ -114,11 +98,10 @@ class GeneratorPrims(MazeGenerator):
         yield self._maze
 
     def generate(self) -> Maze:
-        """
-            Generate the Maze at once
-
-            Return:
-                Maze: the full maze
+        """Generate the complete maze.
+        
+        Returns:
+            Generated Maze instance.
         """
         self.__visited.clear()
         gen = self.__carve(1, 1)
@@ -128,12 +111,10 @@ class GeneratorPrims(MazeGenerator):
         return super().generate()
 
     def generate_step(self) -> Generator[Maze, None, None]:
-        """
-            Generate the Maze step by step
-
-            Return:
-                yield carve position in the maze
-                Maze: the full maze
+        """Generate maze incrementally.
+        
+        Yields:
+            Intermediate maze states.
         """
         self.__visited.clear()
         gen = self.__carve(1, 1)

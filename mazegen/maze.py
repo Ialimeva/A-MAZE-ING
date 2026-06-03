@@ -1,48 +1,28 @@
-"""
-    Maze format, handle all maze property: width, height, grid, grid_hex,
-    entry and exit point.
-
-    Handle (2x + 1) format in list[list[int]] and
-    hexadecimal format in LSB condition format
-"""
+"""Maze representation with grid structure and solver path management."""
 
 from typing import Optional
 
 
 class MazeError(Exception):
-    """
-        Error raised by the maze
-    """
+    """Error raised by maze operations."""
     pass
 
 
-# TODO: : Merge contract Maze to Cell Representation instead of a full
-#       list[list[int]] (heavy space), Optimization version
 class Maze:
-    """
-        Represent the maze itself and expose its property
+    """Represents a maze grid with entry/exit points in (2x+1) format."""
 
-        Attributes:
-            width (int): number of columns in the maze grid
-            height (int): number of row in the maze grid
-            entry, exit (tuple[int, int]): position of the entry and exit point
-            grid: list[list[int]]: 2D grid of the maze
-    """
     def __init__(
         self,
         grid: Optional[list[list[int]]] = None,
         entry_point: Optional[tuple[int, int]] = None,
         exit_point: Optional[tuple[int, int]] = None
     ) -> None:
-        """
-            Constructor of class Maze, initialization of attribut
+        """Initialize a maze instance.
 
-            Args:
-                grid (Optional[list[list[int]]]): Default to None
-                entry_point (Optional[tuple[int, int]]): Default to None,
-                    position of the entry point
-                exit_point (Optional[tuple[int, int]]): Default to None,
-                    position of the exit point
+        Args:
+            grid: 2D grid representing maze structure.
+            entry_point: Entry coordinate as (x, y).
+            exit_point: Exit coordinate as (x, y).
         """
         self.__grid: list[list[int]] = grid or []
         self.__entry: Optional[tuple[int, int]] = entry_point
@@ -55,54 +35,30 @@ class Maze:
 
     @property
     def width(self) -> int:
-        """
-            Width of the grid (2x + 1 format)
-
-            Return:
-                int: width
-        """
+        """Return the number of columns in the maze grid."""
         return (len(self.__grid[0]) if self.__grid else 0)
 
     @property
     def height(self) -> int:
-        """
-            Height of the grid (2x + 1 format)
-
-            Return:
-                int: height
-        """
+        """Return the number of rows in the maze grid."""
         return (len(self.__grid) if self.__grid else 0)
 
     @property
     def grid(self) -> list[list[int]]:
-        """
-            Grid (2x + 1 format)
-
-            Return:
-                list[list[int]]: grid
-        """
+        """Return the raw integer grid representation."""
         return self.__grid
 
     @property
     def grid_hex(self) -> list[list[str]]:
-        """
-            Grid (hexadecimal format)
-
-            Return:
-                list[list[int]]: grid
-        """
+        """Return the maze grid in hexadecimal format."""
         return self.__parsing_hex()
 
     @property
     def entry(self) -> tuple[int, int]:
-        """
-            Entry Point position in the Maze
+        """Return the entry point coordinate.
 
-            Return:
-                tuple[int, int]: position of the point
-
-            Raise:
-                MazeError: on empty position
+        Raises:
+            MazeError: If entry point is not set.
         """
         if self.__entry is None:
             raise MazeError("No Entry point given")
@@ -110,29 +66,23 @@ class Maze:
 
     @property
     def exit(self) -> tuple[int, int]:
-        """
-            Exit Point position in the Maze
+        """Return the exit point coordinate.
 
-            Return:
-                tuple[int, int]: position of the point
-
-            Raise:
-                MazeError: on empty position
+        Raises:
+            MazeError: If exit point is not set.
         """
         if self.__exit is None:
             raise MazeError("No Exit point given")
         return (2 * self.__exit[0] + 1, 2 * self.__exit[1] + 1)
 
     def __parsing_hex(self) -> list[list[str]]:
-        """
-            Parser of the grid (2x + 1) format to hexadecimal format
+        """Convert grid from (2x+1) format to hexadecimal format.
 
-            Return:
-                list[list[str]]: the hexadecimal format
-                of the attribut self.__grid
+        Returns:
+            2D list of hexadecimal values.
 
-            Raise:
-                MazeError: on invalid, empty self.__grid
+        Raises:
+            MazeError: If grid is empty.
         """
 
         if not self.__grid:
@@ -162,38 +112,38 @@ class Maze:
         return output
 
     def set_grid(self, grid: list[list[int]]) -> None:
-        """
-            Setter grid
+        """Replace the maze grid.
 
-            Args:
-                grid (list[list[int]])
+        Args:
+            grid: 2D grid representing maze structure.
         """
         self.__grid = grid
 
     def set_entry(self, entry_point: tuple[int, int]) -> None:
-        """
-            Setter entry point
+        """Set the entry point.
 
-            Args:
-                entry_point (tuple[int, int])
+        Args:
+            entry_point: Coordinate as (x, y).
         """
         self.__entry = entry_point
 
     def set_exit(self, exit_point: tuple[int, int]) -> None:
-        """
-            Setter exit point
+        """Set the exit point.
 
-            Args:
-                exit_point (tuple[int, int])
+        Args:
+            exit_point: Coordinate as (x, y).
         """
         self.__exit = exit_point
 
     def set_path(self, x: int, y: int) -> None:
-        """
-            Setter path, carve wall, etc
+        """Mark a cell as a path (carve wall).
 
-            Args:
-                x (int), y (int): Position of the point on the grid
+        Args:
+            x: X-coordinate.
+            y: Y-coordinate.
+
+        Raises:
+            MazeError: If coordinates are invalid.
         """
         try:
             self.grid[y][x] = 0
@@ -201,14 +151,17 @@ class Maze:
             raise MazeError(e)
 
     def get_value(self, x: int, y: int) -> int:
-        """
-            Getter value of position on the grid
+        """Get the grid value at a coordinate.
 
-            Args:
-                x (int), y (int): Position needed
+        Args:
+            x: X-coordinate.
+            y: Y-coordinate.
 
-            Return:
-                int: Value of the positon on the grid
+        Returns:
+            int: Grid value at the position.
+
+        Raises:
+            MazeError: If coordinates are invalid.
         """
         try:
             return self.grid[y][x]

@@ -1,6 +1,4 @@
-"""
-    Contain simple call of the mazegen package
-"""
+"""Simple interface for maze generation and solving."""
 
 from mazegen import Maze
 from mazegen.maze_config import MazeConfig
@@ -10,19 +8,18 @@ from typing import Optional, Generator
 
 
 class MazeGen:
-    """
-        Represent MazeGen, a simple utilization of the mazegen package
-    """
+    """Interface for maze generation and solving operations."""
+
     @staticmethod
     def initiate_grid(width: int, height: int) -> list[list[int]]:
-        """
-            Initialization of the grid
+        """Initialize a solid maze grid.
 
-            Args:
-                width, height (int): Size of the grid
+        Args:
+            width: Maze width in cells.
+            height: Maze height in cells.
 
-            Return:
-                list[list[int]]: the grid initialized
+        Returns:
+            2D grid initialized with wall values.
         """
         return MazeGenerator.initiate_grid(width, height)
 
@@ -31,15 +28,14 @@ class MazeGen:
         generator_cls: type[MazeGenerator],
         config: MazeConfig,
     ) -> Maze:
-        """
-            Generate the maze at once
+        """Generate a complete maze.
 
-            Args:
-                generator_cls (typle[MazeGenerator]): instance of MazeGenerator
-                config (MazeConfig): configuration use for the algorithm
+        Args:
+            generator_cls: Generator algorithm class.
+            config: Maze configuration.
 
-            Return:
-                Maze: The full maze generate
+        Returns:
+            Generated Maze instance.
         """
         generator: MazeGenerator = generator_cls(config)
         return generator.generate()
@@ -49,16 +45,14 @@ class MazeGen:
         generator_cls: type[MazeGenerator],
         config: MazeConfig,
     ) -> Generator[Maze, None, None]:
-        """
-            Generate the maze step by step
+        """Generate a maze incrementally.
 
-            Args:
-                generator_cls (typle[MazeGenerator]): instance of MazeGenerator
-                config (MazeConfig): configuration use for the algorithm
+        Args:
+            generator_cls: Generator algorithm class.
+            config: Maze configuration.
 
-            Return:
-                yield position carve
-                Maze: The full maze
+        Yields:
+            Intermediate maze states during generation.
         """
         generator: MazeGenerator = generator_cls(config)
         yield from generator.generate_step()
@@ -69,16 +63,15 @@ class MazeGen:
         maze: Maze,
         seed: Optional[int] = None
     ) -> list[tuple[int, int]]:
-        """
-            Solve the maze at once
+        """Solve a maze completely.
 
-            Args:
-                solver_cls (typle[MazeGenerator]): instance oSolver
-                maze (Maze): The maze to solve
-                seed (Optional[int]): for the random choice
+        Args:
+            solver_cls: Solver algorithm class.
+            maze: Maze to solve.
+            seed: Random seed for reproducibility.
 
-            Return:
-                Maze: The full maze generate
+        Returns:
+            Solution path as list of coordinates.
         """
         solver: MazeSolver = solver_cls(maze, seed)
         return solver.solve()
@@ -89,17 +82,15 @@ class MazeGen:
         maze: Maze,
         seed: Optional[int] = None
     ) -> Generator[tuple[int, int], None, list[tuple[int, int]]]:
-        """
-            Solve the maze at step by step
+        """Solve a maze incrementally.
 
-            Args:
-                solver_cls (typle[MazeGenerator]): instance oSolver
-                maze (Maze): The maze to solve
-                seed (Optional[int]): for the random choice
+        Args:
+            solver_cls: Solver algorithm class.
+            maze: Maze to solve.
+            seed: Random seed for reproducibility.
 
-            Return:
-                yield position visited
-                Maze: The full maze generate
+        Yields:
+            Visited coordinates during solving.
         """
         solver: MazeSolver = solver_cls(maze, seed)
         return (yield from solver.solve_step())

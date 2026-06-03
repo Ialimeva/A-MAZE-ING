@@ -1,11 +1,4 @@
-"""
-    Algorithm Generator, backtracking approach
-    DFS (Depth-first search)
-
-    This algo is a graph/tree algorithm that explores
-    as far as possible while the position is valid, and
-    backtrack on invalid position
-"""
+"""Depth-first search maze generation algorithm."""
 
 from ..generator_base import MazeGenerator
 from typing import Generator
@@ -14,24 +7,18 @@ from ...maze_config import MazeConfig
 
 
 class GeneratorDFS(MazeGenerator):
-    """
-        Representation of the DFS Algorithm
+    """Maze generation using depth-first search backtracking."""
 
-        Class Attributes:
-            algorithm_name = "dfs", for register
-    """
     algorithm_name = "dfs"
 
     def __init__(
         self,
         configs: MazeConfig,
     ) -> None:
-        """
-            Contructor, initialization of the instance
+        """Initialize DFS generator.
 
-            Attributes:
-                self.__visited (set[tuple[int, int]]):
-                    containt visited position
+        Args:
+            configs: Maze configuration.
         """
         super().__init__(configs)
         self.__visited: set[tuple[int, int]] = set()
@@ -41,14 +28,14 @@ class GeneratorDFS(MazeGenerator):
         start_x: int,
         start_y: int
     ) -> Generator[Maze, None, None]:
-        """
-            The heart of the algorithm
+        """Carve passages using depth-first search.
 
-            Agrs:
-                start_x, start_y (int): starting position
-
-            Return:
-                Generator[Maze, None, None]: yield position visited
+        Args:
+            start_x: Starting X coordinate.
+            start_y: Starting Y coordinate.
+        
+        Yields:
+            Intermediate maze states.
         """
 
         self.__visited.clear()
@@ -93,11 +80,10 @@ class GeneratorDFS(MazeGenerator):
         yield self._maze
 
     def generate(self) -> Maze:
-        """
-            Generate the Maze at once
+        """Generate the complete maze.
 
-            Return:
-                Maze: the full maze
+        Returns:
+            Generated Maze instance.
         """
         self.__visited.clear()
         gen = self.__carve(1, 1)
@@ -107,12 +93,10 @@ class GeneratorDFS(MazeGenerator):
         return super().generate()
 
     def generate_step(self) -> Generator[Maze, None, None]:
-        """
-            Generate the Maze step by step
+        """Generate maze incrementally.
 
-            Return:
-                yield carve position in the maze
-                Maze: the full maze
+        Yields:
+            Intermediate maze states.
         """
         self.__visited.clear()
         gen = self.__carve(1, 1)
