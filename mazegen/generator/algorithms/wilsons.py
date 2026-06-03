@@ -1,3 +1,11 @@
+"""
+    Algorithm Generator, Wilson's approch
+
+    This algo is a maze generator that
+    created a perfect maze using
+    loop-erased random walks
+"""
+
 from ..generator_base import MazeGenerator
 from typing import Generator
 from ...maze import Maze
@@ -5,13 +13,32 @@ from ...maze_config import MazeConfig
 
 
 class GeneratorWilsons(MazeGenerator):
+    """
+        Representation of the Wilson's Algorithm
+
+        Class Attributes:
+            algorithm_name = "wilsons", for register
+    """
     algorithm_name = "wilsons"
 
     def __init__(self, configs: MazeConfig) -> None:
+        """
+            Contructor, initialization of the instance
+
+            Attributes:
+                self.__visited (set[tuple[int, int]]):
+                    containt visited position
+        """
         super().__init__(configs)
         self.__visited: set[tuple[int, int]] = set()
 
     def __get_all_cell(self) -> list[tuple[int, int]]:
+        """
+            Return all cell position in the grid
+
+            Return:
+                list[tuple[int, int]]: list of positions
+        """
         return ([
             (x, y) for x in range(1, self._maze.width, 2)
             for y in range(1, self._maze.height, 2)
@@ -19,6 +46,15 @@ class GeneratorWilsons(MazeGenerator):
         ])
 
     def __get_neighbors(self, x, y) -> list[tuple[int, int]]:
+        """
+            Return all unvisited neighboring cells of a position
+
+            Args:
+                x, y (int): Position to evaluate
+
+            Return:
+                list[tuple[int, int]]: position of the cell
+        """
         edges: list[tuple[int, int]] = []
         directions: list[tuple[int, int]] = [
             (2, 0),
@@ -39,6 +75,15 @@ class GeneratorWilsons(MazeGenerator):
         start_x: int,
         start_y: int
     ) -> Generator[Maze, None, None]:
+        """
+            The heart of the algorithm
+
+            Agrs:
+                start_x, start_y (int): starting position
+
+            Return:
+                Generator[Maze, None, None]: yield position visited
+        """
         self.__visited.clear()
 
         all_cells: list[tuple[int, int]] = self.__get_all_cell()
@@ -85,6 +130,12 @@ class GeneratorWilsons(MazeGenerator):
             yield self._maze
 
     def generate(self) -> Maze:
+        """
+            Generate the Maze at once
+
+            Return:
+                Maze: the full maze
+        """
         self.__visited.clear()
         gen = self.__carve(1, 1)
 
@@ -93,6 +144,13 @@ class GeneratorWilsons(MazeGenerator):
         return super().generate()
 
     def generate_step(self) -> Generator[Maze, None, None]:
+        """
+            Generate the Maze step by step
+
+            Return:
+                yield carve position in the maze
+                Maze: the full maze
+        """
         self.__visited.clear()
         gen = self.__carve(1, 1)
 

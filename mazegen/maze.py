@@ -96,7 +96,7 @@ class Maze:
     @property
     def entry(self) -> tuple[int, int]:
         """
-            Entry Point position in the Maze    
+            Entry Point position in the Maze
 
             Return:
                 tuple[int, int]: position of the point
@@ -111,7 +111,7 @@ class Maze:
     @property
     def exit(self) -> tuple[int, int]:
         """
-            Exit Point position in the Maze    
+            Exit Point position in the Maze
 
             Return:
                 tuple[int, int]: position of the point
@@ -128,7 +128,8 @@ class Maze:
             Parser of the grid (2x + 1) format to hexadecimal format
 
             Return:
-                list[list[str]]: the hexadecimal format of the attribut self.__grid
+                list[list[str]]: the hexadecimal format
+                of the attribut self.__grid
 
             Raise:
                 MazeError: on invalid, empty self.__grid

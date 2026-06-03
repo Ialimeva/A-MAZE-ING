@@ -3,6 +3,7 @@
         Solver and Generator
 """
 
+
 class RegistryError(Exception):
     """
         Error Raise by all Register
