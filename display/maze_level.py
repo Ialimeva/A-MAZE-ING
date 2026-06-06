@@ -8,7 +8,7 @@ except ImportError:
 import random
 from typing import Any, Generator
 from .engine.window import Window
-from .engine.input_manager import input_manager
+from .engine.input_manager import Hooks
 from .renderer.renderer import Draw
 from .display_config import DisplayConfig
 from core import MazeManager
@@ -59,13 +59,13 @@ class Game:
             key: str
     ) -> None:
         if self.done_gen:
-            input_manager[key] = False
+            Hooks.input_manager[key] = False
             return
         try:
             self.maze = next(generator)
             self.draw.maze_hex = self.maze.grid_hex
         except StopIteration:
-            input_manager[key] = False
+            Hooks.input_manager[key] = False
             self.done_gen = True
             self.buff_cache = np.copy(self.draw.buff_3d)
             try:
@@ -73,7 +73,7 @@ class Game:
             except Exception as e:
                 print(f"Error: {e}")
         except Exception as e:
-            input_manager[key] = False
+            Hooks.input_manager[key] = False
             print(f"Error: {e}")
 
         if not self.done_gen:
@@ -83,14 +83,14 @@ class Game:
 
     def update(self, _: Any) -> None:
         try:
-            if input_manager["ESC"]:
+            if Hooks.input_manager["ESC"]:
                 self.window.exit_window(None)
-                input_manager["ESC"] = False
+                Hooks.input_manager["ESC"] = False
 
-            if input_manager["ENTER"]:
+            if Hooks.input_manager["ENTER"]:
                 self.generate_step(self.gen, "ENTER")
 
-            if input_manager["G"]:
+            if Hooks.input_manager["G"]:
                 if not self.regen_maze:
                     self.regen_maze = True
                     self.draw.path = []
@@ -103,16 +103,16 @@ class Game:
                 if self.done_gen:
                     self.regen_maze = False
 
-            if input_manager["S"] and self.done_gen:
+            if Hooks.input_manager["S"] and self.done_gen:
                 if self.done_solve:
-                    input_manager["S"] = False
+                    Hooks.input_manager["S"] = False
                     return
                 try:
                     self.draw.path.append(
                         MazeManager.grid_to_cell(next(self.solve))
                     )
                 except StopIteration as e:
-                    input_manager["S"] = False
+                    Hooks.input_manager["S"] = False
                     self.draw.buff_3d[:] = self.buff_cache
                     try:
                         self.draw.path = [
@@ -124,7 +124,7 @@ class Game:
                         print(f"Error: {e}")
                         return
                 except Exception as e:
-                    input_manager["S"] = False
+                    Hooks.input_manager["S"] = False
                     print(f"Error: {e}")
                     return
 
@@ -133,27 +133,27 @@ class Game:
                 self.draw.present()
                 self.window.render_image()
 
-            if input_manager["P"] and self.done_solve:
+            if Hooks.input_manager["P"] and self.done_solve:
                 try:
                     if self.path_show:
-                        input_manager["P"] = False
+                        Hooks.input_manager["P"] = False
                         self.draw.render_path()
                         self.draw.entry_and_exit()
                         self.draw.present()
                         self.window.render_image()
                         self.path_show = False
                     elif not self.path_show:
-                        input_manager["P"] = False
+                        Hooks.input_manager["P"] = False
                         self.draw.buff_3d[:] = self.buff_cache
                         self.draw.present()
                         self.window.render_image()
                         self.path_show = True
                 except Exception as e:
-                    input_manager["P"] = False
+                    Hooks.input_manager["P"] = False
                     print(f"Error: {e}")
 
-            if input_manager["C"] and self.done_gen:
-                input_manager["C"] = False
+            if Hooks.input_manager["C"] and self.done_gen:
+                Hooks.input_manager["C"] = False
                 try:
                     self.draw.change_wall_color()
                     self.draw.maze()
@@ -166,25 +166,39 @@ class Game:
                 except Exception as e:
                     print(f"Error: {e}")
 
-            if input_manager["UP"]:
+            if Hooks.input_manager["UP"]:
                 self.draw.camera_y -= self.draw.speed
                 self.draw.present()
                 self.window.render_image()
 
-            if input_manager["DOWN"]:
+            if Hooks.input_manager["DOWN"]:
                 self.draw.camera_y += self.draw.speed
                 self.draw.present()
                 self.window.render_image()
 
-            if input_manager["LEFT"]:
+            if Hooks.input_manager["LEFT"]:
                 self.draw.camera_x -= self.draw.speed
                 self.draw.present()
                 self.window.render_image()
 
-            if input_manager["RIGHT"]:
+            if Hooks.input_manager["RIGHT"]:
                 self.draw.camera_x += self.draw.speed
                 self.draw.present()
                 self.window.render_image()
+
+            if Hooks.input_manager["E"]:
+                if not self.done_solve:
+                    print("Error: Maze not generated or solved yet")
+                elif self.done_solve:
+                    MazeManager.write_maze(
+                        self.configs["output_file"],
+                        self.draw.maze_hex,
+                        self.configs["entry"],
+                        self.configs["exit"],
+                        self.draw.path
+                    )
+                Hooks.input_manager["E"] = False
+
 
         except (KeyboardInterrupt, EOFError):
             self.window.exit_window(None)

@@ -5,6 +5,7 @@ class Keymap:
     P = 0x70
     G = 0x67
     C = 0x63
+    E = 0x65
     UP = 0xff52
     DOWN = 0xff54
     LEFT = 0xff51
