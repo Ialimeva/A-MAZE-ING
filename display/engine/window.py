@@ -31,10 +31,14 @@ class Window():
                         self.display_height,
                         "A-maze-ing"
         )
-
         (self.wimg_ptr, _, _) = self.m.mlx_png_file_to_image(
                                     self.mlx_ptr,
                                     "display/assets/A-MAZE-ING.png"
+                                )
+
+        (self.menu_ptr, _, _) = self.m.mlx_png_file_to_image(
+                                    self.mlx_ptr,
+                                    "display/assets/menu.png"
                                 )
 
         self.m.mlx_hook(self.win_ptr, 2, 1, Hooks.key_pressed, None)
@@ -115,5 +119,13 @@ class Window():
             self.mlx_ptr,
             self.win_ptr,
             self.wimg_ptr,
+            0, 0
+        )
+
+    def put_menu(self) -> None:
+        self.m.mlx_put_image_to_window(
+            self.mlx_ptr,
+            self.win_ptr,
+            self.menu_ptr,
             0, 0
         )
