@@ -1,3 +1,5 @@
+"""A* maze solving algorithm."""
+
 from ..solver_base import MazeSolver
 from typing import Generator, Optional
 from ...maze import Maze
@@ -5,6 +7,7 @@ import heapq
 
 
 class SolverAStar(MazeSolver):
+    """Maze solving using the A* algorithm."""
     algorithm_name = "astar"
 
     def __init__(
@@ -12,6 +15,12 @@ class SolverAStar(MazeSolver):
         maze: Maze,
         seed: Optional[int] = None
     ) -> None:
+        """Initialize A* solver.
+
+        Args:
+            maze: Maze to solve.
+            seed: Random seed.
+        """
         super().__init__(maze, seed)
         self.__visited: set[tuple[int, int]] = set()
         self.__path: list[tuple[int, int]] = []
@@ -20,6 +29,12 @@ class SolverAStar(MazeSolver):
         self,
         previous: dict[tuple[int, int], tuple[int, int]],
     ) -> None:
+        """Reconstruct the solution path.
+
+        Args:
+            previous: Mapping from each visited position to its
+                predecessor.
+        """
         path: list[tuple[int, int]] = []
         current: tuple[int, int] | None = self._maze.exit
 
@@ -39,13 +54,32 @@ class SolverAStar(MazeSolver):
         val1: tuple[int, int],
         val2: tuple[int, int]
     ) -> int:
+        """Compute the Manhattan distance between two positions.
+
+        Args:
+            val1: First position.
+            val2: Second position.
+
+        Returns:
+            Manhattan distance between the two positions.
+        """
         return (abs(val1[0] - val2[0]) + abs(val1[1] - val2[1]))
 
-    def __find(self) -> Generator[
+    def __find(
+        self
+    ) -> Generator[
         tuple[int, int],
         None,
         list[tuple[int, int]]
     ]:
+        """Solve the maze using the A* algorithm.
+
+        Yields:
+            Intermediate visited positions.
+
+        Returns:
+            Path from the entry point to the exit point.
+        """
         distances: dict[tuple[int, int], int] = {
             self._maze.entry: 0
         }
@@ -111,6 +145,11 @@ class SolverAStar(MazeSolver):
         return self.__path
 
     def solve(self) -> list[tuple[int, int]]:
+        """Solve the maze completely.
+
+        Returns:
+            Path from the entry point to the exit point.
+        """
         self.__visited.clear()
         gen = self.__find()
 
@@ -123,11 +162,21 @@ class SolverAStar(MazeSolver):
 
         return (self.__path)
 
-    def solve_step(self) -> Generator[
+    def solve_step(
+        self
+    ) -> Generator[
         tuple[int, int],
         None,
         list[tuple[int, int]]
     ]:
+        """Solve the maze incrementally.
+
+        Yields:
+            Intermediate visited positions.
+
+        Returns:
+            Path from the entry point to the exit point.
+        """
         self.__visited.clear()
         gen = self.__find()
         return (yield from gen)

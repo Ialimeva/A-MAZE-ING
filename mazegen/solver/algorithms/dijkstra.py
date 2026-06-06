@@ -1,3 +1,5 @@
+"""Dijkstra maze solving algorithm."""
+
 from ...solver.solver_base import MazeSolver
 from typing import Generator, Optional
 from ...maze import Maze
@@ -5,6 +7,8 @@ import heapq
 
 
 class SolverDijkstra(MazeSolver):
+    """Maze solving using Dijkstra's algorithm."""
+
     algorithm_name = "dijkstra"
 
     def __init__(
@@ -12,6 +16,12 @@ class SolverDijkstra(MazeSolver):
         maze: Maze,
         seed: Optional[int] = None
     ) -> None:
+        """Initialize Dijkstra solver.
+
+        Args:
+            maze: Maze to solve.
+            seed: Random seed.
+        """
         super().__init__(maze, seed)
         self.__visited: set[tuple[int, int]] = set()
         self.__path: list[tuple[int, int]] = []
@@ -20,6 +30,12 @@ class SolverDijkstra(MazeSolver):
         self,
         previous: dict[tuple[int, int], tuple[int, int]],
     ) -> None:
+        """Reconstruct the solution path.
+
+        Args:
+            previous: Mapping from each visited position to its
+                predecessor.
+        """
         path: list[tuple[int, int]] = []
         current: tuple[int, int] | None = self._maze.exit
 
@@ -34,11 +50,21 @@ class SolverDijkstra(MazeSolver):
         path.reverse()
         self.__path = path
 
-    def __find(self) -> Generator[
+    def __find(
+        self
+    ) -> Generator[
         tuple[int, int],
         None,
         list[tuple[int, int]]
     ]:
+        """Solve the maze using Dijkstra's algorithm.
+
+        Yields:
+            Intermediate visited positions.
+
+        Returns:
+            Path from the entry point to the exit point.
+        """
         distances: dict[tuple[int, int], int] = {
             self._maze.entry: 0
         }
@@ -96,6 +122,11 @@ class SolverDijkstra(MazeSolver):
         return self.__path
 
     def solve(self) -> list[tuple[int, int]]:
+        """Solve the maze completely.
+
+        Returns:
+            Path from the entry point to the exit point.
+        """
         self.__visited.clear()
         gen = self.__find()
 
@@ -108,11 +139,21 @@ class SolverDijkstra(MazeSolver):
 
         return (self.__path)
 
-    def solve_step(self) -> Generator[
+    def solve_step(
+        self
+    ) -> Generator[
         tuple[int, int],
         None,
         list[tuple[int, int]]
     ]:
+        """Solve the maze incrementally.
+
+        Yields:
+            Intermediate visited positions.
+
+        Returns:
+            Path from the entry point to the exit point.
+        """
         self.__visited.clear()
         gen = self.__find()
         return (yield from gen)
