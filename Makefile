@@ -9,8 +9,6 @@ MYPY		= $(PYTHON) -m mypy
 
 PIP			= $(PYTHON) -m pip
 REQ			= requirements.txt
-DEP			= dependencies
-WHL			= $(shell find $(DEP) -name "*whl" -type f 2>/dev/null)
 
 # Program and Args
 PROGRAM		= a_maze_ing.py
@@ -38,9 +36,6 @@ check		:
 install		: $(VENV) check
 	@ echo "$(C_MAGENTA)> Installing $(REQ)$(C_RESET)"
 	@ $(PIP) install -r $(REQ) -q
-	@ echo "$(C_MAGENTA)> Installing $(DEP) $(C_RESET)"
-	@ echo "$(C_BLUE)$(WHL)$(C_RESET)"
-	@ $(PIP) install $(WHL) -q
 
 $(VENV)		:
 	@ echo "$(C_MAGENTA)> Creating Virtual environment$(C_RESET)"
