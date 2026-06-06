@@ -1,8 +1,18 @@
+"""Generate and query the 42 pattern inside a maze grid"""
+
+
 class Pattern42Error(Exception):
+    """Raised when the dimensions are invalid for creating a 42 pattern."""
     pass
 
 
 class Pattern42:
+    """Create and manipulate the 42 digit pattern.
+
+    The pattern is represented as a collection of grid positions
+    corresponding to the digits '4' and '2'. The generated cells can
+    later be used by maze generators or renderers.
+    """
 
     _DIGIT_4: list[list[int]] = [
         [0, 0, 0, 1],
@@ -32,6 +42,26 @@ class Pattern42:
             list[list[int]],
             set[tuple[int, int]]
     ]:
+        """Create a grid containing the 42 pattern.
+
+        The grid is initialized with walls and the cells forming the
+        digits '4' and '2' are marked with the value ``2``.
+
+        Args:
+            val_width: Width of the maze in cells.
+            val_height: Height of the maze in cells.
+
+        Returns:
+            A tuple containing:
+
+            - A two-dimensional grid representing the pattern.
+            - A set of coordinates corresponding to the cells occupied
+              by the digits.
+
+        Raises:
+            Pattern42Error: If the dimensions are non-positive or too
+                small to contain the pattern.
+        """
         width: int = (2 * val_width) + 1
         height: int = (2 * val_height) + 1
 
@@ -72,8 +102,20 @@ class Pattern42:
     def is_42_position(
         cls,
         points: tuple[int, int],
-        width: int, height: int
+        width: int,
+        height: int
     ) -> bool:
+        """Determine whether a cell belongs to the 42 pattern.
+
+        Args:
+            points: Coordinates of the cell to test.
+            width: Width of the maze in cells.
+            height: Height of the maze in cells.
+
+        Returns:
+            True if the specified cell is part of the 42 pattern,
+            otherwise False.
+        """
         _, positions = Pattern42.create_grid_42pattern(width, height)
         val: tuple[int, int] = (2 * points[0] + 1, 2 * points[1] + 1)
         if val in positions:

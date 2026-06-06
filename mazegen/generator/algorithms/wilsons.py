@@ -32,7 +32,7 @@ class GeneratorWilsons(MazeGenerator):
             if self.is_valid_pos(x, y)
         ])
 
-    def __get_neighbors(self, x, y) -> list[tuple[int, int]]:
+    def __get_neighbors(self, x: int, y: int) -> list[tuple[int, int]]:
         """Get neighboring cells.
 
         Args:
