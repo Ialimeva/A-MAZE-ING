@@ -83,7 +83,7 @@ packages	: $(VENV)
 	@ $(PIP) list
 
 build		: install
-	@ $(MAKE) -C mazegen
+	@ $(MAKE) build -C mazegen
 
 help:
 	@ echo "$(C_BLUE)Usage: make [target] $(C_RESET)"
