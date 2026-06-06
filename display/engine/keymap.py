@@ -9,7 +9,7 @@ class Keymap:
     DOWN = 0xff54
     LEFT = 0xff51
     RIGHT = 0xff53
-    
+
     @classmethod
     def get(cls, key: str) -> int | str:
         return getattr(cls, key.upper(), "Unknown key")
