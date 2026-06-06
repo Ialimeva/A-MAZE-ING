@@ -11,6 +11,7 @@ from typing import Any
 
 class ConfigError(Exception):
     """Raise when an invalid configuration value is encountered."""
+
     pass
 
 

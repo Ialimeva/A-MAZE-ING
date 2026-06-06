@@ -8,6 +8,7 @@ import heapq
 
 class SolverAStar(MazeSolver):
     """Maze solving using the A* algorithm."""
+
     algorithm_name = "astar"
 
     def __init__(

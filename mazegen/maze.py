@@ -5,6 +5,7 @@ from typing import Optional
 
 class MazeError(Exception):
     """Error raised by maze operations."""
+
     pass
 
 
@@ -84,7 +85,6 @@ class Maze:
         Raises:
             MazeError: If grid is empty.
         """
-
         if not self.__grid:
             raise MazeError("Empty grid")
         output: list[list[str]] = []

@@ -1,3 +1,14 @@
+"""Entry point for the A-Maze-ing application.
+
+This module handles command-line execution, configuration loading,
+and selection of the visualization mode (terminal or graphical).
+
+It coordinates:
+    - configuration parsing via ConfigManager
+    - maze generation and solving registries
+    - rendering selection (terminal or game mode)
+"""
+
 #!/usr/bin/env python3
 
 import sys
@@ -10,9 +21,7 @@ import time
 
 
 def usage_exit() -> None:
-    """Print usage instruction and exit with the value 1 status.
-    """
-
+    """Print usage instruction and exit with the value 1 status."""
     print("No argument or multiple arguments found")
     print("Usage: \033[34mpython a_maze_ing.py <file config>\033[0m")
     print("Please try again :)")
@@ -21,7 +30,6 @@ def usage_exit() -> None:
 
 def introduction() -> None:
     """Display the A-Maze-ing ASCII banner with a loading animation."""
-
     a_maze_ing: str = r"""
  █████╗       ███╗   ███╗ █████╗ ███████╗███████╗      ██╗███╗   ██╗ ██████╗
 ██╔══██╗      ████╗ ████║██╔══██╗╚══███╔╝██╔════╝      ██║████╗  ██║██╔════╝
@@ -48,7 +56,6 @@ def get_config(filename: str) -> dict[str, Any]:
     Returns:
         The configuration as a dictionary of key-value pairs.
     """
-
     return ConfigManager(
         filename,
         GeneratorRegistry.avaliable(),
@@ -62,7 +69,6 @@ def print_config(configs: dict[str, Any]) -> None:
     Args:
         configs: Configuration dictionary containing the program settings.
     """
-
     output: str = "\n=== Configuration ===\n"
 
     output += "WIDTH: " + f"{configs['width']}\n"
@@ -98,7 +104,6 @@ def main() -> None:
         - solver
         - visual
     """
-
     if len(sys.argv) != 2:
         usage_exit()
 

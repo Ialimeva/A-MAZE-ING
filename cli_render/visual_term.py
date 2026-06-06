@@ -14,11 +14,13 @@ import random
 
 class VisualTermError(Exception):
     """Raise when an error occurs in the terminal visualization."""
+
     pass
 
 
 class Color(Enum):
     """Define ANSI escape sequences used by the terminal menu."""
+
     reset = "\033[0m"
     green = "\033[032m"
     yellow = "\033[33m"

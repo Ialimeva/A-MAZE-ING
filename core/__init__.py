@@ -1,4 +1,4 @@
-"""Core management of the A-Maze-ing program configuration"""
+"""Core management of the A-Maze-ing program configuration."""
 
 from .read_config import ConfigManager
 from .maze_writer import MazeWriter

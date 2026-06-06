@@ -37,7 +37,6 @@ class GeneratorDFS(MazeGenerator):
         Yields:
             Intermediate maze states.
         """
-
         self.__visited.clear()
 
         stack: list[tuple[int, int]] = [(start_x, start_y)]

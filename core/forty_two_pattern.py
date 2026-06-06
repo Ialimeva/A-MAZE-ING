@@ -1,8 +1,9 @@
-"""Generate and query the 42 pattern inside a maze grid"""
+"""Generate and query the 42 pattern inside a maze grid."""
 
 
 class Pattern42Error(Exception):
     """Raised when the dimensions are invalid for creating a 42 pattern."""
+
     pass
 
 

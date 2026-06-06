@@ -9,6 +9,7 @@ from typing import Optional
 
 class MazeWriterError(Exception):
     """Raise when a maze cannot be written to a file."""
+
     pass
 
 

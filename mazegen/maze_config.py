@@ -17,6 +17,7 @@ class MazeConfig:
         seed: Random seed for reproducibility.
         grid: Pre-initialized grid (optional).
     """
+
     width: int
     height: int
     entry_point: tuple[int, int]

@@ -10,6 +10,7 @@ import random
 
 class GeneratorError(Exception):
     """Error raised by generator operations."""
+
     pass
 
 
@@ -116,7 +117,6 @@ class MazeGenerator(ABC):
         Returns:
             Set of protected coordinates.
         """
-
         protected: set[tuple[int, int]] = set()
 
         for y in range(1, self.__height, 2):
@@ -147,7 +147,6 @@ class MazeGenerator(ABC):
         Yields:
             Positions to carve.
         """
-
         grid: list[list[int]] = self._maze.grid
 
         for y in range(1, self.__height - 1):

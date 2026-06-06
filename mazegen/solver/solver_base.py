@@ -9,6 +9,7 @@ from ..maze_register import SolverRegistry
 
 class SolverError(Exception):
     """Error raised by solver operations."""
+
     pass
 
 
@@ -32,6 +33,16 @@ class MazeSolver(ABC):
         self._random: random.Random = random.Random(seed)
 
     def __init_subclass__(cls) -> None:
+        """Automatically register solver subclasses in the solver registry.
+
+        When a subclass defines an ``algorithm_name``, it is automatically
+        registered into the :class:`SolverRegistry`.
+
+        This enables dynamic discovery of all available solver implementations.
+
+        Args:
+            cls: The subclass being initialized.
+        """
         super().__init_subclass__()
 
         if cls.algorithm_name is not None:

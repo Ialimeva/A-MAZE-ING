@@ -3,6 +3,7 @@
 
 class RegistryError(Exception):
     """Error raised when registry operation fails."""
+
     pass
 
 
