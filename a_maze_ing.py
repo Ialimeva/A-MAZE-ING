@@ -10,8 +10,7 @@ import time
 
 
 def usage_exit() -> None:
-    """
-        Print usage instruction and exit with the value 1 status
+    """Print usage instruction and exit with the value 1 status.
     """
 
     print("No argument or multiple arguments found")
@@ -20,10 +19,8 @@ def usage_exit() -> None:
     sys.exit(1)
 
 
-def introduction():
-    """
-        Display the A-Maze-ing ASCII banner with a loading animation
-    """
+def introduction() -> None:
+    """Display the A-Maze-ing ASCII banner with a loading animation."""
 
     a_maze_ing: str = r"""
  █████╗       ███╗   ███╗ █████╗ ███████╗███████╗      ██╗███╗   ██╗ ██████╗
@@ -43,14 +40,13 @@ def introduction():
 
 
 def get_config(filename: str) -> dict[str, Any]:
-    """
-        Load and Validate the configuration from a file
+    """Load and validate the configuration from a file.
 
-        Args:
-            filename (str): Path to the configuration file
+    Args:
+        filename: Path to the configuration file.
 
-        Returns:
-            config (dict[str, Any]): the configuration on format key, value
+    Returns:
+        The configuration as a dictionary of key-value pairs.
     """
 
     return ConfigManager(
@@ -61,11 +57,10 @@ def get_config(filename: str) -> dict[str, Any]:
 
 
 def print_config(configs: dict[str, Any]) -> None:
-    """
-        Display the configuration used on for the run of the program
+    """Display the configuration used for the current execution.
 
-        Args:
-            configs (dict[str, Any]): The configuration already in format key:value
+    Args:
+        configs: Configuration dictionary containing the program settings.
     """
 
     output: str = "\n=== Configuration ===\n"
@@ -86,14 +81,22 @@ def print_config(configs: dict[str, Any]) -> None:
 
 
 def main() -> None:
-    """
-        Entry Point of the A-Maze-ing Program
+    """Run the A-Maze-ing program.
 
-        Validate command-line argument, run introduction loading, parse
-        configuration from config file and run the visualization of the program
+    Validate the command-line arguments, display the introduction,
+    load the configuration file, and start the selected visualization.
 
-        Configuration in format dict, avaliable key: 'width', 'height', 'entry', 'exit',
-            'output_file', 'perfect', 'seed', 'generator', 'solver', 'visual'
+    Available configuration keys are:
+        - width
+        - height
+        - entry
+        - exit
+        - output_file
+        - perfect
+        - seed
+        - generator
+        - solver
+        - visual
     """
 
     if len(sys.argv) != 2:
