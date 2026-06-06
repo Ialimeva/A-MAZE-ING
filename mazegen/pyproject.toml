@@ -14,4 +14,4 @@ readme		= "mazegen/README.md"
 
 [tool.setuptools.packages.find]
 where	= ["."]
-include	= ["mazegen*"]
+include	= ["src*"]

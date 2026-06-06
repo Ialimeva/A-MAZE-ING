@@ -23,7 +23,6 @@ C_YELLOW	= \033[33m
 C_BLUE		= \033[34m
 C_MAGENTA	= \033[35m
 
-DIST		= dist $(shell find . -name "*.egg-info" -type d)
 
 all			: install
 
@@ -65,8 +64,6 @@ clean		:
 fclean		: clean
 	@ echo "$(C_YELLOW)Removing virtual environment$(C_RESET)"
 	@ $(RM) $(VENV)
-	@ echo "$(C_YELLOW)Removing dist build generated file$(C_RESET)"
-	@ $(RM) $(DIST)
 
 lint 		: install
 	@ $(FLAKE8)  --exclude=$(VENV)
@@ -86,7 +83,7 @@ packages	: $(VENV)
 	@ $(PIP) list
 
 build		: install
-	@ $(PYTHON) -m build
+	@ $(MAKE) -C mazegen
 
 help:
 	@ echo "$(C_BLUE)Usage: make [target] $(C_RESET)"

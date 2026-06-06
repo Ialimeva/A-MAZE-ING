@@ -1,6 +1,6 @@
 """Dijkstra maze solving algorithm."""
 
-from ...solver.solver_base import MazeSolver
+from ..solver_base import MazeSolver
 from typing import Generator, Optional
 from ...maze import Maze
 import heapq

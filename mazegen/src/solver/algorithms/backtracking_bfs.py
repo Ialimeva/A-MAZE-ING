@@ -1,6 +1,6 @@
 """Breadth-first search maze solving algorithm."""
 
-from ...solver.solver_base import MazeSolver
+from ..solver_base import MazeSolver
 from typing import Deque, Generator, Optional
 from collections import deque
 from ...maze import Maze
