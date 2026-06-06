@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """Entry point for the A-Maze-ing application.
 
 This module handles command-line execution, configuration loading,
@@ -8,8 +10,6 @@ It coordinates:
     - maze generation and solving registries
     - rendering selection (terminal or game mode)
 """
-
-#!/usr/bin/env python3
 
 import sys
 from typing import Any
