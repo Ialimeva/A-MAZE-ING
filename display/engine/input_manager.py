@@ -4,6 +4,7 @@ from .keymap import Keymap
 
 class Hooks():
     input_manager: dict[str, bool] = {
+        "SPACE": False,
         "ESC": False,
         "ENTER": False,
         "S": False,
@@ -19,6 +20,9 @@ class Hooks():
 
     @staticmethod
     def key_pressed(keycode: int, param: Any) -> None:
+        if keycode == Keymap.get("space"):
+            Hooks.input_manager["SPACE"] = True
+
         if keycode == Keymap.get("esc"):
             Hooks.input_manager["ESC"] = True
 

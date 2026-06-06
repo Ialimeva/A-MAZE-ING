@@ -39,6 +39,8 @@ class Game:
 
         self.buff_cache = np.ndarray([])
 
+        self.is_starting = False
+        self.show_menu = False
         self.path_show = False
         self.regen_maze = False
         self.done_gen = False
@@ -84,10 +86,22 @@ class Game:
     def update(self, _: Any) -> None:
         try:
             if Hooks.input_manager["ESC"]:
+                self.is_starting = False
                 self.window.exit_window(None)
                 Hooks.input_manager["ESC"] = False
 
+            if Hooks.input_manager["SPACE"] and self.is_starting:
+                Hooks.input_manager["SPACE"] = False
+                if not self.show_menu:
+                    self.show_menu = True
+                    self.window.put_menu()
+                else:
+                    self.show_menu = False
+                    self.draw.present()
+                    self.window.render_image()
+
             if Hooks.input_manager["ENTER"]:
+                self.is_starting = True
                 self.generate_step(self.gen, "ENTER")
 
             if Hooks.input_manager["G"]:
@@ -198,7 +212,6 @@ class Game:
                         self.draw.path
                     )
                 Hooks.input_manager["E"] = False
-
 
         except (KeyboardInterrupt, EOFError):
             self.window.exit_window(None)

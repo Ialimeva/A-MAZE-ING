@@ -1,4 +1,5 @@
 class Keymap:
+    SPACE = 0x20
     ESC = 0xFF1B
     ENTER = 0xFF0D
     S = 0x73
