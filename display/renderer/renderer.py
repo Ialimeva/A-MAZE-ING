@@ -16,14 +16,15 @@ from .renderer_utils import (
     wall_colors,
     background_colors
 )
+from typing import Any
 
 
 class Draw:
     def __init__(
         self,
-        img_data: tuple,
-        buff_data: tuple,
-        display_data: tuple,
+        img_data: tuple[Any, bytearray, int, int, int],
+        buff_data: tuple[Any, bytearray, int, int, int],
+        display_data: tuple[Any, bytearray, int, int, int],
         display_configs: DisplayConfig,
     ) -> None:
 
@@ -121,7 +122,7 @@ class Draw:
         self.maze_hex: list[list[str]] = []
         self.path: list[tuple[int, int]] = []
 
-        self.theme_cache = {}
+        self.theme_cache: dict[str, dict[str, Any]] = {}
         self.fcolors = floor_colors
         self.wcolors = wall_colors
         self.bcolors = background_colors
@@ -157,7 +158,7 @@ class Draw:
                 "bcolor": bcolor,
             }
 
-        self.active_theme = self.theme_cache["default_theme"]
+        self.active_theme: dict[str, Any] = self.theme_cache["default_theme"]
         self.h_wall, self.v_wall, self.b_wall = (
             self.active_theme["h_wall"],
             self.active_theme["v_wall"],
@@ -178,7 +179,12 @@ class Draw:
         self.camera_x, self.camera_y = (0, 0)
         self.speed = 20
 
-    def blit(self, y_coords, x_coords, wall) -> None:
+    def blit(
+            self,
+            y_coords: tuple[int, int],
+            x_coords: tuple[int, int],
+            wall: np.ndarray
+    ) -> None:
         start_x, end_x = x_coords
         start_y, end_y = y_coords
 
@@ -299,7 +305,7 @@ class Draw:
             self.money
         )
 
-    def render_path(self):
+    def render_path(self) -> None:
         for coord in self.path:
             x, y = coord
 

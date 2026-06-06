@@ -16,7 +16,7 @@ from mazegen import Maze
 
 
 class Game:
-    def __init__(self, configs: dict) -> None:
+    def __init__(self, configs: dict[str, Any]) -> None:
         self.configs = configs
         self.display_config = DisplayConfig(
             columns=self.configs["width"],
@@ -53,7 +53,11 @@ class Game:
         self.window.welcome_page()
         self.window.start(self.update)
 
-    def generate_step(self, generator, key: str) -> None:
+    def generate_step(
+            self,
+            generator: Generator[Maze, None, None],
+            key: str
+    ) -> None:
         if self.done_gen:
             input_manager[key] = False
             return
