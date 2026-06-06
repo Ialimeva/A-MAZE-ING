@@ -135,6 +135,20 @@ class VisualTerm:
                 self.__render_path()
                 self.__path_show = True
 
+        if val == "e":
+            if not self.__is_maze_generate:
+                self.__generate_maze()
+            if not self.__is_solve:
+                self.__solve_maze()
+            MazeManager.write_maze(
+                self.__config["output_file"],
+                self.__maze.grid_hex,
+                self.__config["entry"],
+                self.__config["exit"],
+                self.__path,
+                True
+            )
+
     def run(self) -> None:
         """Start the interactive terminal interface."""
         while self.__is_running:
@@ -183,6 +197,13 @@ class VisualTerm:
             "p) - " +
             Color.reset.value +
             "Show path" +
+            "\n"
+        )
+        menu += (
+            Color.blue.value +
+            "e) - " +
+            Color.reset.value +
+            "Export Maze to a file" +
             "\n"
         )
         return menu

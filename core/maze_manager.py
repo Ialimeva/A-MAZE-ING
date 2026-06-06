@@ -204,7 +204,8 @@ class MazeManager:
         grid_hex: list[list[str]],
         entry_point: Optional[tuple[int, int]],
         exit_point: Optional[tuple[int, int]],
-        path: Optional[list[tuple[int, int]]] = None
+        path: Optional[list[tuple[int, int]]] = None,
+        is_cell: Optional[bool] = False
     ) -> None:
         """Write a maze to a file.
 
@@ -214,10 +215,13 @@ class MazeManager:
             entry_point: Entry point of the maze.
             exit_point: Exit point of the maze.
             path: Optional solution path to include in the output.
+            is_cell: Optional indication of the grid format.
         """
         MazeWriter.write_maze(
             filename,
             grid_hex,
             entry_point,
-            exit_point, path
+            exit_point,
+            path,
+            is_cell or False
         )

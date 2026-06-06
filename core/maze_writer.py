@@ -23,7 +23,8 @@ class MazeWriter:
         grid_hex: list[list[str]],
         entry_point: Optional[tuple[int, int]],
         exit_point: Optional[tuple[int, int]],
-        path: Optional[list[tuple[int, int]]] = None
+        path: Optional[list[tuple[int, int]]] = None,
+        is_cell: bool = False
     ) -> None:
         """Write a maze and its metadata to a file.
 
@@ -36,6 +37,7 @@ class MazeWriter:
             entry_point: Entry point of the maze.
             exit_point: Exit point of the maze.
             path: Optional solution path.
+            is_cell: Optional indication of the grid format.
 
         Raises:
             MazeWriterError: If the output file is invalid or the
@@ -63,14 +65,14 @@ class MazeWriter:
                     )
 
                 if path:
-                    output = MazeWriter.__parse_path(path)
+                    output = MazeWriter.__parse_path(path, is_cell)
                     f.write(output + "\n")
 
         except Exception as e:
             raise MazeWriterError(f"Export failed: {e}")
 
     @staticmethod
-    def __parse_path(path: list[tuple[int, int]]) -> str:
+    def __parse_path(path: list[tuple[int, int]], is_cell: bool) -> str:
         """Convert a solution path into cardinal directions.
 
         Consecutive positions are translated into a string
@@ -78,15 +80,17 @@ class MazeWriter:
 
         Args:
             path: Sequence of positions describing the solution.
+            is_cell: Optional indication of the grid format.
 
         Returns:
             The solution path encoded as a direction string.
         """
+        step: int = 2 if is_cell else 1
         directions: dict[tuple[int, int], str] = {
-            (0, -2): "N",
-            (2, 0): "E",
-            (0, 2): "S",
-            (-2, 0): "W",
+            (0, -step): "N",
+            (step, 0): "E",
+            (0, step): "S",
+            (-step, 0): "W",
         }
 
         res: str = ""
