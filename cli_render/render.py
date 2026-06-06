@@ -1,3 +1,10 @@
+"""Render mazes in the terminal using ANSI colors.
+
+This module provides utilities for coloring and displaying mazes
+and their solution paths in a terminal.
+"""
+
+
 import time
 from enum import Enum
 from mazegen import Maze
@@ -6,6 +13,8 @@ import random
 
 
 class ColorPalette(Enum):
+    """Define ANSI escape sequences used for terminal colors."""
+
     RESET = "\033[0m"
 
     # Basic colors
@@ -38,6 +47,8 @@ class ColorPalette(Enum):
 
 
 class Palette:
+    """Manage predefined color palettes for terminal rendering."""
+
     PALETTES = [
         {
             "wall": ColorPalette.BRIGHT_BLUE.value,
@@ -74,21 +85,34 @@ class Palette:
 
     @classmethod
     def get_color(cls) -> dict[str, str]:
+        """Select a color palette.
+
+        Returns:
+            A dictionary mapping rendering elements to ANSI colors.
+        """
         return random.choice(cls.PALETTES)
 
 
 class Brick:
+    """Represent the visual symbols used to render a maze."""
+
     def __init__(self) -> None:
+        """Initialize the rendering symbols with a random color palette."""
         self.palette: dict[str, str] = {}
         self.change_color()
         self.update()
 
     def change_color(self) -> None:
-        self.palette = Palette.get_color()
+        """Switch to a new color palette."""
+        tmp: dict[str, str] = Palette.get_color()
+        while (tmp == self.palette):
+            tmp = Palette.get_color()
+        self.palette = tmp
         self.update()
 
     def update(self) -> None:
-        self.wall: str = self.palette["path"] + "▓▓" + ColorPalette.RESET.value
+        """Update the rendered symbols according to the current palette."""
+        self.wall: str = self.palette["path"] + "  " + ColorPalette.RESET.value
         self.path: str = self.palette["wall"] + "██" + ColorPalette.RESET.value
         self.res: str = self.palette["res"] + "▓▓" + ColorPalette.RESET.value
         self.ft: str = self.palette["ft"] + "▓▓" + ColorPalette.RESET.value
@@ -98,9 +122,12 @@ class Brick:
 
 
 class Render:
+    """Render mazes and solution paths in the terminal."""
+
     clear = "\033[H\033[J"
 
     def __init__(self) -> None:
+        """Initialize the renderer."""
         self.__brick = Brick()
 
     def render_maze(
@@ -108,6 +135,18 @@ class Render:
         maze: Maze,
         path: Optional[list[tuple[int, int]]] = None
     ) -> None:
+        """Display a maze in the terminal.
+
+        Optionally highlights the solution path, entry point,
+        exit point, and the 42 pattern.
+
+        Args:
+            maze: Maze to render.
+            path: Optional path to highlight.
+
+        Raises:
+            ValueError: If the maze grid is empty.
+        """
         if maze.grid is None or not maze.grid:
             raise ValueError("Maze grid empty")
 
@@ -139,6 +178,15 @@ class Render:
         self,
         path: list[tuple[int, int]]
     ) -> list[tuple[int, int]]:
+        """Expand a cell path to include intermediate wall positions.
+
+        Args:
+            path: Sequence of maze positions.
+
+        Returns:
+            A path containing both cells and the walls connecting
+            consecutive positions.
+        """
         full_path: list[tuple[int, int]] = []
 
         for i in range(len(path) - 1):
@@ -156,4 +204,5 @@ class Render:
         return full_path
 
     def change_color(self) -> None:
+        """Change the current rendering palette."""
         self.__brick.change_color()

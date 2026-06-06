@@ -1,3 +1,9 @@
+"""Provide an interactive terminal interface for maze visualization.
+
+This module allows users to generate, solve, and display mazes
+through a text-based menu.
+"""
+
 from .render import Render
 from typing import Any
 from mazegen import Maze
@@ -7,10 +13,12 @@ import random
 
 
 class VisualTermError(Exception):
+    """Raise when an error occurs in the terminal visualization."""
     pass
 
 
 class Color(Enum):
+    """Define ANSI escape sequences used by the terminal menu."""
     reset = "\033[0m"
     green = "\033[032m"
     yellow = "\033[33m"
@@ -19,7 +27,14 @@ class Color(Enum):
 
 
 class VisualTerm:
+    """Manage the interactive terminal visualization of mazes."""
+
     def __init__(self, config: dict[str, Any]) -> None:
+        """Initialize the terminal visualization.
+
+        Args:
+            config: Maze configuration parameters.
+        """
         self.__render: Render = Render()
         self.__config: dict[str, Any] = config
         self.__maze: Maze = Maze()
@@ -34,11 +49,16 @@ class VisualTerm:
         self.__generate_maze()
 
     def __render_maze(self) -> None:
+        """Render the current maze.
+
+        Generates a new maze if none has been created yet.
+        """
         if not self.__is_maze_generate:
             self.__generate_maze()
         self.__render.render_maze(self.__maze)
 
     def __generate_maze(self) -> None:
+        """Generate and display a maze step by step."""
         if not self.__is_maze_generate:
             gen = MazeManager.generate_step(self.__config)
             for maze in gen:
@@ -47,6 +67,10 @@ class VisualTerm:
             self.__is_maze_generate = True
 
     def __solve_maze(self) -> None:
+        """Solve the current maze and animate the process.
+
+        The final solution path is stored internally.
+        """
         gen = MazeManager.solve_step(self.__maze, self.__config)
         try:
             while True:
@@ -58,12 +82,21 @@ class VisualTerm:
         self.__is_solve = True
 
     def __render_path(self) -> None:
+        """Display the solution path.
+
+        Solves the maze first if no solution has been computed.
+        """
         if not self.__is_solve:
             self.__solve_maze()
         expand = self.__render.expand_path(self.__path)
         self.__render.render_maze(self.__maze, expand)
 
     def __manage_input(self) -> None:
+        """Process a user command from the interactive menu.
+
+        Supported commands allow generating a maze, solving it,
+        changing colors, toggling the solution path, and quitting.
+        """
         print(self.__menu)
         val = input("Your choice: ")
 
@@ -101,11 +134,17 @@ class VisualTerm:
                 self.__path_show = True
 
     def run(self) -> None:
+        """Start the interactive terminal interface."""
         while self.__is_running:
             self.__manage_input()
 
     @staticmethod
     def get_menu() -> str:
+        """Build the menu displayed to the user.
+
+        Returns:
+            A formatted string containing the available commands.
+        """
         menu: str = ""
         menu += (
             Color.magenta.value +
