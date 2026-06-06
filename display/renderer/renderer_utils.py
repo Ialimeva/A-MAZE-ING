@@ -6,7 +6,7 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/24 11:42:36 by ialrandr        #+#    #+#               #
-#  Updated: 2026/06/06 19:30:03 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/06/06 19:42:41 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -54,7 +54,7 @@ def recolor_pixel(
     sprite[mask] = new_color
 
 
-floor_colors: dict[str, list[list]] = {
+floor_colors: dict[str, list[list[int]]] = {
     "default_theme": [
         [143, 164, 194, 255],
         [215, 240, 246, 255],
@@ -80,7 +80,7 @@ floor_colors: dict[str, list[list]] = {
     ],
 }
 
-wall_colors: dict[str, list[list]] = {
+wall_colors: dict[str, list[list[int]]] = {
     "default_theme": [
         [53, 40, 66, 255],
         [23, 17, 28, 255],
@@ -106,7 +106,7 @@ wall_colors: dict[str, list[list]] = {
     ]
 }
 
-background_colors: dict[str, list] = {
+background_colors: dict[str, list[int]] = {
     "default_theme": [46, 37, 79, 255],
     "ice_theme": [233, 235, 193, 255],
     "bright_theme": [153, 253, 254, 255],
