@@ -1,4 +1,4 @@
-from .src import (
+from .mazegen import (
     Maze,
     MazeError,
     MazeConfig,
