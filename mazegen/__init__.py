@@ -1,3 +1,5 @@
+"""Maze generation, solving, and data model reimporation."""
+
 from .mazegen import (
     Maze,
     MazeError,

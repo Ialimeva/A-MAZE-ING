@@ -43,8 +43,6 @@ def introduction() -> None:
     for line in output:
         print(line)
         time.sleep(0.1)
-    print("Loading ...")
-    time.sleep(0.1)
 
 
 def get_config(filename: str) -> dict[str, Any]:
