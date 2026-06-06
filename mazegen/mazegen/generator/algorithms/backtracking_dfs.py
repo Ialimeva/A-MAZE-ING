@@ -33,7 +33,7 @@ class GeneratorDFS(MazeGenerator):
         Args:
             start_x: Starting X coordinate.
             start_y: Starting Y coordinate.
-        
+
         Yields:
             Intermediate maze states.
         """

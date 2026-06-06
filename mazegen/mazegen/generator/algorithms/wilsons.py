@@ -8,7 +8,7 @@ from ...maze_config import MazeConfig
 
 class GeneratorWilsons(MazeGenerator):
     """Maze generation using Wilson's algorithm (loop-erased random walks)."""
-    
+
     algorithm_name = "wilsons"
 
     def __init__(self, configs: MazeConfig) -> None:

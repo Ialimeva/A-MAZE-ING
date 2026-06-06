@@ -8,12 +8,12 @@ from ...maze_config import MazeConfig
 
 class GeneratorPrims(MazeGenerator):
     """Maze generation using Prim's algorithm (MST-based)."""
-    
+
     algorithm_name = "prims"
 
     def __init__(self, configs: MazeConfig) -> None:
         """Initialize Prim's generator.
-        
+
         Args:
             configs: Maze configuration.
         """
@@ -26,11 +26,11 @@ class GeneratorPrims(MazeGenerator):
         y: int
     ) -> list[tuple[int, int, int, int]]:
         """Get unvisited neighboring cells.
-        
+
         Args:
             x: X coordinate.
             y: Y coordinate.
-        
+
         Returns:
             List of (nx, ny, wx, wy) tuples.
         """
@@ -58,11 +58,11 @@ class GeneratorPrims(MazeGenerator):
         start_y: int
     ) -> Generator[Maze, None, None]:
         """Carve passages using Prim's algorithm.
-        
+
         Args:
             start_x: Starting X coordinate.
             start_y: Starting Y coordinate.
-        
+
         Yields:
             Intermediate maze states.
         """
@@ -99,7 +99,7 @@ class GeneratorPrims(MazeGenerator):
 
     def generate(self) -> Maze:
         """Generate the complete maze.
-        
+
         Returns:
             Generated Maze instance.
         """
@@ -112,7 +112,7 @@ class GeneratorPrims(MazeGenerator):
 
     def generate_step(self) -> Generator[Maze, None, None]:
         """Generate maze incrementally.
-        
+
         Yields:
             Intermediate maze states.
         """
