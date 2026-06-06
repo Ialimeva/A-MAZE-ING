@@ -6,18 +6,25 @@
 #  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/05/24 11:42:36 by ialrandr        #+#    #+#               #
-#  Updated: 2026/06/03 15:47:00 by ialrandr        ###   ########.fr        #
+#  Updated: 2026/06/06 19:30:03 by ialrandr        ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
-from display import np
+import sys
+try:
+    import numpy as np
+except ImportError:
+    print("Error: 'numpy' is not installed")
+    sys.exit(1)
+
 from .spritsheet import Spritesheet
 
+
 def tileset(
-            x_coordinates: tuple,
-            y_coordinates: tuple,
+            x_coordinates: tuple[int, int],
+            y_coordinates: tuple[int, int],
             spritesheet: Spritesheet
-        ) -> tuple:
+        ) -> tuple[np.ndarray, int, int]:
     x_min, x_max = x_coordinates
     y_min, y_max = y_coordinates
     tileset = spritesheet.get_tileset(
@@ -29,18 +36,19 @@ def tileset(
     tileset_height, tileset_witdth, _ = tileset.shape
     return (tileset.copy(), tileset_height, tileset_witdth)
 
+
 def scale_pixel(sprite: np.ndarray, scale: int) -> np.ndarray:
-    scaled_img: np.ndarray = np.repeat(sprite, scale, axis=0)
-    scaled_img: np.ndarray = np.repeat(scaled_img, scale, axis=1)
+    scaled_img = np.repeat(sprite, scale, axis=0)
+    scaled_img = np.repeat(scaled_img, scale, axis=1)
 
     return (scaled_img)
 
 
 def recolor_pixel(
         sprite: np.ndarray,
-        target_color: list[int, int, int, int],
-        new_color: list[int, int, int, int]
-    ) -> None:
+        target_color: list[int],
+        new_color: list[int]
+) -> None:
 
     mask = np.all(sprite == target_color, axis=2)
     sprite[mask] = new_color
@@ -62,7 +70,7 @@ floor_colors: dict[str, list[list]] = {
     "bright_theme": [
         [41, 89, 165, 255],
         [41 - 10, 89 - 10, 165 - 10, 255],
-        [41 - 20, 89- 20, 165 - 20, 255],
+        [41 - 20, 89 - 20, 165 - 20, 255],
     ],
 
     "green_theme": [

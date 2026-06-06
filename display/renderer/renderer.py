@@ -1,18 +1,12 @@
-# ************************************************************************* #
-#                                                                           #
-#                                                      :::      ::::::::    #
-#  renderer.py                                       :+:      :+:    :+:    #
-#                                                  +:+ +:+         +:+      #
-#  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
-#                                              +#+#+#+#+#+   +#+            #
-#  Created: 2026/05/04 13:12:18 by ialrandr        #+#    #+#               #
-#  Updated: 2026/06/03 17:16:15 by ialrandr        ###   ########.fr        #
-#                                                                           #
-# ************************************************************************* #
+import sys
+try:
+    import numpy as np
+except ImportError:
+    print("Error: 'numpy' is not installed")
+    sys.exit(1)
 
 import random
 from ..display_config import DisplayConfig
-from display import np, Maze
 from .spritsheet import Spritesheet
 from .renderer_utils import (
     scale_pixel,
@@ -23,44 +17,34 @@ from .renderer_utils import (
     background_colors
 )
 
+
 class Draw:
-    def __init__(self,
-                 img_data: tuple,
-                 buff_data: tuple,
-                 display_data: tuple,
-                 display_configs: DisplayConfig,
-                ):
-        
+    def __init__(
+        self,
+        img_data: tuple,
+        buff_data: tuple,
+        display_data: tuple,
+        display_configs: DisplayConfig,
+    ) -> None:
+
         self.display_configs = display_configs
 
-        # Image and Buff data are still in Ctypes wrapped memory
-        (self.img_ptr,
-         self.img_adr,
-         self.img_line,
-         self.img_width,
-         self.img_height,
-        ) = img_data
-        
-        (self.buff_ptr,
-         self.buff_adr,
-         self.buff_line,
-         self.buff_width,
-         self.buff_height
-        ) = buff_data
-        print(self.buff_height)
+        self.img_ptr, self.img_adr, self.img_line, _, _ = img_data
+        _, _, _, self.img_width, self.img_height = img_data
 
-        (self.display_ptr,
-         self.display_adr,
-         self.display_line,
-         self.display_width,
-         self.display_height
-        ) = display_data
+        self.buff_ptr, self.buff_adr, self.buff_line, _, _ = buff_data
+        _, _, _, self.buff_width, self.buff_height = buff_data
+
+        self.display_ptr, self.display_adr, self.display_line, _, _ = (
+            display_data
+        )
+        _, _, _, self.display_width, self.display_height = display_data
 
         # Image and Buff are in raw C memory adresses
         self.img_array = np.frombuffer(self.img_adr, dtype=np.uint8)
         self.buff_array = np.frombuffer(self.buff_adr, dtype=np.uint8)
         self.display_array = np.frombuffer(self.display_adr, dtype=np.uint8)
-        
+
         self.img_3d = self.img_array.reshape(
                                     self.img_height,
                                     self.img_width,
@@ -71,20 +55,20 @@ class Draw:
                                     self.buff_width,
                                     4
                                 )
-        
+
         self.display_3d = self.display_array.reshape(
                                     self.display_height,
                                     self.display_width,
                                     4
                                 )
-        
+
         self.spritesheet = Spritesheet(self.img_3d)
         self.h_wall, self.h_wall_height, self.h_wall_width = tileset(
             self.display_configs.horizontal_wall_x,
             self.display_configs.horizontal_wall_y,
             self.spritesheet
-        )        
-        
+        )
+
         self.v_wall, self.v_wall_height, self.v_wall_width = tileset(
             self.display_configs.vertical_wall_x,
             self.display_configs.vertical_wall_y,
@@ -109,18 +93,20 @@ class Draw:
             self.spritesheet
         )
 
-        self.empty_joint, self.empty_joint_height, self.empty_joint_width = tileset(
-            self.display_configs.empty_joint_x,
-            self.display_configs.empty_joint_y,
-            self.spritesheet
+        self.empty_joint, self.empty_joint_height, self.empty_joint_width = (
+            tileset(
+                self.display_configs.empty_joint_x,
+                self.display_configs.empty_joint_y,
+                self.spritesheet
+            )
         )
 
-        self.dude, self.dude_height, self.dude_width  = tileset(
+        self.dude, self.dude_height, self.dude_width = tileset(
             self.display_configs.dude_x,
             self.display_configs.dude_y,
             self.spritesheet
         )
-        self.money, self.money_height, self.money_width  = tileset(
+        self.money, self.money_height, self.money_width = tileset(
             self.display_configs.money_x,
             self.display_configs.money_y,
             self.spritesheet
@@ -132,9 +118,8 @@ class Draw:
         self.money = scale_pixel(self.money, 2)
         self.money_height, self.money_width, _ = self.money.shape
 
-
-        self.maze_hex = []
-        self.path = []
+        self.maze_hex: list[list[str]] = []
+        self.path: list[tuple[int, int]] = []
 
         self.theme_cache = {}
         self.fcolors = floor_colors
@@ -146,7 +131,7 @@ class Draw:
             w1, w2, w3 = self.wcolors[theme]
             f1, f2, f3 = self.fcolors[theme]
             bcolor = self.bcolors[theme]
-            
+
             t_hw = self.h_wall.copy()
             t_vw = self.v_wall.copy()
             t_svw = self.sv_wall.copy()
@@ -173,37 +158,31 @@ class Draw:
             }
 
         self.active_theme = self.theme_cache["default_theme"]
-        (self.h_wall,
-         self.v_wall,
-         self.b_wall,
-         self.sv_wall,
-         self.h_joint,
-         self.empty_joint,
-         self.fcolor1,
-         self.fcolor2,
-         self.fcolor3,
-         self.bcolor
-        ) = (
+        self.h_wall, self.v_wall, self.b_wall = (
             self.active_theme["h_wall"],
             self.active_theme["v_wall"],
-            self.active_theme["b_wall"],
+            self.active_theme["b_wall"]
+        )
+        self.sv_wall, self.h_joint, self.empty_joint = (
             self.active_theme["sv_wall"],
             self.active_theme["hj_wall"],
             self.active_theme["ej_wall"],
+        )
+        self.fcolor1, self.fcolor2, self.fcolor3, self.bcolor = (
             self.active_theme["f1"],
             self.active_theme["f2"],
             self.active_theme["f3"],
-            self.active_theme["bcolor"],
+            self.active_theme["bcolor"]
         )
-        
+
         self.camera_x, self.camera_y = (0, 0)
         self.speed = 20
 
     def blit(self, y_coords, x_coords, wall) -> None:
         start_x, end_x = x_coords
         start_y, end_y = y_coords
-        
-        self.buff_3d[start_y : end_y, start_x : end_x] = wall
+
+        self.buff_3d[start_y:end_y, start_x:end_x] = wall
 
     def floor(self) -> None:
         dest_y: int = 0
@@ -225,7 +204,6 @@ class Draw:
                     )
                 dest_x = dest_x + self.display_configs.cell_width
             dest_y = dest_y + self.display_configs.cell_height
-    
 
     def cell(self) -> None:
         dest_y = 0
@@ -244,11 +222,11 @@ class Draw:
                 if (hex_value & 1):
                     self.blit(
                         (dest_y, dest_y + self.h_wall_height),
-                        (dest_x + self.v_wall_width, 
+                        (dest_x + self.v_wall_width,
                          dest_x + self.v_wall_width + self.h_wall_width),
                         self.h_wall
                     )
-                
+
                 if (hex_value & 1) and not (hex_value >> 3 & 1):
                     self.blit(
                         (dest_y, dest_y + self.h_joint_height),
@@ -256,7 +234,7 @@ class Draw:
                         self.h_joint
                     )
 
-                if not (hex_value & 1) and  not (hex_value >> 3 & 1):
+                if not (hex_value & 1) and not (hex_value >> 3 & 1):
                     self.blit(
                         (dest_y, dest_y + self.empty_joint_height),
                         (dest_x, dest_x + self.empty_joint_width),
@@ -267,7 +245,7 @@ class Draw:
                     self.blit(
                         (dest_y, dest_y + self.v_wall_height),
                         (dest_x + self.v_wall_width + self.h_wall_width,
-                        (dest_x + (self.v_wall_width * 2) + self.h_wall_width)),
+                         dest_x + self.v_wall_width * 2 + self.h_wall_width),
                         self.v_wall
                     )
 
@@ -277,7 +255,7 @@ class Draw:
                         (dest_y + self.sv_wall_height - self.h_joint_height,
                          dest_y + self.sv_wall_height + self.h_joint_height),
                         (dest_x, dest_x + self.h_joint_width),
-                        self.h_joint 
+                        self.h_joint
                     )
 
                     self.blit(
@@ -292,14 +270,13 @@ class Draw:
                         self.blit(
                             (dest_y, dest_y + self.sv_wall_height),
                             (dest_x + self.v_wall_width + self.h_wall_width,
-                             dest_x + (self.v_wall_width * 2) + self.h_wall_width),
+                             dest_x + self.v_wall_width*2 + self.h_wall_width),
                             self.sv_wall
                         )
 
                 dest_x = dest_x + self.v_wall_width + self.h_wall_width
             dest_y = dest_y + self.v_wall_height
 
-    
     def entry_and_exit(self) -> None:
         entry_x, entry_y = self.display_configs.entry_point
         exit_x, exit_y = self.display_configs.exit_point
@@ -309,11 +286,11 @@ class Draw:
 
         dest_exit_x = exit_x * self.display_configs.cell_width
         dest_exit_y = exit_y * self.display_configs.cell_height
-        
+
         self.blit(
             (dest_entry_y + 10, dest_entry_y + self.dude_height + 10),
             (dest_entry_x + 12, dest_entry_x + self.dude_width + 12),
-            self.dude 
+            self.dude
         )
 
         self.blit(
@@ -322,7 +299,6 @@ class Draw:
             self.money
         )
 
-    
     def render_path(self):
         for coord in self.path:
             x, y = coord
@@ -341,35 +317,28 @@ class Draw:
         self.floor()
         self.cell()
 
-    def change_wall_color(self):
-        key: str = random.choice(self.wcolors_keys)
+    def change_wall_color(self) -> None:
+        key = random.choice(self.wcolors_keys)
         while self.active_theme is self.theme_cache[key]:
-            key: str = random.choice(self.wcolors_keys)
+            key = random.choice(self.wcolors_keys)
         self.active_theme = self.theme_cache[key]
-        
-        (self.h_wall,
-         self.v_wall,
-         self.b_wall,
-         self.sv_wall,
-         self.h_joint,
-         self.empty_joint,
-         self.fcolor1,
-         self.fcolor2,
-         self.fcolor3,
-         self.bcolor
-        ) = (
+
+        self.h_wall, self.v_wall, self.b_wall = (
             self.active_theme["h_wall"],
             self.active_theme["v_wall"],
-            self.active_theme["b_wall"],
+            self.active_theme["b_wall"]
+        )
+        self.sv_wall, self.h_joint, self.empty_joint = (
             self.active_theme["sv_wall"],
             self.active_theme["hj_wall"],
             self.active_theme["ej_wall"],
+        )
+        self.fcolor1, self.fcolor2, self.fcolor3, self.bcolor = (
             self.active_theme["f1"],
             self.active_theme["f2"],
             self.active_theme["f3"],
             self.active_theme["bcolor"]
         )
-
 
     def present(self) -> None:
         self.display_3d[:] = self.bcolor
@@ -379,7 +348,7 @@ class Draw:
 
         offset_x = max(0, (self.display_width - self.buff_width) // 2)
         offset_y = max(0, (self.display_height - self.buff_height) // 2)
-        
+
         self.camera_x = max(0, min(
                 self.camera_x, self.buff_width - self.display_width
             )
@@ -390,9 +359,9 @@ class Draw:
         )
 
         self.display_3d[
-            offset_y : offset_y + visible_h,
-            offset_x : offset_x + visible_w
+            offset_y:offset_y + visible_h,
+            offset_x:offset_x + visible_w
         ] = self.buff_3d[
-            self.camera_y : self.camera_y + visible_h,
-            self.camera_x : self.camera_x + visible_w,
+            self.camera_y:self.camera_y + visible_h,
+            self.camera_x:self.camera_x + visible_w,
         ]

@@ -1,33 +1,28 @@
-# ************************************************************************* #
-#                                                                           #
-#                                                      :::      ::::::::    #
-#  maze_level.py                                     :+:      :+:    :+:    #
-#                                                  +:+ +:+         +:+      #
-#  By: ialrandr <ialrandr@student.42.fr>         +#+  +:+       +#+         #
-#                                              +#+#+#+#+#+   +#+            #
-#  Created: 2026/05/01 14:51:46 by ialrandr        #+#    #+#               #
-#  Updated: 2026/06/03 17:47:48 by ialrandr        ###   ########.fr        #
-#                                                                           #
-# ************************************************************************* #
+import sys
+try:
+    import numpy as np
+except ImportError:
+    print("Error: 'numpy' is not installed")
+    sys.exit(1)
 
 import random
-from typing import Any
-from display import np
+from typing import Any, Generator
 from .engine.window import Window
 from .engine.input_manager import input_manager
 from .renderer.renderer import Draw
 from .display_config import DisplayConfig
 from core import MazeManager
+from mazegen import Maze
 
 
 class Game:
-    def __init__(self, configs: dict):
-        self.configs: dict = configs
-        self.display_config: DisplayConfig = DisplayConfig(
-            columns = self.configs["width"],
-            rows = self.configs["height"],
-            entry_point = self.configs["entry"],
-            exit_point = self.configs["exit"],
+    def __init__(self, configs: dict) -> None:
+        self.configs = configs
+        self.display_config = DisplayConfig(
+            columns=self.configs["width"],
+            rows=self.configs["height"],
+            entry_point=self.configs["entry"],
+            exit_point=self.configs["exit"],
         )
         self.window = Window(self.display_config)
         self.img_data = self.window.img_data()
@@ -39,25 +34,25 @@ class Game:
             self.display_data,
             self.display_config
         )
-        self.maze = []
+        self.maze: Maze = Maze()
         self.gen = MazeManager.generate_step(self.configs)
-        
-        self.buff_cache = None
-        
+
+        self.buff_cache = np.ndarray([])
+
         self.path_show = False
         self.regen_maze = False
         self.done_gen = False
         self.done_solve = False
         self.change_wcolor = False
-        self.solve = []
+        self.solve: Generator[
+            tuple[int, int], None, list[tuple[int, int]]
+        ]
         self.draw.path = []
 
-    
     def run(self) -> None:
         self.window.welcome_page()
         self.window.start(self.update)
 
-    
     def generate_step(self, generator, key: str) -> None:
         if self.done_gen:
             input_manager[key] = False
@@ -76,12 +71,11 @@ class Game:
         except Exception as e:
             input_manager[key] = False
             print(f"Error: {e}")
-        
+
         if not self.done_gen:
             self.draw.maze()
             self.draw.present()
             self.window.render_image()
-
 
     def update(self, _: Any) -> None:
         try:
@@ -110,12 +104,17 @@ class Game:
                     input_manager["S"] = False
                     return
                 try:
-                    self.draw.path.append(MazeManager.grid_to_cell(next(self.solve)))
+                    self.draw.path.append(
+                        MazeManager.grid_to_cell(next(self.solve))
+                    )
                 except StopIteration as e:
                     input_manager["S"] = False
                     self.draw.buff_3d[:] = self.buff_cache
                     try:
-                        self.draw.path = [MazeManager.grid_to_cell(coord) for coord in e.value]
+                        self.draw.path = [
+                            MazeManager.grid_to_cell(coord)
+                            for coord in e.value
+                        ]
                         self.done_solve = True
                     except Exception as e:
                         print(f"Error: {e}")
@@ -167,17 +166,17 @@ class Game:
                 self.draw.camera_y -= self.draw.speed
                 self.draw.present()
                 self.window.render_image()
-            
+
             if input_manager["DOWN"]:
                 self.draw.camera_y += self.draw.speed
                 self.draw.present()
                 self.window.render_image()
-            
+
             if input_manager["LEFT"]:
                 self.draw.camera_x -= self.draw.speed
                 self.draw.present()
                 self.window.render_image()
-            
+
             if input_manager["RIGHT"]:
                 self.draw.camera_x += self.draw.speed
                 self.draw.present()
