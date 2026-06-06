@@ -55,7 +55,7 @@ class GeneratorRegistry:
         return cls._algorithms[name]
 
     @classmethod
-    def avaliable(cls) -> dict[str, type]:
+    def available(cls) -> dict[str, type]:
         """Return all registered generators."""
         return cls._algorithms
 
@@ -108,6 +108,6 @@ class SolverRegistry:
         return cls._algorithms[name]
 
     @classmethod
-    def avaliable(cls) -> dict[str, type]:
+    def available(cls) -> dict[str, type]:
         """Return all registered solvers."""
         return cls._algorithms

@@ -1,7 +1,7 @@
 """Simple interface for maze generation and solving."""
 
-from mazegen import Maze
-from mazegen.maze_config import MazeConfig
+from .maze import Maze
+from .maze_config import MazeConfig
 from .generator import MazeGenerator
 from .solver import MazeSolver
 from typing import Optional, Generator

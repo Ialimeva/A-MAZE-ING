@@ -58,8 +58,8 @@ def get_config(filename: str) -> dict[str, Any]:
     """
     return ConfigManager(
         filename,
-        GeneratorRegistry.avaliable(),
-        SolverRegistry.avaliable()
+        GeneratorRegistry.available(),
+        SolverRegistry.available()
     ).get_config()
 
 
