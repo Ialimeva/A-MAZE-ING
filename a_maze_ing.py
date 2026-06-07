@@ -83,6 +83,43 @@ def print_config(configs: dict[str, Any]) -> None:
 
     print(output)
 
+def print_story() -> None:
+    clean_line: str = "\r\033[2K"
+    line_time: int = 1.5
+    char_time: int = 0.05
+    story: list[str] = [
+        "Dude is broke",
+        "And has heard rumors of a hidden treasure", 
+        "Deep within an ever-changing maze.",
+        "Help him find the gold",
+        "And change his fortune!",
+    ]
+    color: str = "\033[1m\033[94m"
+    reset: str = "\033[0m"
+    for line in story:
+        for char in line:
+            print(f"{color}{char}", end="", flush=True)
+            time.sleep(char_time)
+        time.sleep(line_time)
+        print(clean_line, end="", flush=True)
+    print(reset, end="")
+
+def print_mlx_controls() -> None:
+    output: str = "=== MLX Controls ===\n"
+
+    output += "ENTER: Start generating the maze\n"
+    output += "SPACE: Show/Hide menu\n"
+    output += "G: Create a new maze with a new treasure hunt\n"
+    output += "↑ ↓ ← →: Look around the maze\n"
+    output += "S: Reveal the path to the treasure\n"
+    output += "P: Show/Hide the discovered path\n"
+    output += "C: Change the maze's wall colors\n"
+    output += "E: Save Dude's successful treasure route\n"
+    output += "ESC: Give up and leave the maze\n"
+    output += "=====================\n"
+
+    print(output)
+
 
 def main() -> None:
     """Run the A-Maze-ing program.
@@ -114,6 +151,8 @@ def main() -> None:
         term_render: VisualTerm = VisualTerm(configs)
         term_render.run()
     else:
+        print_story()
+        print_mlx_controls()
         game = Game(configs)
         game.run()
 
