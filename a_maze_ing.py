@@ -79,6 +79,7 @@ def print_config(configs: dict[str, Any]) -> None:
     output += "GENERATOR: " + f"{configs['generator']}\n"
     output += "SOLVER: " + f"{configs['solver']}\n"
     output += "VISUAL: " + f"{configs['visual']}\n"
+    output += "STORY: " + f"{configs['story']}\n"
     output += "=====================\n"
 
     print(output)
@@ -138,6 +139,7 @@ def main() -> None:
         - generator
         - solver
         - visual
+        - story
     """
     if len(sys.argv) != 2:
         usage_exit()
@@ -146,6 +148,9 @@ def main() -> None:
 
     configs: dict[str, Any] = get_config(sys.argv[1])
     print_config(configs)
+
+    if configs["story"]:
+        pass
 
     if configs["visual"] == "term":
         term_render: VisualTerm = VisualTerm(configs)
