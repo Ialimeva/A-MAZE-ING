@@ -30,6 +30,7 @@ class Config:
         self.__generator: Optional[str] = "auto"
         self.__solver: Optional[str] = "auto"
         self.__visual: str = "mlx"
+        self.__story: bool = True
 
     def get_config(self) -> dict[str, Any]:
         """Return the current configuration.
@@ -49,6 +50,7 @@ class Config:
         config["generator"] = self.__generator
         config["solver"] = self.__solver
         config["visual"] = self.__visual
+        config["story"] = self.__story
 
         return config
 
@@ -180,6 +182,13 @@ class Config:
         else:
             raise ConfigError(f"Invalid visual value {value}")
 
+    def set_story(self, value: bool) -> None:
+        """Set the story mode of the program
+
+        Args:
+            value: Story mode
+        """
+        self.__story = value
 
 class ConfigManager:
     """Build and validate configurations from files."""
@@ -329,6 +338,9 @@ class ConfigManager:
             elif key == "visual":
                 self.__config.set_visual(value)
 
+            elif key == "story":
+                self.__config.set_story(ConfigManager.parse_bool(value))
+
             else:
                 raise ConfigError(f"Unknown key value: {key} - {value}")
 
@@ -367,9 +379,9 @@ class ConfigManager:
             ValueError: If the value is not recognized.
         """
         value = value.strip()
-        if value in ("1", "true", "True", "TRUE", "yes", "Yes", "YES"):
+        if value.lower() in ("1", "true", "yes"):
             return True
-        if value in ("0", "false", "False", "FALSE", "no", "No", "NO"):
+        if value.lower() in ("0", "false", "no"):
             return False
         raise ValueError(f"Invalid boolean format: {value}")
 
