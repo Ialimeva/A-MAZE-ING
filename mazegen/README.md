@@ -1,4 +1,4 @@
-> *This project has been created as part of the 42 curriculum by [ialrandr](mailto:ialrandr@student.42antananarivo.mg) and [trakotoz](mailto:trakotoz@student.42antananarivo.mg).*
+> *This project has been created as part of the 42 curriculum by [ialrandr](mailto:ialrandr@student.42antananarivo.mg), [trakotoz](mailto:trakotoz@student.42antananarivo.mg).*
 
 # MazeGen: Generate and Solve Mazes
 
