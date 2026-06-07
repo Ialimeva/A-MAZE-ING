@@ -6,6 +6,7 @@ except ImportError:
     sys.exit(1)
 
 import random
+import signal
 from typing import Any, Generator
 from .engine.window import Window
 from .engine.input_manager import Hooks
@@ -50,6 +51,10 @@ class Game:
             tuple[int, int], None, list[tuple[int, int]]
         ]
         self.draw.path = []
+        signal.signal(signal.SIGINT, self.sig_handler)
+
+    def sig_handler(self, signum: int, frame: Any) -> None:
+        self.window.exit_window(None)
 
     def run(self) -> None:
         self.window.welcome_page()
@@ -214,6 +219,8 @@ class Game:
                 Hooks.input_manager["E"] = False
 
         except (KeyboardInterrupt, EOFError):
+            print("CTRL+C CAUGHT")
             self.window.exit_window(None)
+            return
         except Exception as e:
             print(f"Error: {e}")
