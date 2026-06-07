@@ -1,8 +1,36 @@
+"""Display configuration module.
+
+This module defines the DisplayConfig dataclass, which stores display
+window resolution, sprite coordinates, wall coordinates
+and maze configuration values used throughout the rendering system.
+"""
+
 from dataclasses import dataclass
 
 
 @dataclass
 class DisplayConfig:
+    """Rendering and display configuration.
+
+    This dataclass stores maze dimensions, entry and exit locations,
+    display resolution settings, sprite coordinates, wall texture
+    coordinates, and cell sizing information used by the renderer.
+
+    Attributes:
+        columns: Number of maze columns.
+        rows: Number of maze rows.
+        entry_point: Maze entry coordinates.
+        exit_point: Maze exit coordinates.
+        cell_width: Width of a rendered maze cell in pixels.
+        cell_height: Height of a rendered maze cell in pixels.
+        extra_width: Additional horizontal spacing applied
+            during rendering.
+        extra_height: Additional vertical spacing applied
+            during rendering.
+        display_width: Width of the application window.
+        display_height: Height of the application window.
+    """
+
     columns: int
     rows: int
     entry_point: tuple[int, int]

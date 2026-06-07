@@ -1,3 +1,13 @@
+"""Maze rendering module.
+
+This module defines the Draw class, which is responsible for rendering
+maze cells, walls, sprites, paths, and themes onto image buffers.
+
+The renderer uses NumPy arrays as image buffers and performs direct
+pixel manipulation to generate the final display image presented by
+the window system.
+"""
+
 import sys
 try:
     import numpy as np
@@ -20,6 +30,27 @@ from typing import Any
 
 
 class Draw:
+    """Maze renderer.
+
+    This class manages sprite extraction, theme application, maze
+    rendering, path visualization, and presentation of rendered
+    images to the display buffer.
+
+    It operates on image buffers supplied by the window system and
+    performs rendering through direct NumPy array manipulation.
+
+    Attributes:
+        display_configs: Display configuration settings.
+        maze_hex: Maze representation using hexadecimal
+            wall encodings.
+        path: Solution path coordinates.
+        theme_cache: Cached themed sprites and colors.
+        active_theme: Currently selected theme.
+        camera_x: Horizontal camera offset.
+        camera_y: Vertical camera offset.
+        speed: Camera movement speed.
+    """
+
     def __init__(
         self,
         img_data: tuple[Any, bytearray, int, int, int],
@@ -27,7 +58,17 @@ class Draw:
         display_data: tuple[Any, bytearray, int, int, int],
         display_configs: DisplayConfig,
     ) -> None:
+        """Initialize the renderer.
 
+        Loads sprites from the tileset, creates rendering buffers,
+        initializes themes, and prepares rendering resources.
+
+        Args:
+            img_data: Tileset image data and metadata.
+            buff_data: Maze rendering buffer data and metadata.
+            display_data: Display buffer data and metadata.
+            display_configs: Display configuration settings.
+        """
         self.display_configs = display_configs
 
         self.img_ptr, self.img_adr, self.img_line, _, _ = img_data
@@ -184,12 +225,27 @@ class Draw:
             x_coords: tuple[int, int],
             wall: np.ndarray
     ) -> None:
+        """Copy pixel data into the rendering buffer.
+
+        Writes a sprite or color block into the specified region of the
+        maze buffer.
+
+        Args:
+            y_coords: Vertical destination bounds.
+            x_coords: Horizontal destination bounds.
+            wall: Sprite or pixel data to copy.
+        """
         start_x, end_x = x_coords
         start_y, end_y = y_coords
 
         self.buff_3d[start_y:end_y, start_x:end_x] = wall
 
     def floor(self) -> None:
+        """Render maze floor tiles.
+
+        Fills each maze cell with the appropriate floor color based on
+        its encoded cell type.
+        """
         dest_y: int = 0
         for y in range(len(self.maze_hex)):
             dest_x: int = 0
@@ -211,6 +267,11 @@ class Draw:
             dest_y = dest_y + self.display_configs.cell_height
 
     def cell(self) -> None:
+        """Render maze walls and joints.
+
+        Draws all maze walls, corner joints, border walls, and bottom
+        boundaries using the currently active theme.
+        """
         dest_y = 0
         for y in range(len(self.maze_hex)):
             dest_x = 0
@@ -283,6 +344,11 @@ class Draw:
             dest_y = dest_y + self.v_wall_height
 
     def entry_and_exit(self) -> None:
+        """Render entry and exit markers.
+
+        Draws the player sprite at the maze entry point and the goal
+        sprite at the maze exit point.
+        """
         entry_x, entry_y = self.display_configs.entry_point
         exit_x, exit_y = self.display_configs.exit_point
 
@@ -305,6 +371,11 @@ class Draw:
         )
 
     def render_path(self) -> None:
+        """Render the maze solution path.
+
+        Highlights all coordinates belonging to the current solution
+        path and redraws walls above the path overlay.
+        """
         for coord in self.path:
             x, y = coord
 
@@ -319,10 +390,19 @@ class Draw:
         self.cell()
 
     def maze(self) -> None:
+        """Render the complete maze.
+
+        Draws floor tiles followed by wall structures.
+        """
         self.floor()
         self.cell()
 
     def change_wall_color(self) -> None:
+        """Switch to a random rendering theme.
+
+        Selects a new theme from the available theme cache and updates
+        all active wall, floor, and background colors.
+        """
         key = random.choice(self.wcolors_keys)
         while self.active_theme is self.theme_cache[key]:
             key = random.choice(self.wcolors_keys)
@@ -346,6 +426,11 @@ class Draw:
         )
 
     def present(self) -> None:
+        """Compose the final display image.
+
+        Copies the visible portion of the maze buffer into the display
+        buffer while applying camera offsets and centering logic.
+        """
         self.display_3d[:] = self.bcolor
 
         visible_h = min(self.buff_height, self.display_height)

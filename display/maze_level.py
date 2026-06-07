@@ -54,6 +54,15 @@ class Game:
     """
 
     def __init__(self, configs: dict[str, Any]) -> None:
+        """Initialize the game controller.
+
+        Creates the display system, rendering pipeline, maze generation
+        components, and application state variables.
+
+        Args:
+            configs: Configuration dictionary containing
+                the program settings.
+        """
         self.configs = configs
         self.display_config = DisplayConfig(
             columns=self.configs["width"],
@@ -90,9 +99,22 @@ class Game:
         signal.signal(signal.SIGINT, self.sig_handler)
 
     def sig_handler(self, signum: int, frame: Any) -> None:
+        """Handle operating system interrupt signals.
+
+        Ensures the application exits gracefully when an interrupt signal
+        is received.
+
+        Args:
+            signum: Signal number received by the process.
+            frame: Current execution frame.
+        """
         self.window.exit_window(None)
 
     def run(self) -> None:
+        """Start the game application.
+
+        Displays the welcome screen and starts the window event loop.
+        """
         self.window.welcome_page()
         self.window.start(self.update)
 
@@ -101,6 +123,17 @@ class Game:
             generator: Generator[Maze, None, None],
             key: str
     ) -> None:
+        """Advance maze generation by one step.
+
+        Retrieves the next maze state from the generator, updates the
+        renderer, and refreshes the display. When generation completes,
+        initializes the maze solver generator.
+
+        Args:
+            generator: Maze generation generator producing
+                intermediate maze states.
+            key: Input key associated with the generation action.
+        """
         if self.done_gen:
             Hooks.input_manager[key] = False
             return
@@ -125,6 +158,16 @@ class Game:
             self.window.render_image()
 
     def update(self, _: Any) -> None:
+        """Process user input and update application state.
+
+        Handles keyboard actions for maze generation, regeneration,
+        solving, camera movement, menu display, wall color changes,
+        path visibility toggling, exporting, and application shutdown.
+
+        Args:
+            _ (Any): Callback parameter supplied by the window system.
+                The value is unused.
+        """
         try:
             if Hooks.input_manager["ESC"]:
                 self.is_starting = False

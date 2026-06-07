@@ -1,8 +1,27 @@
+"""Input event handling module.
+
+This module defines keyboard event hooks used by the application.
+It maintains a shared input state and updates key flags in response
+to key press and key release events.
+"""
+
 from typing import Any
 from .keymap import Keymap
 
 
 class Hooks():
+    """Keyboard input event manager.
+
+    This class provides static callback methods for handling keyboard
+    events and maintaining the current input state. Key states are
+    stored in the shared ``input_manager`` dictionary and can be
+    queried by other application components.
+
+    Attributes:
+        input_manager: Mapping of supported input actions
+            to their current pressed state.
+    """
+
     input_manager: dict[str, bool] = {
         "SPACE": False,
         "ESC": False,
@@ -20,6 +39,17 @@ class Hooks():
 
     @staticmethod
     def key_pressed(keycode: int, param: Any) -> None:
+        """Handle a key press event.
+
+        Updates the input state by marking the corresponding key action
+        as active.
+
+        Args:
+            keycode: Numeric key code received from the windowing
+                system.
+            param: Additional callback data supplied by the
+                windowing system. This parameter is not used.
+        """
         if keycode == Keymap.get("space"):
             Hooks.input_manager["SPACE"] = True
 
@@ -58,6 +88,17 @@ class Hooks():
 
     @staticmethod
     def key_released(keycode: int, param: Any) -> None:
+        """Handle a key release event.
+
+        Updates the input state by marking the corresponding key action
+        as inactive.
+
+        Args:
+            keycode: Numeric key code received from the windowing
+                system.
+            param: Additional callback data supplied by the
+                windowing system. This parameter is not used.
+        """
         if keycode == Keymap.get("esc"):
             Hooks.input_manager["ESC"] = False
 

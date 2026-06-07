@@ -86,6 +86,15 @@ def print_config(configs: dict[str, Any]) -> None:
 
 
 def print_story() -> None:
+    """Display the game's introductory story.
+
+    Prints the game's backstory using a typewriter-style animation.
+    Each line is displayed character by character before being cleared
+    and replaced by the next line.
+
+    The story introduces the player's objective of finding treasure
+    hidden within the maze.
+    """
     clean_line: str = "\r\033[2K"
     line_time: float = 1.5
     char_time: float = 0.05
@@ -108,6 +117,11 @@ def print_story() -> None:
 
 
 def print_mlx_controls() -> None:
+    """Display the game controls.
+
+    Prints a list of available keyboard controls and their associated
+    actions within the maze application.
+    """
     output: str = "=== MLX Controls ===\n"
 
     output += "ENTER: Start generating the maze\n"

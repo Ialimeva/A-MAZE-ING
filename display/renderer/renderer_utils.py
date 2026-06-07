@@ -1,3 +1,10 @@
+"""Sprite and theme utility module.
+
+This module provides helper functions for extracting, scaling, and
+recoloring sprite images. It also defines the color themes used for
+maze floors, walls, and background rendering.
+"""
+
 import sys
 try:
     import numpy as np
@@ -13,6 +20,26 @@ def tileset(
             y_coordinates: tuple[int, int],
             spritesheet: Spritesheet
         ) -> tuple[np.ndarray, int, int]:
+    """Extract a sprite from a spritesheet.
+
+    Retrieves a sprite using the specified coordinate bounds and
+    returns a copy of the sprite along with its dimensions.
+
+    Args:
+        x_coordinates: Horizontal bounds of the
+            sprite in the spritesheet.
+        y_coordinates: Vertical bounds of the
+            sprite in the spritesheet.
+        spritesheet: Source spritesheet object.
+
+    Returns:
+        tuple:
+            A tuple containing:
+
+            - The extracted sprite image.
+            - Sprite height.
+            - Sprite width.
+    """
     x_min, x_max = x_coordinates
     y_min, y_max = y_coordinates
     tileset = spritesheet.get_tileset(
@@ -21,11 +48,23 @@ def tileset(
                 y_min,
                 y_max
             )
-    tileset_height, tileset_witdth, _ = tileset.shape
-    return (tileset.copy(), tileset_height, tileset_witdth)
+    tileset_height, tileset_width, _ = tileset.shape
+    return (tileset.copy(), tileset_height, tileset_width)
 
 
 def scale_pixel(sprite: np.ndarray, scale: int) -> np.ndarray:
+    """Scale a sprite using nearest-neighbor enlargement.
+
+    Each pixel in the source image is duplicated horizontally and
+    vertically according to the specified scale factor.
+
+    Args:
+        sprite: Sprite image to scale.
+        scale: Scaling factor.
+
+    Returns:
+        np.ndarray: Scaled sprite image.
+    """
     scaled_img = np.repeat(sprite, scale, axis=0)
     scaled_img = np.repeat(scaled_img, scale, axis=1)
 
@@ -37,7 +76,16 @@ def recolor_pixel(
         target_color: list[int],
         new_color: list[int]
 ) -> None:
+    """Replace a color within a sprite.
 
+    Finds all pixels matching the target color and replaces them
+    with the specified new color.
+
+    Args:
+        sprite: Sprite image to modify.
+        target_color: RGBA color to replace.
+        new_color: Replacement RGBA color.
+    """
     mask = np.all(sprite == target_color, axis=2)
     sprite[mask] = new_color
 
