@@ -1,4 +1,4 @@
-> *This project has been created as part of the 42 curriculum by [ialrandr](mailto:ialrandr@student.42antananarivo.mg), [trakotoz](mailto:trakotoz@student.42antananarivo.mg).*
+> *This project has been created as part of the 42 curriculum by ialrandr, trakotoz.*
 
 # A-Maze-ing
 
@@ -159,10 +159,10 @@ be panned across mazes larger than the window.
 
 | Key | Action |
 |---|---|
-| `ENTER` | Advance maze generation one step (hold to animate) |
+| `ENTER` | Advance maze generation one step |
 | `SPACE` | Show / hide the overlay menu |
 | `G` | Generate a new maze with a new random seed |
-| `S` | Reveal the solution path one step at a time |
+| `S` | Reveal the solution path |
 | `P` | Toggle showing / hiding the complete solution path |
 | `C` | Change wall and floor colors |
 | `↑ ↓ ← →` | Pan the camera |
@@ -366,6 +366,8 @@ The current `mazegen` pipeline relies on an intermediate `2x + 1` representation
 which introduces unnecessary processing overhead.
 A more efficient approach would be to use the hexadecimal representation throughout the entire pipeline.
 Although bit-level manipulation is more complex to implement, it offers significant performance and memory benefits.
+While the `display` module is functional and can be reused independently, its internal structure would benefit from further refinement.
+Some files are excessively long, and certain responsibilities are duplicated across functions, reducing overall maintainability and modularity
 
 ### Tools used
 
@@ -411,7 +413,7 @@ AI assistance (Claude, Anthropic) was used during this project for the following
 | Task                          | Part of the project                                   |
 |-------------------------------|-------------------------------------------------------|
 | Algorithm understanding       | graph theory, lesson on heuristic                     |
-| Documentation on tool used    | numpy learning, mlx documentation                     |
+| Documentation on tool used    | numpy learning, mlx documentation, pyhton docstring   |
 | README                        | help on the redaction of README and code documentation|
 | Optimization idea             | idea on the `hex` version                             |
 
