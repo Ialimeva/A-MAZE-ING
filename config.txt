@@ -1,28 +1,37 @@
-# width and height of the maze
+# Maze dimensions in cells.
 WIDTH		= 20
 HEIGHT		= 15
 
-# entry and exit point of the solver
+
+# Solver start and end coordinates (x,y).
 ENTRY		= 0,0
 EXIT		= 19,14
 
-# The output file of the maze in format hexadecimal
+
+# Output file for the generated maze.
 OUTPUT_FILE	= maze.txt
 
-# Set true if you want a perfect maze
+
+# True for a perfect maze without loops.
 PERFECT		= True
 
-# give a value if you want a seed randomize map generator
+
+# Random seed. Use None for a different maze each run.
 SEED		= None
 
-# Algorithm to use for maze generator: DFS, Prims, Wilsons
-Generator	= Auto
 
-# Algorithm to use for solving the maze: BFS, Dijkstra, Astar
-Solver		= Auto
+# Maze generator: DFS, Prims, Wilsons, or Auto (DFS).
+GENERATOR	= Auto
 
-# Mode visual can be: term (terminal) or mlx (graphical)
-Visual		= mlx
 
-# If you want to hear a hidden story, just ask the system.
-Story		= True
+# Maze solver: BFS, Dijkstra, Astar, or Auto (BFS).
+SOLVER		= Auto
+
+
+# Display mode: term (terminal) or mlx (graphical).
+VISUAL		= mlx
+
+
+# Enable the hidden story.
+STORY		= True
+
