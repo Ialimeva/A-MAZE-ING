@@ -219,8 +219,8 @@ class Game:
                 Hooks.input_manager["E"] = False
 
         except (KeyboardInterrupt, EOFError):
-            print("CTRL+C CAUGHT")
             self.window.exit_window(None)
             return
         except Exception as e:
             print(f"Error: {e}")
+            return
