@@ -190,6 +190,7 @@ class Game:
 
             if Hooks.input_manager["G"]:
                 if not self.regen_maze:
+                    self.is_starting = True
                     self.regen_maze = True
                     self.draw.path = []
                     self.path_show = False
