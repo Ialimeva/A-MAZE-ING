@@ -87,8 +87,8 @@ Each setting is written as `key = value`. Keys are case-insensitive.
 
 ```ini
 # Maze dimensions (logical cells, not raw grid pixels)
-width       = 20        # Integer, range [1, 200]. Must be ≥ 9 (42 pattern constraint)
-height      = 15        # Integer, range [1, 200]. Must be ≥ 6 (42 pattern constraint)
+width       = 20        # Integer, range [1, 200]. Must be ≥ 11 (42 pattern constraint)
+height      = 15        # Integer, range [1, 200]. Must be ≥ 9 (42 pattern constraint)
 
 # Entry and exit points: col,row in logical cell coordinates
 entry       = 0,0
@@ -125,7 +125,7 @@ story       = true      # true → display the narrative intro on startup
 The configuration is validated before the program starts. Any failing field resets to
 its default and a warning is printed. The full set of constraints:
 
-- `width` ∈ [1, 200] and `width` ≥ 9; `height` ∈ [1, 200] and `height` ≥ 6.
+- `width` ∈ [1, 200] and `width` ≥ 11; `height` ∈ [1, 200] and `height` ≥ 9.
 - `entry` ≠ `exit`; both must be within bounds (`col < width`, `row < height`).
 - Neither `entry` nor `exit` may overlap a cell occupied by the 42 pattern.
 - `generator` and `solver` must name a registered algorithm or be `"auto"`.

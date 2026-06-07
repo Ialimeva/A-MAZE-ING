@@ -429,8 +429,8 @@ class ConfigManager:
         height = conf["height"]
 
         if (
-            width < Pattern42._CELL_WIDTH or
-            height < Pattern42._CELL_HEIGHT + 1
+            width < Pattern42._CELL_WIDTH + 2 or
+            height < Pattern42._CELL_HEIGHT + 3
         ):
             raise ConfigError("Size to small for 42 pattern")
 
