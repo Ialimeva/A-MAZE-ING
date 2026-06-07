@@ -146,13 +146,12 @@ def main() -> None:
     if len(sys.argv) != 2:
         usage_exit()
 
-    introduction()
-
     configs: dict[str, Any] = get_config(sys.argv[1])
-    print_config(configs)
 
+    introduction()
     if configs["story"]:
         print_story()
+    print_config(configs)
 
     if configs["visual"] == "term":
         term_render: VisualTerm = VisualTerm(configs)
