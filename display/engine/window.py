@@ -1,6 +1,6 @@
 import sys
 try:
-    from mlx import Mlx  # type: ignore
+    from mlx import Mlx
 except ImportError:
     print("Error: 'mlx' is not installed")
     sys.exit(1)

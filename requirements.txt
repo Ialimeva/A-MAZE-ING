@@ -4,3 +4,4 @@ ipdb>=0.13.13
 build>=1.4.4
 numpy>=2.4.4
 dependencies/mlx-2.2-py3-none-any.whl
+pydocstyle

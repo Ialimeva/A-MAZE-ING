@@ -41,7 +41,6 @@ class Draw:
         )
         _, _, _, self.display_width, self.display_height = display_data
 
-        # Image and Buff are in raw C memory adresses
         self.img_array = np.frombuffer(self.img_adr, dtype=np.uint8)
         self.buff_array = np.frombuffer(self.buff_adr, dtype=np.uint8)
         self.display_array = np.frombuffer(self.display_adr, dtype=np.uint8)
