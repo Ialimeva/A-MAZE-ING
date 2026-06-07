@@ -160,10 +160,11 @@ def main() -> None:
     if len(sys.argv) != 2:
         usage_exit()
 
-    configs: dict[str, Any] = get_config(sys.argv[1])
-
     introduction()
+
+    configs: dict[str, Any] = get_config(sys.argv[1])
     print_config(configs)
+
     if configs["story"]:
         print_story()
 

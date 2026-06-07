@@ -1,5 +1,4 @@
 # Maze dimensions in cells.
-WIDTH		= 20
 HEIGHT		= 15
 
 
@@ -25,11 +24,10 @@ GENERATOR	= Auto
 
 
 # Maze solver: BFS, Dijkstra, Astar, or Auto (BFS).
-SOLVER		= Auto
+SOLVER		= Autda
 
 
 # Display mode: term (terminal) or mlx (graphical).
-VISUAL		= mlx
 
 
 # Enable the hidden story.
