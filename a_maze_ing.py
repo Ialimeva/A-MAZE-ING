@@ -163,9 +163,9 @@ def main() -> None:
     configs: dict[str, Any] = get_config(sys.argv[1])
 
     introduction()
+    print_config(configs)
     if configs["story"]:
         print_story()
-    print_config(configs)
 
     if configs["visual"] == "term":
         term_render: VisualTerm = VisualTerm(configs)
