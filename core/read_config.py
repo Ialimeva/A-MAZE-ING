@@ -183,10 +183,10 @@ class Config:
             raise ConfigError(f"Invalid visual value {value}")
 
     def set_story(self, value: bool) -> None:
-        """Set the story mode of the program
+        """Set the story mode of the program.
 
         Args:
-            value: Story mode
+            value: Story mode.
         """
         self.__story = value
 
