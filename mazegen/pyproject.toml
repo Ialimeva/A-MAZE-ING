@@ -10,7 +10,7 @@ authors		= [
 	{name = "Teddy Andrianina", email = "trakotoz@student.42antananarivo.mg"},
 	{name = "Ialimeva Rindraniaina", email = "ialrandr@student.42antananarivo.mg"}
 ]
-readme		= "mazegen/README.md"
+readme		= "README.md"
 
 [tool.setuptools.packages.find]
 where	= ["."]
