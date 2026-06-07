@@ -1,3 +1,11 @@
+"""Game controller module.
+
+This module defines the Game class, which coordinates maze generation,
+rendering, user input handling, maze solving, and exporting results.
+It serves as the main application controller between the rendering
+engine, window system, and maze management logic.
+"""
+
 import sys
 try:
     import numpy as np
@@ -17,6 +25,34 @@ from mazegen import Maze
 
 
 class Game:
+    """Main game controller.
+
+    This class manages the application lifecycle, including maze
+    generation, rendering, solving, user interaction, and exporting
+    maze solutions. It acts as the central coordinator between the
+    window system, renderer, input manager, and maze algorithms.
+
+    Attributes:
+        configs: Configuration dictionary containing the program settings.
+        display_config: Display configuration object.
+        window: Window instance.
+        img_data: Source Tileset Image used for rendering.
+        buff_data: Internal rendering buffer.
+        display_data: Display buffer presented to the window.
+        draw: Renderer responsible for drawing maze elements.
+        maze: Current maze instance.
+        gen: Maze generation generator.
+        buff_cache: Cached rendering buffer used for restoring maze state.
+        is_starting: Indicates whether generation has started.
+        show_menu: Indicates whether the menu is visible.
+        path_show: Indicates whether the solution path is hidden.
+        regen_maze: Indicates whether maze regeneration is active.
+        done_gen: Indicates whether maze generation is complete.
+        done_solve: Indicates whether maze solving is complete.
+        change_wcolor: Indicates whether wall colors changed.
+        solve: Maze solving generator.
+    """
+
     def __init__(self, configs: dict[str, Any]) -> None:
         self.configs = configs
         self.display_config = DisplayConfig(
@@ -95,6 +131,10 @@ class Game:
                 self.window.exit_window(None)
                 Hooks.input_manager["ESC"] = False
 
+            if Hooks.input_manager["ENTER"]:
+                self.is_starting = True
+                self.generate_step(self.gen, "ENTER")
+
             if Hooks.input_manager["SPACE"] and self.is_starting:
                 Hooks.input_manager["SPACE"] = False
                 if not self.show_menu:
@@ -104,10 +144,6 @@ class Game:
                     self.show_menu = False
                     self.draw.present()
                     self.window.render_image()
-
-            if Hooks.input_manager["ENTER"]:
-                self.is_starting = True
-                self.generate_step(self.gen, "ENTER")
 
             if Hooks.input_manager["G"]:
                 if not self.regen_maze:
