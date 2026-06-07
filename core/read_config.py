@@ -190,6 +190,7 @@ class Config:
         """
         self.__story = value
 
+
 class ConfigManager:
     """Build and validate configurations from files."""
 

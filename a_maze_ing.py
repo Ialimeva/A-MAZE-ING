@@ -84,13 +84,14 @@ def print_config(configs: dict[str, Any]) -> None:
 
     print(output)
 
+
 def print_story() -> None:
     clean_line: str = "\r\033[2K"
-    line_time: int = 1.5
-    char_time: int = 0.05
+    line_time: float = 1.5
+    char_time: float = 0.05
     story: list[str] = [
         "Dude is broke",
-        "And has heard rumors of a hidden treasure", 
+        "And has heard rumors of a hidden treasure",
         "Deep within an ever-changing maze.",
         "Help him find the gold",
         "And change his fortune!",
@@ -104,6 +105,7 @@ def print_story() -> None:
         time.sleep(line_time)
         print(clean_line, end="", flush=True)
     print(reset, end="")
+
 
 def print_mlx_controls() -> None:
     output: str = "=== MLX Controls ===\n"
@@ -150,13 +152,12 @@ def main() -> None:
     print_config(configs)
 
     if configs["story"]:
-        pass
+        print_story()
 
     if configs["visual"] == "term":
         term_render: VisualTerm = VisualTerm(configs)
         term_render.run()
     else:
-        print_story()
         print_mlx_controls()
         game = Game(configs)
         game.run()

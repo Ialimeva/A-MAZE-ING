@@ -23,3 +23,6 @@ Solver		= Auto
 
 # Mode visual can be: term (terminal) or mlx (graphical)
 Visual		= mlx
+
+# If you want to hear a hidden story, just ask the system.
+Story		= True
