@@ -24,6 +24,20 @@ C_BLUE		= \033[34m
 C_MAGENTA	= \033[35m
 
 
+help:
+	@ echo "$(C_BLUE)Usage: make [target] $(C_RESET)"
+	@ echo "$(C_GREEN)make install$(C_RESET)        Install all the dependencies"
+	@ echo "$(C_GREEN)make run$(C_RESET)            Run $(PROGRAM) with $(CONFIG) as argument"
+	@ echo "$(C_GREEN)make check$(C_RESET)          Verify Python is installed"
+	@ echo "$(C_GREEN)make lint$(C_RESET)           Run flake8 and mypy (standard version)"
+	@ echo "$(C_GREEN)make lint-strict$(C_RESET)    Run flake8 and mypy (strict version)"
+	@ echo "$(C_GREEN)make debug$(C_RESET)          Run $(PROGRAM) under ipdb debugger"
+	@ echo "$(C_GREEN)make packages$(C_RESET)       Show list of packages installed pip list"
+	@ echo "$(C_GREEN)make build$(C_RESET)          Build mazegen packages"
+	@ echo "$(C_GREEN)make clean$(C_RESET)          Remove python and mypy cache"
+	@ echo "$(C_GREEN)make fclean$(C_RESET)         clean + remove virtualenv/dist"
+	@ echo "$(C_GREEN)make re$(C_RESET)             fclean + install (rebuild of the project)"
+
 all			: install
 
 check		:
@@ -84,19 +98,5 @@ packages	: $(VENV)
 
 build		: install
 	@ $(MAKE) build -C mazegen
-
-help:
-	@ echo "$(C_BLUE)Usage: make [target] $(C_RESET)"
-	@ echo "$(C_GREEN)make install$(C_RESET)        Install all the dependencies"
-	@ echo "$(C_GREEN)make run$(C_RESET)            Run $(PROGRAM) with $(CONFIG) as argument"
-	@ echo "$(C_GREEN)make check$(C_RESET)          Verify Python is installed"
-	@ echo "$(C_GREEN)make lint$(C_RESET)           Run flake8 and mypy (standard version)"
-	@ echo "$(C_GREEN)make lint-strict$(C_RESET)    Run flake8 and mypy (strict version)"
-	@ echo "$(C_GREEN)make debug$(C_RESET)          Run $(PROGRAM) under ipdb debugger"
-	@ echo "$(C_GREEN)make packages$(C_RESET)       Show list of packages installed pip list"
-	@ echo "$(C_GREEN)make build$(C_RESET)          Build mazegen packages"
-	@ echo "$(C_GREEN)make clean$(C_RESET)          Remove python and mypy cache"
-	@ echo "$(C_GREEN)make fclean$(C_RESET)         clean + remove virtualenv/dist"
-	@ echo "$(C_GREEN)make re$(C_RESET)             fclean + install (rebuild of the project)"
 
 .PHONY	: all install check run clean fclean lint lint-strict debug re packages build help
