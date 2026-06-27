@@ -12,7 +12,7 @@ REQ			= requirements.txt
 
 # Program and Args
 PROGRAM		= a_maze_ing.py
-CONFIG		= config.txt
+CONFIG		= config.conf
 
 RM			= rm -rf
 
